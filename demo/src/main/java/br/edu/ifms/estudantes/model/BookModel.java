@@ -1,22 +1,36 @@
 package br.edu.ifms.estudantes.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "books")
 public class BookModel {
-    private String Título;
+
+    @Column()
+    private String Titulo;
+    @Column()
     private String Tema;
+    @Column()
     private String Autor;
+    @Column()
     private String ISBN;
+    @Column()
     private Date data_publicacao;
+    @Column()
     private int Quantidade;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int NumberId;
 
     public String getTítulo() {
-        return Título;
+        return Titulo;
     }
 
     public void setTítulo(String título) {
-        Título = título;
+        Titulo = título;
     }
 
     public String getTema() {
