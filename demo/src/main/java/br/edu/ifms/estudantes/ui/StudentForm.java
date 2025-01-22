@@ -14,7 +14,7 @@ public class StudentForm {
   public static void main(String[] args) {
     JFrame frame = new JFrame("Student Form");
     frame.setLayout(new FlowLayout());
-    frame.setSize(300, 200);
+    frame.setSize(500, 500);
 
     JLabel firstNameLabel = new JLabel("First Name");
     JTextField firstNameField = new JTextField(15);

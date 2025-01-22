@@ -1,11 +1,23 @@
 package br.edu.ifms.estudantes.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="Users")
 public class UserModel {
-    private String Nome;
-    private String Sexo;
-    private int NumberPhone;
-    private String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int NumberId;
+
+    @Column()
+    private String Nome;
+    @Column()
+    private String Sexo;
+    @Column()
+    private int NumberPhone;
+    @Column()
+    private String email;
 
     public String getNome() {
         return Nome;
