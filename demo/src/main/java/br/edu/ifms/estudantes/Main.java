@@ -1,7 +1,9 @@
 package br.edu.ifms.estudantes;
 
+import br.edu.ifms.estudantes.ui.BookFormView;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        new BookFormView();
     }
 }
