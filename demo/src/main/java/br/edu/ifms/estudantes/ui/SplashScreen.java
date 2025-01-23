@@ -17,7 +17,8 @@ public class SplashScreen extends JFrame{
         continuarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new MenuView();
+                dispose();
             }
         });
     }

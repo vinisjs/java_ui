@@ -7,7 +7,6 @@ import br.edu.ifms.estudantes.ui.SplashScreen;
 public class Main {
     public static void main(String[] args) {
         new BookFormView();
-        new MenuView();
         new SplashScreen();
     }
 }
