@@ -23,7 +23,7 @@ public class BookFormView extends JFrame{
     public BookFormView() {
         this.setTitle("Cadastro de Livros");
         this.setContentPane(Screen1);
-        this.setSize(600, 450);
+        this.setSize(580, 400);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
         cadastrarButton.addActionListener(new ActionListener() {
