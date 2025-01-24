@@ -14,10 +14,11 @@ public class MenuView extends JFrame{
     private JPanel Content;
     private JLabel titleLabel;
 
-    public MenuView() {
+    public MenuView(JPanel splashScreen) {
         setTitle("Menu de opções");
         setContentPane(MenuScreen);
         this.setSize(600, 450);
+        this.setLocationRelativeTo(splashScreen);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         MenuBorder.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
 

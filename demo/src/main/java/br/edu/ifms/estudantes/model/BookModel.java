@@ -25,12 +25,12 @@ public class BookModel {
     @Column(name = "id")
     private int NumberId;
 
-    public String getTítulo() {
+    public String getTitulo() {
         return Titulo;
     }
 
-    public void setTítulo(String título) {
-        Titulo = título;
+    public void setTitulo(String titulo) {
+        Titulo = titulo;
     }
 
     public String getTema() {
