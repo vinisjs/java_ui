@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BookFormView extends JFrame{
+public class BookFormView extends JDialog{
     private JPanel Screen1;
     private JTextField textField1;
     private JTextField textField2;
@@ -19,18 +19,26 @@ public class BookFormView extends JFrame{
     private JPanel CampoExemplares;
     private JTextField textField6;
     private JButton cadastrarButton;
+    private JButton cancelarButton;
 
-    public BookFormView() {
-        this.setTitle("Cadastro de Livros");
+    public BookFormView(JFrame parent) {
+        super(parent, "Cadastro de Livros", true);
         this.setContentPane(Screen1);
         this.setSize(580, 400);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setVisible(true);
+        this.setLocationRelativeTo(parent);
+
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
+        cancelarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        this.setVisible(true);
     }
 }

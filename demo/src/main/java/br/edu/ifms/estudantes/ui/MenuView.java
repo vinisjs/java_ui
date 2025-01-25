@@ -3,6 +3,8 @@ package br.edu.ifms.estudantes.ui;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MenuView extends JFrame{
     private JPanel MenuScreen;
@@ -23,5 +25,14 @@ public class MenuView extends JFrame{
         MenuBorder.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
 
         this.setVisible(true);
+        livrosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openBookForm();
+            }
+        });
+    }
+    private void openBookForm() {
+        new BookFormView(this);
     }
 }
