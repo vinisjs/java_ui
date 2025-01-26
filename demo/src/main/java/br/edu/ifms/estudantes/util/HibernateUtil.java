@@ -5,12 +5,13 @@ import org.hibernate.cfg.Configuration;
 import br.edu.ifms.estudantes.model.*;
 
 public class HibernateUtil {
-  private static SessionFactory sessionFactory;
+  private static final SessionFactory sessionFactory;
 
   static {
     try {
       sessionFactory = new Configuration().configure("hibernate.cfg.xml")
-          .addAnnotatedClass(Student.class)
+          .addAnnotatedClass(BookModel.class)
+          .addAnnotatedClass(UserModel.class)
           .buildSessionFactory();
     } catch (Exception e) {
       e.printStackTrace();

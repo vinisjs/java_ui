@@ -32,6 +32,11 @@ public class MenuView extends JFrame{
         MenuBorder.add(titleLabel);
         MenuBorder.add(Box.createVerticalStrut(20));
 
+        livrosButton.setIcon(loadIcon("/images/book.png", 20, 20));
+        usuariosButton.setIcon(loadIcon("/images/users.png", 20, 20));
+        emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png", 20, 20));
+        sairButton.setIcon(loadIcon("/images/log-out.png", 20, 20));
+
         styleButton(livrosButton);
         styleButton(usuariosButton);
         styleButton(emprestimosButton);
@@ -65,6 +70,10 @@ public class MenuView extends JFrame{
         button.setBackground(new Color(2, 133, 199));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
+
+        button.setHorizontalTextPosition(SwingConstants.RIGHT);
+        button.setIconTextGap(10);
+
         button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         button.setUI(new BasicButtonUI() {
             @Override
@@ -92,10 +101,16 @@ public class MenuView extends JFrame{
 
     private void addCenteredButton(JButton button) {
         MenuBorder.add(button);
-        MenuBorder.add(Box.createVerticalStrut(15));
+        MenuBorder.add(Box.createVerticalStrut(10));
     }
 
     private void openBookForm() {
         new BookFormView(this);
+    }
+
+    private ImageIcon loadIcon(String path, int width, int height) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(path));
+        Image img = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
     }
 }

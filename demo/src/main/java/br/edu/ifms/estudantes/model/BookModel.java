@@ -16,7 +16,7 @@ public class BookModel {
     @Column()
     private String ISBN;
     @Column()
-    private Date data_publicacao;
+    private String data_publicacao;
     @Column()
     private int Quantidade;
 
@@ -57,11 +57,11 @@ public class BookModel {
         this.ISBN = ISBN;
     }
 
-    public Date getData_publicacao() {
+    public String getData_publicacao() {
         return data_publicacao;
     }
 
-    public void setData_publicacao(Date data_publicacao) {
+    public void setData_publicacao(String data_publicacao) {
         this.data_publicacao = data_publicacao;
     }
 

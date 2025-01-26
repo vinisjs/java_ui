@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.BookController;
+import br.edu.ifms.estudantes.model.BookModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +30,24 @@ public class BookFormView extends JDialog{
         this.setSize(580, 400);
         this.setLocationRelativeTo(parent);
 
+        BookModel book = new BookModel();
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Captura os valores dos campos de texto
+                book.setTitulo(textField1.getText());
+                book.setAutor(textField2.getText());
+                book.setTema(textField3.getText());
+                book.setISBN(textField4.getText());
+                book.setData_publicacao(textField5.getText());
+                book.setQuantidade(Integer.parseInt(textField6.getText()));
+
+
+                new BookController().controller(book);
 
             }
         });
+
         cancelarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,5 +55,7 @@ public class BookFormView extends JDialog{
             }
         });
         this.setVisible(true);
+
+
     }
 }
