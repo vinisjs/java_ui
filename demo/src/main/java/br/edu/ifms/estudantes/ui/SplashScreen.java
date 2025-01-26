@@ -15,6 +15,8 @@ public class SplashScreen extends JFrame{
         this.setSize(600, 450);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        continuarButton.setPreferredSize(new Dimension(200, 30));
+        continuarButton.setFocusPainted(false);
         this.setVisible(true);
         continuarButton.addActionListener(new ActionListener() {
             @Override
