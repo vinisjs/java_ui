@@ -57,6 +57,12 @@ public class MenuView extends JFrame{
                 openBookForm();
             }
         });
+        usuariosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openUserForm();
+            }
+        });
         sairButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,6 +121,10 @@ public class MenuView extends JFrame{
         new BookFormView(this);
     }
 
+    private void openUserForm() {
+        new UserFormView(this);
+    }
+    
     private ImageIcon loadIcon(String path) {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
         Image img = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);

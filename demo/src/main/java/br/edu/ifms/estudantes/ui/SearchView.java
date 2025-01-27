@@ -1,13 +1,11 @@
 package br.edu.ifms.estudantes.ui;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import java.awt.*;
 
 public class SearchView extends JFrame{
     private JPanel SearchScreen;
-    private JButton button1;
-    private JTextField textField1;
+    private JTextField SearchField;
+    private JButton SearchButton;
 
     public SearchView() {
         setContentPane(SearchScreen);

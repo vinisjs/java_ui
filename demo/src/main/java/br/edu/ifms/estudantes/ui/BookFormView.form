@@ -41,7 +41,7 @@
                   <text value="Tema do livro:"/>
                 </properties>
               </component>
-              <component id="c9e4f" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+              <component id="c9e4f" class="javax.swing.JTextField" binding="textTheme">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -67,7 +67,7 @@
                   <text value="Título do livro:"/>
                 </properties>
               </component>
-              <component id="3917f" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+              <component id="3917f" class="javax.swing.JTextField" binding="textTitle">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -93,7 +93,7 @@
                   <text value="Autor do livro:"/>
                 </properties>
               </component>
-              <component id="4ffc4" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+              <component id="4ffc4" class="javax.swing.JTextField" binding="textAuthor">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -130,7 +130,7 @@
                   <text value="ISBN do livro:"/>
                 </properties>
               </component>
-              <component id="27386" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+              <component id="27386" class="javax.swing.JTextField" binding="textIsbn">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -156,7 +156,7 @@
                   <text value="Data de publicação:"/>
                 </properties>
               </component>
-              <component id="f422b" class="javax.swing.JTextField" binding="textField5" default-binding="true">
+              <component id="f422b" class="javax.swing.JTextField" binding="textDate">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -182,7 +182,7 @@
                   <text value="Total de exemplares:"/>
                 </properties>
               </component>
-              <component id="85b4f" class="javax.swing.JTextField" binding="textField6" default-binding="true">
+              <component id="85b4f" class="javax.swing.JTextField" binding="textTotal">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>

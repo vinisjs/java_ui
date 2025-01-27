@@ -9,18 +9,18 @@ import java.awt.event.ActionListener;
 
 public class BookFormView extends JDialog{
     private JPanel Screen1;
-    private JTextField textField1;
-    private JTextField textField2;
+    private JTextField textTheme;
+    private JTextField textTitle;
     private JPanel CampoTema;
     private JPanel CampoTitulo;
     private JPanel CampoAutor;
-    private JTextField textField3;
+    private JTextField textAuthor;
     private JPanel CampoISBN;
-    private JTextField textField4;
+    private JTextField textIsbn;
     private JPanel CampoData;
-    private JTextField textField5;
+    private JTextField textDate;
     private JPanel CampoExemplares;
-    private JTextField textField6;
+    private JTextField textTotal;
     private JButton cadastrarButton;
     private JButton cancelarButton;
 
@@ -35,12 +35,12 @@ public class BookFormView extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Captura os valores dos campos de texto
-                book.setTitulo(textField2.getText()); // tema
-                book.setAutor(textField3.getText()); // titulo
-                book.setTema(textField1.getText()); // autor
-                book.setISBN(textField4.getText()); //
-                book.setData_publicacao(textField5.getText());
-                book.setQuantidade(Integer.parseInt(textField6.getText()));
+                book.setTitulo(textTitle.getText()); // tema
+                book.setAutor(textAuthor.getText()); // titulo
+                book.setTema(textTheme.getText()); // autor
+                book.setISBN(textIsbn.getText()); //
+                book.setData_publicacao(textDate.getText());
+                book.setQuantidade(Integer.parseInt(textTotal.getText()));
 
 
                 new BookController().controller(book);
@@ -57,7 +57,6 @@ public class BookFormView extends JDialog{
             }
         });
         this.setVisible(true);
-
 
     }
 }
