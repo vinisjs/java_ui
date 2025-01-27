@@ -35,15 +35,17 @@ public class BookFormView extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Captura os valores dos campos de texto
-                book.setTitulo(textField1.getText());
-                book.setAutor(textField2.getText());
-                book.setTema(textField3.getText());
-                book.setISBN(textField4.getText());
+                book.setTitulo(textField2.getText()); // tema
+                book.setAutor(textField3.getText()); // titulo
+                book.setTema(textField1.getText()); // autor
+                book.setISBN(textField4.getText()); //
                 book.setData_publicacao(textField5.getText());
                 book.setQuantidade(Integer.parseInt(textField6.getText()));
 
 
                 new BookController().controller(book);
+                BookModel re = new BookController().getBook(2);
+                System.out.println(re.getTitulo());
 
             }
         });

@@ -4,10 +4,25 @@ import br.edu.ifms.estudantes.model.BookModel;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class BookRepo extends BookModel {
-    public void save(BookModel book, Session session, Transaction transaction){
+import java.io.Serializable;
+
+public class BookRepo {
+
+    public void save(BookModel book, Session session, Transaction transaction) {
         session.save(book);
         transaction.commit();
         System.out.println("Livro Salvo");
+    }
+
+    public static BookModel getBook(Object param, Session session) {
+        if (param instanceof Integer) {
+            return session.get(BookModel.class, (Serializable) param); // Busca por id (NumberId)
+        } else if (param instanceof String) {
+            // Busca por Titulo
+            return session.createQuery("FROM BookModel WHERE Titulo = :titulo", BookModel.class)
+                    .setParameter("titulo", param)
+                    .uniqueResult();
+        }
+        return null; // Retorna null se o parâmetro não for nem Integer nem String
     }
 }

@@ -14,4 +14,9 @@ public class BookController {
         new BookRepo().save(book, session,transaction);
 
     }
+
+
+    public BookModel getBook(Object param) {
+        return BookRepo.getBook(param, session);
+    }
 }

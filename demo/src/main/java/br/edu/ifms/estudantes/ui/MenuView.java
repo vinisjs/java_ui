@@ -7,6 +7,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class MenuView extends JFrame{
     private JPanel MenuScreen;
@@ -32,10 +33,10 @@ public class MenuView extends JFrame{
         MenuBorder.add(titleLabel);
         MenuBorder.add(Box.createVerticalStrut(20));
 
-        livrosButton.setIcon(loadIcon("/images/book.png", 20, 20));
-        usuariosButton.setIcon(loadIcon("/images/users.png", 20, 20));
-        emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png", 20, 20));
-        sairButton.setIcon(loadIcon("/images/log-out.png", 20, 20));
+        livrosButton.setIcon(loadIcon("/images/book.png"));
+        usuariosButton.setIcon(loadIcon("/images/users.png"));
+        emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png"));
+        sairButton.setIcon(loadIcon("/images/log-out.png"));
 
         styleButton(livrosButton);
         styleButton(usuariosButton);
@@ -108,9 +109,9 @@ public class MenuView extends JFrame{
         new BookFormView(this);
     }
 
-    private ImageIcon loadIcon(String path, int width, int height) {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    private ImageIcon loadIcon(String path) {
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
+        Image img = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         return new ImageIcon(img);
     }
 }
