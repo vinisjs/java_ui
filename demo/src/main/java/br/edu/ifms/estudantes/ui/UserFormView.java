@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserFormView extends JDialog{
     private JPanel Screen2;
@@ -27,6 +29,9 @@ public class UserFormView extends JDialog{
     private JFormattedTextField formattedTextEmail;
     private JFormattedTextField formattedTextTelefone;
     private JLabel labelSexo;
+    private JLabel labelEmail;
+    private JTextField textEmail;
+    private JLabel emailErrorLabel;
 
     public Styles styles = new Styles();
 
@@ -42,7 +47,7 @@ public class UserFormView extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 user.setNome(textName.getText());
-                user.setEmail(formattedTextEmail.getText());
+                user.setEmail(textEmail.getText());
                 user.setNumberPhone(formattedTextTelefone.getText());
 
                 if (masculinoRadioButton.isSelected()) {
@@ -75,9 +80,21 @@ public class UserFormView extends JDialog{
             System.out.println("Deu B.O");
         }
 
+        textEmail.getDocument().addDocumentListener(new SimpleDocumentListener() {
+            @Override
+            public void update() {
+                String email = textEmail.getText();
+                if (!isValidEmail(email)) {
+                    emailErrorLabel.setText("E-mail inválido");
+                } else {
+                    emailErrorLabel.setText("");
+                }
+            }
+        });
+
         styles.styleTextField(textName);
         styles.styleTextField(formattedTextTelefone);
-        styles.styleTextField(formattedTextEmail);
+        styles.styleTextField(textEmail);
 
         styles.styleRadioButton(masculinoRadioButton);
         styles.styleRadioButton(femininoRadioButton);
@@ -85,14 +102,38 @@ public class UserFormView extends JDialog{
 
         styles.alignFields(CampoNome, "Nome:", textName);
         styles.alignFields(CampoTelefone, "Telefone:", formattedTextTelefone);
-        styles.alignFields(CampoEmail, "E-mail:", formattedTextEmail);
+        styles.alignFields(CampoEmail, "E-mail:", textEmail);
 
         styles.alignRadioButtonField(CampoSexo, "Sexo:", masculinoRadioButton, femininoRadioButton, naoBinarioRadioButton);
+
+        emailErrorLabel = new JLabel("");
+        emailErrorLabel.setForeground(Color.RED);
+        CampoEmail.add(emailErrorLabel, BorderLayout.SOUTH);
 
         styles.styleButton(cadastrarButtonUser);
         styles.styleButton(cancelarButtonUser);
 
         this.setVisible(true);
 
+    }
+
+    public boolean isValidEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public abstract class SimpleDocumentListener implements javax.swing.event.DocumentListener {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            update();
+        }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            update();
+        }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            update();
+        }
+        public abstract void update();
     }
 }
