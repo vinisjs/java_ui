@@ -12,6 +12,7 @@ public class HibernateUtil {
       sessionFactory = new Configuration().configure("hibernate.cfg.xml")
           .addAnnotatedClass(BookModel.class)
           .addAnnotatedClass(UserModel.class)
+          .addAnnotatedClass(BorrowModel.class)
           .buildSessionFactory();
     } catch (Exception e) {
       e.printStackTrace();

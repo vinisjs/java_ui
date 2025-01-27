@@ -16,13 +16,12 @@ public class BookRepo {
 
     public static BookModel getBook(Object param, Session session) {
         if (param instanceof Integer) {
-            return session.get(BookModel.class, (Serializable) param); // Busca por id (NumberId)
+            return session.get(BookModel.class, (Serializable) param);
         } else if (param instanceof String) {
-            // Busca por Titulo
             return session.createQuery("FROM BookModel WHERE Titulo = :titulo", BookModel.class)
                     .setParameter("titulo", param)
                     .uniqueResult();
         }
-        return null; // Retorna null se o parâmetro não for nem Integer nem String
+        return null;
     }
 }

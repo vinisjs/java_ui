@@ -15,7 +15,7 @@ public class UserModel {
     @Column()
     private String Sexo;
     @Column()
-    private int NumberPhone;
+    private String NumberPhone;
     @Column()
     private String email;
 
@@ -35,11 +35,11 @@ public class UserModel {
         Sexo = sexo;
     }
 
-    public int getNumberPhone() {
+    public String getNumberPhone() {
         return NumberPhone;
     }
 
-    public void setNumberPhone(int numberPhone) {
+    public void setNumberPhone(String numberPhone) {
         NumberPhone = numberPhone;
     }
 

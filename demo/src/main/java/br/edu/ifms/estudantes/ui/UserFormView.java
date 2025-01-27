@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.UserController;
+import br.edu.ifms.estudantes.model.UserModel;
+
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
@@ -14,7 +17,7 @@ public class UserFormView extends JDialog{
     private JPanel Jpanel;
     private JRadioButton masculinoRadioButton;
     private JRadioButton femininoRadioButton;
-    private JRadioButton nãoBinárioRadioButton;
+    private JRadioButton naoBinarioRadioButton;
     private JPanel CampoSexo;
     private JPanel CampoTelefone;
     private JPanel CampoEmail;
@@ -25,6 +28,8 @@ public class UserFormView extends JDialog{
 
     public Styles styles = new Styles();
 
+    UserModel user = new UserModel();
+
     public UserFormView(JFrame parentUser) {
         super(parentUser, "Cadastro de Usuários", true);
         setContentPane(Screen2);
@@ -34,6 +39,19 @@ public class UserFormView extends JDialog{
         cadastrarButtonUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                user.setNome(textName.getText());
+                user.setEmail(formattedTextEmail.getText());
+                user.setNumberPhone(formattedTextTelefone.getText());
+
+                if (masculinoRadioButton.isSelected()) {
+                    user.setSexo(masculinoRadioButton.getText());
+                } else if (femininoRadioButton.isSelected()) {
+                    user.setSexo(femininoRadioButton.getText());
+                } else if (naoBinarioRadioButton.isSelected()) {
+                    user.setSexo(naoBinarioRadioButton.getText());
+                }
+
+                new UserController().controllerSave(user);
 
             }
         });
