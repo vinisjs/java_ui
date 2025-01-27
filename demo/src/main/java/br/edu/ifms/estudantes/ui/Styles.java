@@ -48,4 +48,32 @@ public class Styles {
         panel.add(component, BorderLayout.CENTER);
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
     }
+
+    public void alignRadioButtonField(JPanel panel, String labelText, JComponent... components) {
+        panel.setLayout(new GridBagLayout());
+        JLabel label = new JLabel(labelText);
+        label.setPreferredSize(new Dimension(100, 30));
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(label, gbc);
+
+        for (int i = 0; i < components.length; i++) {
+            gbc.gridx = i + 1;
+            panel.add(components[i], gbc);
+        }
+
+        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
+    }
+
+    public void styleRadioButton(JRadioButton radioButton) {
+        radioButton.setBackground(new Color(240, 240, 240));
+        radioButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        radioButton.setForeground(Color.BLACK);
+    }
 }

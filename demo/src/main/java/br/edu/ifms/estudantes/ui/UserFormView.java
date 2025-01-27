@@ -6,6 +6,7 @@ import br.edu.ifms.estudantes.model.UserModel;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -25,6 +26,7 @@ public class UserFormView extends JDialog{
     private JButton cadastrarButtonUser;
     private JFormattedTextField formattedTextEmail;
     private JFormattedTextField formattedTextTelefone;
+    private JLabel labelSexo;
 
     public Styles styles = new Styles();
 
@@ -77,13 +79,18 @@ public class UserFormView extends JDialog{
         styles.styleTextField(formattedTextTelefone);
         styles.styleTextField(formattedTextEmail);
 
+        styles.styleRadioButton(masculinoRadioButton);
+        styles.styleRadioButton(femininoRadioButton);
+        styles.styleRadioButton(naoBinarioRadioButton);
+
         styles.alignFields(CampoNome, "Nome:", textName);
         styles.alignFields(CampoTelefone, "Telefone:", formattedTextTelefone);
         styles.alignFields(CampoEmail, "E-mail:", formattedTextEmail);
 
+        styles.alignRadioButtonField(CampoSexo, "Sexo:", masculinoRadioButton, femininoRadioButton, naoBinarioRadioButton);
+
         styles.styleButton(cadastrarButtonUser);
         styles.styleButton(cancelarButtonUser);
-
 
         this.setVisible(true);
 
