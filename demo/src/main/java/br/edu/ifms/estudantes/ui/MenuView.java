@@ -57,6 +57,12 @@ public class MenuView extends JFrame{
                 openBookForm();
             }
         });
+        sairButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
     }
 
     private void styleTitleLabel(JLabel label){
