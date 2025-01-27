@@ -7,6 +7,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Objects;
 
 public class MenuView extends JFrame{
@@ -18,6 +20,9 @@ public class MenuView extends JFrame{
     private JButton sairButton;
     private JPanel Content;
     private JLabel titleLabel;
+    private JButton SearchButton;
+    private JTextField SearchInput;
+    private JPanel SearchPanel;
 
     public MenuView(JPanel splashScreen) {
         setTitle("Menu de opções");
@@ -29,10 +34,32 @@ public class MenuView extends JFrame{
         MenuBorder.setLayout(new BoxLayout(MenuBorder, BoxLayout.Y_AXIS));
         MenuBorder.setBorder(new EmptyBorder(20, 20, 20, 20));
 
+        SearchInput.setText("Busque por id ou nome do livro");
+        SearchInput.setForeground(Color.GRAY);
+
+        SearchInput.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                if (SearchInput.getText().equals("Busque por id ou nome do livro")) {
+                    SearchInput.setText("");
+                    SearchInput.setForeground(Color.BLACK);
+                }
+            }
+
+            public void focusLost(FocusEvent e) {
+                if (SearchInput.getText().equals("")) {
+                    SearchInput.setText("Busque por id ou nome do livro");
+                    SearchInput.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        MenuBorder.add(Box.createVerticalStrut(20));
+
         styleTitleLabel(titleLabel);
         MenuBorder.add(titleLabel);
         MenuBorder.add(Box.createVerticalStrut(20));
 
+        SearchButton.setIcon(loadIcon("/images/searchIcon.png"));
         livrosButton.setIcon(loadIcon("/images/book.png"));
         usuariosButton.setIcon(loadIcon("/images/users.png"));
         emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png"));
