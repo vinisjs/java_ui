@@ -31,6 +31,19 @@ public class UserFormView extends JDialog{
         this.setSize(580, 400);
         this.setLocationRelativeTo(parentUser);
 
+        cadastrarButtonUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        cancelarButtonUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+
         MaskFormatter mascaratelefone = null;
 
         try {
@@ -55,17 +68,6 @@ public class UserFormView extends JDialog{
 
 
         this.setVisible(true);
-        cadastrarButtonUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-        cancelarButtonUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
     }
 }
