@@ -145,7 +145,7 @@
                   <text value="Número Do telefone:"/>
                 </properties>
               </component>
-              <component id="3046e" class="javax.swing.JTextField" binding="textPhone">
+              <component id="71817" class="javax.swing.JFormattedTextField" binding="formattedTextTelefone">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -171,7 +171,7 @@
                   <text value="E-mail:"/>
                 </properties>
               </component>
-              <component id="3b52e" class="javax.swing.JTextField" binding="textEmail">
+              <component id="8d16" class="javax.swing.JFormattedTextField" binding="formattedTextEmail">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -185,4 +185,11 @@
       </grid>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="SexGroup">
+      <member id="c3767"/>
+      <member id="2aef6"/>
+      <member id="623de"/>
+    </group>
+  </buttonGroups>
 </form>

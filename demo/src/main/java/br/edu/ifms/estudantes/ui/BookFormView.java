@@ -5,7 +5,6 @@ import br.edu.ifms.estudantes.model.BookModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
@@ -24,12 +23,13 @@ public class BookFormView extends JDialog{
     private JPanel CampoISBN;
     private JTextField textIsbn;
     private JPanel CampoData;
-    private JTextField textDate;
     private JPanel CampoExemplares;
     private JTextField textTotal;
     private JButton cadastrarButton;
     private JButton cancelarButton;
     private JFormattedTextField formattedTextDate;
+
+    public Styles styles = new Styles();
 
     public BookFormView(JFrame parent) {
         super(parent, "Cadastro de Livros", true);
@@ -37,30 +37,30 @@ public class BookFormView extends JDialog{
         this.setSize(650, 450);
         this.setLocationRelativeTo(parent);
 
-        styleTextField(textTheme);
-        styleTextField(textTitle);
-        styleTextField(textAuthor);
-        styleTextField(textIsbn);
-        styleTextField(formattedTextDate);
-        styleTextField(textTotal);
+        styles.styleTextField(textTheme);
+        styles.styleTextField(textTitle);
+        styles.styleTextField(textAuthor);
+        styles.styleTextField(textIsbn);
+        styles.styleTextField(formattedTextDate);
+        styles.styleTextField(textTotal);
 
-        alignFields(CampoTema, "Tema:", textTheme);
-        alignFields(CampoTitulo, "Título:", textTitle);
-        alignFields(CampoAutor, "Autor:", textAuthor);
-        alignFields(CampoISBN, "ISBN:", textIsbn);
-        alignFields(CampoData, "Data:", formattedTextDate);
-        alignFields(CampoExemplares, "Exemplares:", textTotal);
+        styles.alignFields(CampoTema, "Tema:", textTheme);
+        styles.alignFields(CampoTitulo, "Título:", textTitle);
+        styles.alignFields(CampoAutor, "Autor:", textAuthor);
+        styles.alignFields(CampoISBN, "ISBN:", textIsbn);
+        styles.alignFields(CampoData, "Data:", formattedTextDate);
+        styles.alignFields(CampoExemplares, "Exemplares:", textTotal);
 
-        styleButton(cadastrarButton);
-        styleButton(cancelarButton);
+        styles.styleButton(cadastrarButton);
+        styles.styleButton(cancelarButton);
 
-        MaskFormatter mascaratelefone = null;
+        MaskFormatter mascaradata = null;
 
             try {
-                mascaratelefone = new MaskFormatter("##/##/####");
-                mascaratelefone.setPlaceholderCharacter('_');
+                mascaradata = new MaskFormatter("##/##/####");
+                mascaradata.setPlaceholderCharacter('_');
 
-                formattedTextDate.setFormatterFactory(new DefaultFormatterFactory(mascaratelefone));
+                formattedTextDate.setFormatterFactory(new DefaultFormatterFactory(mascaradata));
 
             } catch (ParseException ex) {
                 System.out.println("Deu B.O");
@@ -92,45 +92,5 @@ public class BookFormView extends JDialog{
             }
         });
         this.setVisible(true);
-    }
-
-    private void styleTextField(JTextField textField) {
-        textField.setPreferredSize(new Dimension(200, 30));
-        textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
-    }
-
-    private void alignFields(JPanel panel, String labelText, JComponent component) {
-        panel.setLayout(new BorderLayout());
-        JLabel label = new JLabel(labelText);
-        label.setPreferredSize(new Dimension(100, 30));
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        panel.add(label, BorderLayout.WEST);
-        panel.add(component, BorderLayout.CENTER);
-        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
-    }
-
-    private void styleButton(JButton button) {
-        button.setBackground(new Color(217, 217, 217));
-        button.setForeground(Color.BLACK);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setUI(new BasicButtonUI() {
-
-            @Override
-            public void paint(Graphics g, JComponent c) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                JButton b = (JButton) c;
-                g2.setColor(b.getBackground());
-                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
-
-                super.paint(g, c);
-            }
-        });
     }
 }
