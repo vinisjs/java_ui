@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.BookController;
+import br.edu.ifms.estudantes.model.BookModel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -23,6 +26,8 @@ public class MenuView extends JFrame{
     private JButton SearchButton;
     private JTextField SearchInput;
     private JPanel SearchPanel;
+
+    public BookModel book = new BookModel();
 
     public MenuView(JPanel splashScreen) {
         setTitle("Menu de opções");
@@ -96,6 +101,35 @@ public class MenuView extends JFrame{
                 dispose();
             }
         });
+
+        SearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String value = SearchInput.getText(); // Obtendo o valor inserido no campo de busca
+
+                // Chamando o controlador para buscar o livro
+                BookController controller = new BookController();
+                BookModel resultado = controller.getBook(value);
+
+                // Armazenando o retorno em uma variável e exibindo o resultado
+                if (resultado != null) {
+                    // Exibe os dados no console (ou em outro componente, se necessário)
+                    System.out.println("Livro encontrado:");
+                    System.out.println("Título: " + resultado.getTitulo());
+                    System.out.println("Autor: " + resultado.getAutor());
+                    System.out.println("ISBN: " + resultado.getISBN());
+                    System.out.println("Quantidade: " + resultado.getQuantidade());
+                    System.out.println("Tema: " + resultado.getTema());
+                    System.out.println("Data de Publicação: " + resultado.getData_publicacao());
+
+                    // Você pode armazenar o resultado em uma variável global para uso posterior
+                    book = resultado;
+                } else {
+                    System.out.println("Livro não encontrado.");
+                }
+            }
+        });
+
     }
 
     private void styleTitleLabel(JLabel label){

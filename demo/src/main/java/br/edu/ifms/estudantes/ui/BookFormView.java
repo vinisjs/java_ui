@@ -70,6 +70,7 @@ public class BookFormView extends JDialog{
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                BookModel book = new BookModel();
                 book.setTitulo(textTitle.getText());
                 book.setAutor(textAuthor.getText());
                 book.setTema(textTheme.getText());
@@ -77,11 +78,21 @@ public class BookFormView extends JDialog{
                 book.setData_publicacao(formattedTextDate.getText());
                 book.setQuantidade(Integer.parseInt(textTotal.getText()));
 
+                BookController controller = new BookController();
 
-                new BookController().controller(book);
-                BookModel re = new BookController().getBook(2);
-                System.out.println(re.getTitulo());
+                // Salvar o livro
+                System.out.println("Salvando o livro...");
+                controller.saveBook(book);
 
+                // Consultar o livro pelo ID ou título
+                System.out.println("Consultando o livro...");
+                BookModel retrievedBook = controller.getBook(2); // Substituir por um ID ou título válido
+
+                if (retrievedBook != null) {
+                    System.out.println("Livro encontrado: " + retrievedBook.getTitulo());
+                } else {
+                    System.out.println("Livro não encontrado.");
+                }
             }
         });
 
@@ -91,6 +102,7 @@ public class BookFormView extends JDialog{
                 dispose();
             }
         });
+
         this.setVisible(true);
     }
 }

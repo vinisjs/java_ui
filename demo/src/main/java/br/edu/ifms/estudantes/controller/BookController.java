@@ -4,19 +4,19 @@ import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.repo.BookRepo;
 import br.edu.ifms.estudantes.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 public class BookController {
-    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-    Transaction transaction = session.beginTransaction();
+    private final BookRepo bookRepo = new BookRepo();
 
-    public void controller(BookModel book) {
-        new BookRepo().save(book, session,transaction);
-
+    public void saveBook(BookModel book) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            bookRepo.save(book, session);
+        }
     }
 
-
     public BookModel getBook(Object param) {
-        return BookRepo.getBook(param, session);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return bookRepo.getBook(param, session);
+        }
     }
 }
