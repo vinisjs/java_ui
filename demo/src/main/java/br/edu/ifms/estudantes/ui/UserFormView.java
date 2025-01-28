@@ -13,11 +13,10 @@ import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserFormView extends JDialog{
+public class UserFormView extends JDialog {
     private JPanel Screen2;
     private JTextField textName;
     private JPanel CampoNome;
-    private JPanel Jpanel;
     private JRadioButton masculinoRadioButton;
     private JRadioButton femininoRadioButton;
     private JRadioButton naoBinarioRadioButton;
@@ -26,16 +25,13 @@ public class UserFormView extends JDialog{
     private JPanel CampoEmail;
     private JButton cancelarButtonUser;
     private JButton cadastrarButtonUser;
-    private JFormattedTextField formattedTextEmail;
     private JFormattedTextField formattedTextTelefone;
-    private JLabel labelSexo;
-    private JLabel labelEmail;
-    private JTextField textEmail;
     private JLabel emailErrorLabel;
+    private JTextField textEmail;
+    private JPanel Jpanel;
 
-    public Styles styles = new Styles();
-
-    UserModel user = new UserModel();
+    private Styles styles = new Styles();
+    private UserModel user = new UserModel();
 
     public UserFormView(JFrame parentUser) {
         super(parentUser, "Cadastro de Usuários", true);
@@ -43,43 +39,29 @@ public class UserFormView extends JDialog{
         this.setSize(580, 400);
         this.setLocationRelativeTo(parentUser);
 
-        cadastrarButtonUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                user.setNome(textName.getText());
-                user.setEmail(textEmail.getText());
-                user.setNumberPhone(formattedTextTelefone.getText());
+        configurePhoneMask();
 
-                if (masculinoRadioButton.isSelected()) {
-                    user.setSexo(masculinoRadioButton.getText());
-                } else if (femininoRadioButton.isSelected()) {
-                    user.setSexo(femininoRadioButton.getText());
-                } else if (naoBinarioRadioButton.isSelected()) {
-                    user.setSexo(naoBinarioRadioButton.getText());
-                }
+        configureEmailValidation();
 
-                new UserController().controllerSave(user);
+        styleComponents();
 
-            }
-        });
-        cancelarButtonUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        cadastrarButtonUser.addActionListener(e -> registerUser());
 
-        MaskFormatter mascaratelefone = null;
+        cancelarButtonUser.addActionListener(e -> dispose());
 
+        this.setVisible(true);
+    }
+
+    private void configurePhoneMask() {
         try {
-            mascaratelefone = new MaskFormatter("+## (##) ##### - ####");
-
-            formattedTextTelefone.setFormatterFactory(new DefaultFormatterFactory(mascaratelefone));
-
+            MaskFormatter phoneMask = new MaskFormatter("+## (##) ##### - ####");
+            formattedTextTelefone.setFormatterFactory(new DefaultFormatterFactory(phoneMask));
         } catch (ParseException ex) {
-            System.out.println("Deu B.O");
+            System.out.println("Erro ao aplicar a máscara do telefone.");
         }
+    }
 
+    private void configureEmailValidation() {
         textEmail.getDocument().addDocumentListener(new SimpleDocumentListener() {
             @Override
             public void update() {
@@ -91,7 +73,9 @@ public class UserFormView extends JDialog{
                 }
             }
         });
+    }
 
+    private void styleComponents() {
         styles.styleTextField(textName);
         styles.styleTextField(formattedTextTelefone);
         styles.styleTextField(textEmail);
@@ -112,16 +96,29 @@ public class UserFormView extends JDialog{
 
         styles.styleButton(cadastrarButtonUser);
         styles.styleButton(cancelarButtonUser);
-
-        this.setVisible(true);
-
     }
 
-    public boolean isValidEmail(String email) {
+    private boolean isValidEmail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    private void registerUser() {
+        user.setNome(textName.getText());
+        user.setEmail(textEmail.getText());
+        user.setNumberPhone(formattedTextTelefone.getText());
+
+        if (masculinoRadioButton.isSelected()) {
+            user.setSexo(masculinoRadioButton.getText());
+        } else if (femininoRadioButton.isSelected()) {
+            user.setSexo(femininoRadioButton.getText());
+        } else if (naoBinarioRadioButton.isSelected()) {
+            user.setSexo(naoBinarioRadioButton.getText());
+        }
+
+        new UserController().controllerSave(user);
     }
 
     public abstract class SimpleDocumentListener implements javax.swing.event.DocumentListener {
