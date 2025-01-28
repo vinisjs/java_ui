@@ -81,6 +81,7 @@ public class MenuView extends JFrame{
 
         styles.styleButton(SearchButton);
         styles.styleButton(allBooksButton);
+        styles.styleTextField(SearchInput);
         styles.styleButtonMenu(livrosButton);
         styles.styleButtonMenu(usuariosButton);
         styles.styleButtonMenu(emprestimosButton);
