@@ -3,6 +3,8 @@ package br.edu.ifms.estudantes.repo;
 import br.edu.ifms.estudantes.model.BookModel;
 import org.hibernate.Session;
 
+import java.util.List;
+
 public class BookRepo {
 
     public void save(BookModel book, Session session) {
@@ -16,6 +18,16 @@ public class BookRepo {
                 session.getTransaction().rollback(); // Reverter a transação em caso de erro
             }
             System.err.println("Erro ao salvar o livro: " + e.getMessage());
+        }
+    }
+
+    public List<BookModel> getAllBooks(Session session) {
+        try {
+            // Consulta para listar todos os livros usando HQL
+            return session.createQuery("FROM BookModel", BookModel.class).list();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar todos os livros: " + e.getMessage());
+            return null;
         }
     }
 

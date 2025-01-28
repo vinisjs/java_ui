@@ -3,11 +3,13 @@ package br.edu.ifms.estudantes.ui;
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
 
+import java.awt.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -26,6 +28,7 @@ public class MenuView extends JFrame{
     private JButton SearchButton;
     private JTextField SearchInput;
     private JPanel SearchPanel;
+    private JButton allBooksButton;
 
     public BookModel book = new BookModel();
 
@@ -127,6 +130,42 @@ public class MenuView extends JFrame{
                     book = resultado;
                 } else {
                     System.out.println("Livro não encontrado.");
+                }
+            }
+        });
+
+        allBooksButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Chamando o controlador para buscar todos os livros
+                // Chamando o controlador para buscar todos os livros
+                BookController controller = new BookController();
+                List<BookModel> livros = controller.getAllBooks();
+
+                // Verificando se há resultados
+                if (livros != null && !livros.isEmpty()) {
+                    // Chama a nova função para exibir todos os livros
+                    ShowAllData.showAllBooks(livros);
+                } else {
+                    System.out.println("Nenhum livro encontrado.");
+                }
+                // Verificando se há resultados
+                if (livros != null && !livros.isEmpty()) {
+
+                    // Exibindo no console (opcional)
+                    System.out.println("Livros encontrados:");
+                    for (BookModel livro : livros) {
+                        System.out.println("----------------------------");
+                        System.out.println("ID: " + livro.getNumberId());
+                        System.out.println("Título: " + livro.getTitulo());
+                        System.out.println("Autor: " + livro.getAutor());
+                        System.out.println("ISBN: " + livro.getISBN());
+                        System.out.println("Quantidade: " + livro.getQuantidade());
+                        System.out.println("Tema: " + livro.getTema());
+                        System.out.println("Data de Publicação: " + livro.getData_publicacao());
+                    }
+                } else {
+                    System.out.println("Nenhum livro encontrado.");
                 }
             }
         });

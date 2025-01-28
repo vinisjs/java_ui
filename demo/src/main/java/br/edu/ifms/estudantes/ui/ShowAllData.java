@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ShowAllData extends JFrame {
     private JTable table;
@@ -58,4 +59,34 @@ public class ShowAllData extends JFrame {
         }
         return tableModel;
     }
+
+    public static void showAllBooks(List<BookModel> livros) {
+        // Cria a tabela e o modelo de dados para todos os livros
+        String[] columnNames = {"Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+
+        // Adiciona os dados de todos os livros
+        for (BookModel livro : livros) {
+            Object[] rowData = {
+                    livro.getTitulo(),
+                    livro.getAutor(),
+                    livro.getISBN(),
+                    livro.getQuantidade(),
+                    livro.getTema(),
+                    livro.getData_publicacao()
+            };
+            tableModel.addRow(rowData);
+        }
+
+        // Cria a janela para exibir os livros
+        JFrame frame = new JFrame("Todos os Livros");
+        JTable table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.add(scrollPane);
+        frame.setSize(600, 450);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
 }
+
