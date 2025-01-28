@@ -15,6 +15,7 @@ public class ResultsUsers extends JFrame{
     private JTextField textFieldPhone;
     private JTextField textFieldEmail;
     private JButton fecharButton;
+    private JButton editButton;
 
 
     public ResultsUsers(JPanel MenuView) {
