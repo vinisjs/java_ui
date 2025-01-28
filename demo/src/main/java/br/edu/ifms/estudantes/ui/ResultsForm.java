@@ -61,6 +61,13 @@ public class ResultsForm extends JFrame {
         styles.styleButton(fecharButton);
         styles.styleButton(editarButton);
 
+        textFieldTitle.setEditable(false);
+        textFieldTheme.setEditable(false);
+        textFieldAuthor.setEditable(false);
+        textFieldIsbn.setEditable(false);
+        formattedTextDateUser.setEditable(false);
+        textFieldQtd.setEditable(false);
+
         this.setVisible(true);
         fecharButton.addActionListener(new ActionListener() {
             @Override
@@ -72,6 +79,40 @@ public class ResultsForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                if (editarButton.getText().equals("Editar")) {
+                    textFieldTitle.setEditable(true);
+                    textFieldTheme.setEditable(true);
+                    textFieldAuthor.setEditable(true);
+                    textFieldIsbn.setEditable(true);
+                    formattedTextDateUser.setEditable(true);
+                    textFieldQtd.setEditable(true);
+
+                    editarButton.setText("Aplicar");
+                } else {
+
+                    String title = textFieldTitle.getText();
+                    String theme = textFieldTheme.getText();
+                    String author = textFieldAuthor.getText();
+                    String isbn = textFieldIsbn.getText();
+                    String date = formattedTextDateUser.getText();
+                    String quantity = textFieldQtd.getText();
+
+                    System.out.println("Título: " + title);
+                    System.out.println("Tema: " + theme);
+                    System.out.println("Autor: " + author);
+                    System.out.println("ISBN: " + isbn);
+                    System.out.println("Data: " + date);
+                    System.out.println("Quantidade: " + quantity);
+
+                    textFieldTitle.setEditable(false);
+                    textFieldTheme.setEditable(false);
+                    textFieldAuthor.setEditable(false);
+                    textFieldIsbn.setEditable(false);
+                    formattedTextDateUser.setEditable(false);
+                    textFieldQtd.setEditable(false);
+
+                    editarButton.setText("Editar");
+                }
             }
         });
     }
