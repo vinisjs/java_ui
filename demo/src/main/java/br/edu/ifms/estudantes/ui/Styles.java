@@ -76,4 +76,45 @@ public class Styles {
         radioButton.setFont(new Font("Arial", Font.PLAIN, 14));
         radioButton.setForeground(Color.BLACK);
     }
+
+    public void styleButtonMenu(JButton button) {
+        button.setPreferredSize(new Dimension(100, 30));
+        button.setMaximumSize(new Dimension(200, 50));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setBackground(new Color(2, 133, 199));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+
+        button.setHorizontalTextPosition(SwingConstants.RIGHT);
+        button.setIconTextGap(10);
+
+        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        button.setUI(new BasicButtonUI() {
+            @Override
+            public void installUI(JComponent c) {
+                super.installUI(c);
+                AbstractButton button = (AbstractButton) c;
+                button.setBorderPainted(false);
+                button.setContentAreaFilled(false);
+                button.setOpaque(false);
+            }
+
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                JButton b = (JButton) c;
+
+                g2.setColor(b.getBackground());
+                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
+
+                super.paint(g, c);
+            }
+        });
+    }
+
+    public void styleTitleLabelMenu(JLabel label){
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setForeground(new Color(50, 50, 50));
+    }
 }

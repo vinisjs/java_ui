@@ -4,6 +4,7 @@ import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -28,6 +29,7 @@ public class MenuView extends JFrame{
     private JPanel SearchPanel;
 
     public BookModel book = new BookModel();
+    public Styles styles = new Styles();
 
     public MenuView(JPanel splashScreen) {
         setTitle("Menu de opções");
@@ -35,7 +37,11 @@ public class MenuView extends JFrame{
         this.setSize(600, 450);
         this.setLocationRelativeTo(splashScreen);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        MenuBorder.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
+        SearchPanel.setBorder(new CompoundBorder(
+                new MatteBorder(0, 0, 1, 0, Color.BLACK),
+                new EmptyBorder(0, 0, 15, 0)
+        ));
+
         MenuBorder.setLayout(new BoxLayout(MenuBorder, BoxLayout.Y_AXIS));
         MenuBorder.setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -60,7 +66,7 @@ public class MenuView extends JFrame{
 
         MenuBorder.add(Box.createVerticalStrut(20));
 
-        styleTitleLabel(titleLabel);
+        styles.styleTitleLabelMenu(titleLabel);
         MenuBorder.add(titleLabel);
         MenuBorder.add(Box.createVerticalStrut(20));
 
@@ -70,15 +76,15 @@ public class MenuView extends JFrame{
         emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png"));
         sairButton.setIcon(loadIcon("/images/log-out.png"));
 
-        styleButton(livrosButton);
-        styleButton(usuariosButton);
-        styleButton(emprestimosButton);
-        styleButton(sairButton);
+        styles.styleButtonMenu(livrosButton);
+        styles.styleButtonMenu(usuariosButton);
+        styles.styleButtonMenu(emprestimosButton);
+        styles.styleButtonMenu(sairButton);
 
-        addCenteredButton(livrosButton);
-        addCenteredButton(usuariosButton);
-        addCenteredButton(emprestimosButton);
-        addCenteredButton(sairButton);
+        addCenteredButtonMenu(livrosButton);
+        addCenteredButtonMenu(usuariosButton);
+        addCenteredButtonMenu(emprestimosButton);
+        addCenteredButtonMenu(sairButton);
 
         MenuBorder.add(Box.createVerticalGlue());
 
@@ -105,16 +111,13 @@ public class MenuView extends JFrame{
         SearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String value = SearchInput.getText(); // Obtendo o valor inserido no campo de busca
+                String value = SearchInput.getText();
 
-                // Chamando o controlador para buscar o livro
                 BookController controller = new BookController();
                 BookModel resultado = controller.getBook(value);
 
                 SwingUtilities.invokeLater(() -> new ShowAllData(resultado).setVisible(true));
-                // Armazenando o retorno em uma variável e exibindo o resultado
                 if (resultado != null) {
-                    // Exibe os dados no console (ou em outro componente, se necessário)
                     System.out.println("Livro encontrado:");
                     System.out.println("Título: " + resultado.getTitulo());
                     System.out.println("Autor: " + resultado.getAutor());
@@ -123,7 +126,6 @@ public class MenuView extends JFrame{
                     System.out.println("Tema: " + resultado.getTema());
                     System.out.println("Data de Publicação: " + resultado.getData_publicacao());
 
-                    // Você pode armazenar o resultado em uma variável global para uso posterior
                     book = resultado;
                 } else {
                     System.out.println("Livro não encontrado.");
@@ -133,48 +135,7 @@ public class MenuView extends JFrame{
 
     }
 
-    private void styleTitleLabel(JLabel label){
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setForeground(new Color(50, 50, 50));
-    }
-
-    private void styleButton(JButton button) {
-        button.setPreferredSize(new Dimension(100, 30));
-        button.setMaximumSize(new Dimension(200, 50));
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setBackground(new Color(2, 133, 199));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-
-        button.setHorizontalTextPosition(SwingConstants.RIGHT);
-        button.setIconTextGap(10);
-
-        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setUI(new BasicButtonUI() {
-            @Override
-            public void installUI(JComponent c) {
-                super.installUI(c);
-                AbstractButton button = (AbstractButton) c;
-                button.setBorderPainted(false);
-                button.setContentAreaFilled(false);
-                button.setOpaque(false);
-            }
-
-            @Override
-            public void paint(Graphics g, JComponent c) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                JButton b = (JButton) c;
-
-                g2.setColor(b.getBackground());
-                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
-
-                super.paint(g, c);
-            }
-        });
-    }
-
-    private void addCenteredButton(JButton button) {
+    private void addCenteredButtonMenu(JButton button) {
         MenuBorder.add(button);
         MenuBorder.add(Box.createVerticalStrut(10));
     }
