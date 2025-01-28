@@ -111,6 +111,7 @@ public class MenuView extends JFrame{
                 BookController controller = new BookController();
                 BookModel resultado = controller.getBook(value);
 
+                SwingUtilities.invokeLater(() -> new ShowAllData(resultado).setVisible(true));
                 // Armazenando o retorno em uma variável e exibindo o resultado
                 if (resultado != null) {
                     // Exibe os dados no console (ou em outro componente, se necessário)

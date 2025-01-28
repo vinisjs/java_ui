@@ -1,5 +1,6 @@
 package br.edu.ifms.estudantes;
 
+import br.edu.ifms.estudantes.ui.ShowAllData;
 import br.edu.ifms.estudantes.ui.SplashScreen;
 
 public class Main {
