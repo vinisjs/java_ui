@@ -29,6 +29,7 @@ public class BookFormView extends JDialog{
     private JButton cancelarButton;
     private JFormattedTextField formattedTextDate;
 
+
     public Styles styles = new Styles();
 
     public BookFormView(JFrame parent) {
@@ -70,28 +71,40 @@ public class BookFormView extends JDialog{
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BookModel book = new BookModel();
-                book.setTitulo(textTitle.getText());
-                book.setAutor(textAuthor.getText());
-                book.setTema(textTheme.getText());
-                book.setISBN(textIsbn.getText());
-                book.setData_publicacao(formattedTextDate.getText());
-                book.setQuantidade(Integer.parseInt(textTotal.getText()));
+                try {
+                    book.setTitulo(textTitle.getText());
+                    book.setAutor(textAuthor.getText());
+                    book.setTema(textTheme.getText());
+                    book.setISBN(textIsbn.getText());
+                    book.setData_publicacao(formattedTextDate.getText());
+                    book.setQuantidade(Integer.parseInt(textTotal.getText()));
 
-                BookController controller = new BookController();
+                    BookController controller = new BookController();
 
-                // Salvar o livro
-                System.out.println("Salvando o livro...");
-                controller.saveBook(book);
+                    controller.saveBook(book);
 
-                // Consultar o livro pelo ID ou título
-                System.out.println("Consultando o livro...");
-                BookModel retrievedBook = controller.getBook(2); // Substituir por um ID ou título válido
+                    JOptionPane.showMessageDialog(
+                            BookFormView.this,
+                            "Livro salvo com sucesso!",
+                            "Sucesso",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
 
-                if (retrievedBook != null) {
-                    System.out.println("Livro encontrado: " + retrievedBook.getTitulo());
-                } else {
-                    System.out.println("Livro não encontrado.");
+                    System.out.println("Consultando o livro...");
+                    BookModel retrievedBook = controller.getBook(2);
+
+                    if (retrievedBook != null) {
+                        System.out.println("Livro encontrado: " + retrievedBook.getTitulo());
+                    } else {
+                        System.out.println("Livro não encontrado.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(
+                            BookFormView.this,
+                            "Por favor, preencha todos os campos corretamente!",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
         });

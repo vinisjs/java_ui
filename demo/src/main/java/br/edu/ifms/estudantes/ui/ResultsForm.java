@@ -30,11 +30,11 @@ public class ResultsForm extends JFrame {
 
     public Styles styles = new Styles();
 
-    public ResultsForm() {
+    public ResultsForm(JPanel MenuView) {
         setTitle("Resultados de Livros");
         setContentPane(ResultScreenBook);
         this.setSize(600, 450);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(MenuView);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         styles.styleTextField(textFieldTheme);
@@ -48,7 +48,7 @@ public class ResultsForm extends JFrame {
         textFieldTheme.setText("Romance");
         textFieldAuthor.setText("Machado de Assis");
         textFieldIsbn.setText("978-85-359-0277-2");
-        formattedTextDateUser.setText("01/01/1900"); // Formato de data
+        formattedTextDateUser.setText("01/01/1900");
         textFieldQtd.setText("10");
 
         styles.alignFields(JPanelTheme, "Tema:", textFieldTheme);
