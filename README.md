@@ -1,10 +1,30 @@
 # Trabalho de Java
 
 ### Tecnologias usadas
+- [ ] InteliJ IDEA Community
 - [ ] Java JDK 20+
 - [ ] Swing UI
 - [ ] Hibernate
-- [ ] Docker Compose
+- [ ] Docker / Docker Compose
+
+### Iniciando
+
+> 💡 Verifique se o git está instalado e funcionando na máquina.
+
+💻 Clone o repositório para sua máquina.
+
+```
+$ git clone https://github.com/vinisjs/java_ui.git
+```
+
+> 💡 Verifique se o docker está instalado e funcionando na máquina.
+
+```
+$ docker ps
+$ docker compose up -d
+```
+
+> ☕ Clique no botão play da IDE para compilar e executar.
 
 ### Requisitos
 
@@ -80,3 +100,26 @@ de dados vamos utilizar o ORM Hibernate.
 - Registrar devolução
 - Listar livros disponíveis
 - Recurso para calcular multas em caso de devolução atrasada.
+
+### Implementação Atual
+
+#### Usuário
+- [x] Criar Usuário 
+- [ ] Visualizar Usuário 
+- [ ] Visualizar Usuário (Todos) 
+- [ ] Editar Usuário 
+- [ ] Arquivar Usuário 
+
+#### Livro
+- [x] Criar Livro 
+- [x] Visualizar Livro 
+- [x] Visualizar Livro (Todos)
+- [x] Editar Livro 
+- [ ] Arquivar Livro 
+
+#### Livro
+- [ ] Criar Empréstimo 
+- [ ] Visualizar Empréstimo 
+- [ ] Visualizar Empréstimo (Todos)
+- [ ] Editar Empréstimo 
+- [ ] Arquivar Empréstimo 

@@ -33,9 +33,10 @@ public class ShowAllData extends JFrame {
         buttonOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Fecha a janela ao clicar em "Ok"
+                dispose();
             }
         });
+
     }
 
     private static DefaultTableModel getDefaultTableModel(BookModel book, String[] columnNames) {
