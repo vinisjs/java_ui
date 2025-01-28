@@ -73,12 +73,14 @@ public class MenuView extends JFrame{
         MenuBorder.add(titleLabel);
         MenuBorder.add(Box.createVerticalStrut(20));
 
-        SearchButton.setIcon(loadIcon("/images/searchIcon.png"));
+        SearchButton.setIcon(loadIcon("/images/search.png"));
         livrosButton.setIcon(loadIcon("/images/book.png"));
         usuariosButton.setIcon(loadIcon("/images/users.png"));
         emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png"));
         sairButton.setIcon(loadIcon("/images/log-out.png"));
 
+        styles.styleButton(SearchButton);
+        styles.styleButton(allBooksButton);
         styles.styleButtonMenu(livrosButton);
         styles.styleButtonMenu(usuariosButton);
         styles.styleButtonMenu(emprestimosButton);
@@ -139,22 +141,17 @@ public class MenuView extends JFrame{
         allBooksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Chamando o controlador para buscar todos os livros
-                // Chamando o controlador para buscar todos os livros
                 BookController controller = new BookController();
                 List<BookModel> livros = controller.getAllBooks();
 
-                // Verificando se há resultados
                 if (livros != null && !livros.isEmpty()) {
-                    // Chama a nova função para exibir todos os livros
                     ShowAllData.showAllBooks(livros);
                 } else {
                     System.out.println("Nenhum livro encontrado.");
                 }
-                // Verificando se há resultados
+
                 if (livros != null && !livros.isEmpty()) {
 
-                    // Exibindo no console (opcional)
                     System.out.println("Livros encontrados:");
                     for (BookModel livro : livros) {
                         System.out.println("----------------------------");

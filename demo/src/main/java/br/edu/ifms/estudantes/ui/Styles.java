@@ -21,9 +21,17 @@ public class Styles {
         button.setBackground(new Color(217, 217, 217));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setUI(new BasicButtonUI() {
+            @Override
+            public void installUI(JComponent c) {
+                super.installUI(c);
+                AbstractButton button = (AbstractButton) c;
+                button.setBorderPainted(false);
+                button.setContentAreaFilled(false);
+                button.setOpaque(false);
+            }
 
             @Override
             public void paint(Graphics g, JComponent c) {
