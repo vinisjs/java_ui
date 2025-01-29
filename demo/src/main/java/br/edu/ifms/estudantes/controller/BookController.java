@@ -10,14 +10,15 @@ import java.util.List;
 public class BookController {
     private final BookRepo bookRepo = new BookRepo();
 
-    public void saveBook(BookModel book) {
+    public void saveOneBook(BookModel book) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            bookRepo.SaveOrUpdate(book, session);
+            bookRepo.saveOnBook(book, session);
         }
     }
-    public void saveOrUpdate(BookModel book) {
+    public void UpdateBook(BookModel book) {
+        System.out.println("Deu ruim!");
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            bookRepo.save(book, session);
+            bookRepo.SaveOrUpdate(book, session);
         }
     }
 

@@ -109,6 +109,7 @@ public class ResultsForm extends JFrame {
 
                     BookModel book = new BookModel();
 
+                    book.setNumberId(resultado.getNumberId());
                     book.setTitulo( textFieldTitle.getText());
                     book.setTema( textFieldTheme.getText());
                     book.setAutor( textFieldAuthor.getText());
@@ -116,21 +117,21 @@ public class ResultsForm extends JFrame {
                     book.setData_publicacao( formattedTextDateUser.getText());
                     book.setQuantidade(Integer.parseInt(textFieldQtd.getText()));
 
-                    new BookController().saveOrUpdate(book);
+                    new BookController().UpdateBook(book);
 
-                    String title = textFieldTitle.getText();
-                    String theme = textFieldTheme.getText();
-                    String author = textFieldAuthor.getText();
-                    String isbn = textFieldIsbn.getText();
-                    String date = formattedTextDateUser.getText();
-                    String quantity = textFieldQtd.getText();
-
-                    System.out.println("Título: " + title);
-                    System.out.println("Tema: " + theme);
-                    System.out.println("Autor: " + author);
-                    System.out.println("ISBN: " + isbn);
-                    System.out.println("Data: " + date);
-                    System.out.println("Quantidade: " + quantity);
+//                    String title = textFieldTitle.getText();
+//                    String theme = textFieldTheme.getText();
+//                    String author = textFieldAuthor.getText();
+//                    String isbn = textFieldIsbn.getText();
+//                    String date = formattedTextDateUser.getText();
+//                    String quantity = textFieldQtd.getText();
+//
+//                    System.out.println("Título: " + title);
+//                    System.out.println("Tema: " + theme);
+//                    System.out.println("Autor: " + author);
+//                    System.out.println("ISBN: " + isbn);
+//                    System.out.println("Data: " + date);
+//                    System.out.println("Quantidade: " + quantity);
 
                     editarButton.setText("Editar");
                 }

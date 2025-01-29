@@ -10,20 +10,22 @@ public class BookRepo {
     public void SaveOrUpdate(BookModel book, Session session) {
         try {
             session.beginTransaction();
-            session.saveOrUpdate(book);
-            session.getTransaction().commit(); // Confirmar a transação
-            System.out.println("Livro Atualizado com sucesso!");
+            System.out.println("Tentando Atualizar Livro");
 
+            // Usar merge para evitar conflitos de sessão
+            session.merge(book);
+
+            session.getTransaction().commit(); // Confirmar a transação
+            System.out.println("Livro atualizado com sucesso!");
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback(); // Reverter a transação em caso de erro
-
             }
+            e.printStackTrace(); // Para ajudar no diagnóstico
         }
     }
 
-
-    public void save(BookModel book, Session session) {
+    public void saveOnBook(BookModel book, Session session) {
         try {
             session.beginTransaction(); // Iniciar transação na chamada
             session.save(book);

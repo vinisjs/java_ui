@@ -121,6 +121,7 @@ public class MenuView extends JFrame {
             System.out.println("Livro encontrado:");
             displayBookDetails(resultado);
         } else {
+            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
             System.out.println("Livro não encontrado.");
         }
     }

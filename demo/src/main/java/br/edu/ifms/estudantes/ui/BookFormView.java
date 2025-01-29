@@ -6,7 +6,6 @@ import br.edu.ifms.estudantes.model.BookModel;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import java.awt.*;
 import java.text.ParseException;
 
 public class BookFormView extends JDialog {
@@ -94,7 +93,7 @@ public class BookFormView extends JDialog {
             book.setData_publicacao(formattedTextDate.getText());
             book.setQuantidade(quantidade);
             BookController controller = new BookController();
-            controller.saveBook(book);
+            controller.saveOneBook(book);
 
             JOptionPane.showMessageDialog(
                     this,
