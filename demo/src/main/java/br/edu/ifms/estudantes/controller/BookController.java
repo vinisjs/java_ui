@@ -34,10 +34,10 @@ public class BookController {
         }
     }
 
-    public void DeleteById(Object params) {
+    public void DeleteById(Object param) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-           bookRepo.DeleteById(params, session);
-
+            bookRepo.DeleteById(param, session);
         }
     }
+
 }

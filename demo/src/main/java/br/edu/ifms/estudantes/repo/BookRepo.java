@@ -72,19 +72,31 @@ public class BookRepo {
         return null;
     }
 
-    public void DeleteById(Object param, Session session){
-
+    public void DeleteById(Object param, Session session) {
         if (param == null) {
             System.out.println("Parâmetro fornecido é nulo.");
+            return;
         }
 
         try {
-            session.createQuery("FROM BookModel WHERE id = :id", BookModel.class)
+            BookModel bookToDelete = session.createQuery("FROM BookModel WHERE id = :id", BookModel.class)
                     .setParameter("id", param)
                     .uniqueResult();
+
+            if (bookToDelete != null) {
+                session.beginTransaction();
+                session.delete(bookToDelete);
+                session.getTransaction().commit();
+                System.out.println("Livro excluído com sucesso!");
+            } else {
+                System.out.println("Livro não encontrado para exclusão.");
+            }
         } catch (Exception e) {
             System.err.println("Erro ao deletar o livro: " + e.getMessage());
-
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
         }
     }
+
 }

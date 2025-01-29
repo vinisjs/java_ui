@@ -108,18 +108,18 @@ de dados vamos utilizar o ORM Hibernate.
 - [ ] Visualizar Usuário 
 - [ ] Visualizar Usuário (Todos) 
 - [ ] Editar Usuário 
-- [ ] Arquivar Usuário 
+- [ ] Deletar Usuário 
 
 #### Livro
 - [x] Criar Livro 
 - [x] Visualizar Livro 
 - [x] Visualizar Livro (Todos)
 - [x] Editar Livro 
-- [ ] Arquivar Livro 
+- [x] Deletar Livro 
 
 #### Empréstimo
 - [ ] Criar Empréstimo 
 - [ ] Visualizar Empréstimo 
 - [ ] Visualizar Empréstimo (Todos)
 - [ ] Editar Empréstimo 
-- [ ] Arquivar Empréstimo 
+- [ ] Deletar Empréstimo 
