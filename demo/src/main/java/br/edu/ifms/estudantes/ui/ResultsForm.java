@@ -145,8 +145,12 @@ public class ResultsForm extends JFrame {
                         "Confirmação",
                         JOptionPane.YES_NO_OPTION
                 );
-                System.out.println(book.getNumberId()+1);
-                // new BookController().DeleteById();
+
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    book.setNumberId(resultado.getNumberId());
+                    new BookController().DeleteById(book.getNumberId());
+                    dispose();
+                }
 
             }
 
