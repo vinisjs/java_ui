@@ -30,12 +30,9 @@ public class ResultsForm extends JFrame {
     private JButton fecharButton;
     private JButton editarButton;
     private JFormattedTextField formattedTextDateUser;
+    private JButton excluirButton;
 
     public Styles styles = new Styles();
-
-    public  ResultsForm() {
-
-    }
 
     public ResultsForm(JPanel MenuView,   BookModel resultado) {
 
@@ -68,6 +65,7 @@ public class ResultsForm extends JFrame {
 
         styles.styleButton(fecharButton);
         styles.styleButton(editarButton);
+        styles.styleButton(excluirButton);
 
         textFieldTitle.setEditable(false);
         textFieldTheme.setEditable(false);
@@ -134,6 +132,17 @@ public class ResultsForm extends JFrame {
 
                     editarButton.setText("Editar");
                 }
+            }
+        });
+        excluirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirmation = JOptionPane.showConfirmDialog(
+                        ResultsForm.this,
+                        "Tem certeza de que deseja excluir este livro?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION
+                );
             }
         });
     }
