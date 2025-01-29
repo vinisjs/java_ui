@@ -109,20 +109,23 @@ public class MenuView extends JFrame {
     }
 
     private void searchBook() {
-        String value = SearchInput.getText();
+        String value = SearchInput.getText().trim();
         BookController controller = new BookController();
-        BookModel resultado = controller.getBook(value);
+        BookModel resultado;
 
-        SwingUtilities.invokeLater(() -> new ResultsForm(MenuScreen, resultado).setVisible(true));
-
-        // SwingUtilities.invokeLater(() -> new ShowAllData(resultado).setVisible(true));
+        try {
+            int id = Integer.parseInt(value);
+            resultado = controller.getBook(id);
+        } catch (NumberFormatException e) {
+            resultado = controller.getBook(value);
+        }
 
         if (resultado != null) {
-            System.out.println("Livro encontrado:");
+            BookModel finalResultado = resultado;
+            SwingUtilities.invokeLater(() -> new ResultsForm(MenuScreen, finalResultado).setVisible(true));
             displayBookDetails(resultado);
         } else {
             JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            System.out.println("Livro não encontrado.");
         }
     }
 

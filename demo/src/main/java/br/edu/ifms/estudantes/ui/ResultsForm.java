@@ -34,6 +34,8 @@ public class ResultsForm extends JFrame {
 
     public Styles styles = new Styles();
 
+    BookModel book = new BookModel();
+
     public ResultsForm(JPanel MenuView,   BookModel resultado) {
 
         setTitle("Resultados de Livros");
@@ -74,8 +76,6 @@ public class ResultsForm extends JFrame {
         formattedTextDateUser.setEditable(false);
         textFieldQtd.setEditable(false);
 
-        BookModel book = new BookModel();
-
         this.setVisible(true);
         fecharButton.addActionListener(new ActionListener() {
             @Override
@@ -107,8 +107,6 @@ public class ResultsForm extends JFrame {
                     formattedTextDateUser.setEditable(false);
                     textFieldQtd.setEditable(false);
 
-
-
                     book.setNumberId(resultado.getNumberId());
                     book.setTitulo( textFieldTitle.getText());
                     book.setTema( textFieldTheme.getText());
@@ -137,6 +135,7 @@ public class ResultsForm extends JFrame {
                 }
             }
         });
+
         excluirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,10 +145,12 @@ public class ResultsForm extends JFrame {
                         "Confirmação",
                         JOptionPane.YES_NO_OPTION
                 );
-
-                System.out.println(book.getNumberId());
+                System.out.println(book.getNumberId()+1);
                 // new BookController().DeleteById();
+
             }
+
         });
     }
+
 }
