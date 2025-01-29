@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.BookController;
+import br.edu.ifms.estudantes.model.BookModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +33,12 @@ public class ResultsForm extends JFrame {
 
     public Styles styles = new Styles();
 
-    public ResultsForm(JPanel MenuView) {
+    public  ResultsForm() {
+
+    }
+
+    public ResultsForm(JPanel MenuView,   BookModel resultado) {
+
         setTitle("Resultados de Livros");
         setContentPane(ResultScreenBook);
         this.setSize(600, 450);
@@ -44,12 +52,12 @@ public class ResultsForm extends JFrame {
         styles.styleTextField(formattedTextDateUser);
         styles.styleTextField(textFieldQtd);
 
-        textFieldTitle.setText("Dom Casmurro");
-        textFieldTheme.setText("Romance");
-        textFieldAuthor.setText("Machado de Assis");
-        textFieldIsbn.setText("978-85-359-0277-2");
-        formattedTextDateUser.setText("01/01/1900");
-        textFieldQtd.setText("10");
+        textFieldTitle.setText(resultado.getTitulo());
+        textFieldTheme.setText(resultado.getTema());
+        textFieldAuthor.setText(resultado.getAutor());
+        textFieldIsbn.setText(resultado.getISBN());
+        formattedTextDateUser.setText(resultado.getData_publicacao());
+        textFieldQtd.setText(String.valueOf(resultado.getQuantidade()));
 
         styles.alignFields(JPanelTheme, "Tema:", textFieldTheme);
         styles.alignFields(JPanelTitle, "Título:", textFieldTitle);
@@ -88,7 +96,27 @@ public class ResultsForm extends JFrame {
                     textFieldQtd.setEditable(true);
 
                     editarButton.setText("Aplicar");
+
+
                 } else {
+
+                    textFieldTitle.setEditable(false);
+                    textFieldTheme.setEditable(false);
+                    textFieldAuthor.setEditable(false);
+                    textFieldIsbn.setEditable(false);
+                    formattedTextDateUser.setEditable(false);
+                    textFieldQtd.setEditable(false);
+
+                    BookModel book = new BookModel();
+
+                    book.setTitulo( textFieldTitle.getText());
+                    book.setTema( textFieldTheme.getText());
+                    book.setAutor( textFieldAuthor.getText());
+                    book.setISBN( textFieldIsbn.getText());
+                    book.setData_publicacao( formattedTextDateUser.getText());
+                    book.setQuantidade(Integer.parseInt(textFieldQtd.getText()));
+
+                    new BookController().saveOrUpdate(book);
 
                     String title = textFieldTitle.getText();
                     String theme = textFieldTheme.getText();
@@ -103,13 +131,6 @@ public class ResultsForm extends JFrame {
                     System.out.println("ISBN: " + isbn);
                     System.out.println("Data: " + date);
                     System.out.println("Quantidade: " + quantity);
-
-                    textFieldTitle.setEditable(false);
-                    textFieldTheme.setEditable(false);
-                    textFieldAuthor.setEditable(false);
-                    textFieldIsbn.setEditable(false);
-                    formattedTextDateUser.setEditable(false);
-                    textFieldQtd.setEditable(false);
 
                     editarButton.setText("Editar");
                 }

@@ -8,9 +8,6 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.List;
@@ -116,7 +113,9 @@ public class MenuView extends JFrame {
         BookController controller = new BookController();
         BookModel resultado = controller.getBook(value);
 
-        SwingUtilities.invokeLater(() -> new ShowAllData(resultado).setVisible(true));
+        SwingUtilities.invokeLater(() -> new ResultsForm(MenuScreen, resultado).setVisible(true));
+
+        // SwingUtilities.invokeLater(() -> new ShowAllData(resultado).setVisible(true));
 
         if (resultado != null) {
             System.out.println("Livro encontrado:");

@@ -117,7 +117,7 @@ de dados vamos utilizar o ORM Hibernate.
 - [x] Editar Livro 
 - [ ] Arquivar Livro 
 
-#### Livro
+#### Empréstimo
 - [ ] Criar Empréstimo 
 - [ ] Visualizar Empréstimo 
 - [ ] Visualizar Empréstimo (Todos)

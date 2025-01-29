@@ -7,6 +7,22 @@ import java.util.List;
 
 public class BookRepo {
 
+    public void SaveOrUpdate(BookModel book, Session session) {
+        try {
+            session.beginTransaction();
+            session.saveOrUpdate(book);
+            session.getTransaction().commit(); // Confirmar a transação
+            System.out.println("Livro Atualizado com sucesso!");
+
+        } catch (Exception e) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback(); // Reverter a transação em caso de erro
+
+            }
+        }
+    }
+
+
     public void save(BookModel book, Session session) {
         try {
             session.beginTransaction(); // Iniciar transação na chamada

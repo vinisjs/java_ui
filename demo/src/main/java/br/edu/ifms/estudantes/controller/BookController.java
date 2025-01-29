@@ -12,6 +12,11 @@ public class BookController {
 
     public void saveBook(BookModel book) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            bookRepo.SaveOrUpdate(book, session);
+        }
+    }
+    public void saveOrUpdate(BookModel book) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             bookRepo.save(book, session);
         }
     }
