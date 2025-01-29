@@ -74,6 +74,8 @@ public class ResultsForm extends JFrame {
         formattedTextDateUser.setEditable(false);
         textFieldQtd.setEditable(false);
 
+        BookModel book = new BookModel();
+
         this.setVisible(true);
         fecharButton.addActionListener(new ActionListener() {
             @Override
@@ -105,7 +107,7 @@ public class ResultsForm extends JFrame {
                     formattedTextDateUser.setEditable(false);
                     textFieldQtd.setEditable(false);
 
-                    BookModel book = new BookModel();
+
 
                     book.setNumberId(resultado.getNumberId());
                     book.setTitulo( textFieldTitle.getText());
@@ -144,6 +146,9 @@ public class ResultsForm extends JFrame {
                         "Confirmação",
                         JOptionPane.YES_NO_OPTION
                 );
+
+                System.out.println(book.getNumberId());
+                // new BookController().DeleteById();
             }
         });
     }

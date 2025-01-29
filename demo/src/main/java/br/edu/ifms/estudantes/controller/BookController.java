@@ -33,4 +33,11 @@ public class BookController {
             return bookRepo.getAllBooks(session);
         }
     }
+
+    public void DeleteById(Object params) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+           bookRepo.DeleteById(params, session);
+
+        }
+    }
 }

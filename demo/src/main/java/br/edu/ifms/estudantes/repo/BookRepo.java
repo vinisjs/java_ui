@@ -56,7 +56,9 @@ public class BookRepo {
         }
 
         try {
+            System.out.println("Parametro recebido:" + param);
             if (param instanceof Integer) {
+                System.out.println("Parametro recebido:" + param);
                 return session.createQuery("FROM BookModel WHERE id = :id", BookModel.class)
                         .setParameter("id", param)
                         .uniqueResult();
@@ -71,6 +73,22 @@ public class BookRepo {
         } catch (Exception e) {
             System.err.println("Erro ao buscar o livro: " + e.getMessage());
             return null;
+        }
+    }
+
+    public void DeleteById(Object param, Session session){
+
+        if (param == null) {
+            System.out.println("Parâmetro fornecido é nulo.");
+        }
+
+        try {
+            session.createQuery("FROM BookModel WHERE id = :id", BookModel.class)
+                    .setParameter("id", param)
+                    .uniqueResult();
+        } catch (Exception e) {
+            System.err.println("Erro ao deletar o livro: " + e.getMessage());
+
         }
     }
 }
