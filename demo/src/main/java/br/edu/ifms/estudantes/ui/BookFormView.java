@@ -7,6 +7,9 @@ import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class BookFormView extends JDialog {
     private JPanel Screen1;
@@ -83,6 +86,17 @@ public class BookFormView extends JDialog {
             int quantidade = Integer.parseInt(textTotal.getText());
             if (quantidade <= 0) {
                 throw new NumberFormatException("Quantidade deve ser um número maior que zero.");
+            }
+
+            String dataStr = formattedTextDate.getText();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            dateFormat.setLenient(false);
+
+            Date dataPublicacao;
+            try {
+                dataPublicacao = dateFormat.parse(dataStr);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Data inválida. Utilize uma data válida.");
             }
 
             BookModel book = new BookModel();
