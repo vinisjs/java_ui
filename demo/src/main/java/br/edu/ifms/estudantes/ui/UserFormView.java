@@ -119,6 +119,13 @@ public class UserFormView extends JDialog {
         }
 
         new UserController().controllerSave(user);
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Livro salvo com sucesso!",
+                "Sucesso",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     public abstract class SimpleDocumentListener implements javax.swing.event.DocumentListener {
