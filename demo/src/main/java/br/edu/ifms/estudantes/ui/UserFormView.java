@@ -36,7 +36,7 @@ public class UserFormView extends JDialog {
     public UserFormView(JFrame parentUser) {
         super(parentUser, "Cadastro de Usuários", true);
         setContentPane(Screen2);
-        this.setSize(580, 400);
+        this.setSize(600, 450);
         this.setLocationRelativeTo(parentUser);
 
         configurePhoneMask();

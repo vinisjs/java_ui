@@ -30,7 +30,7 @@ public class BookFormView extends JDialog {
     public BookFormView(JFrame parent) {
         super(parent, "Cadastro de Livros", true);
         this.setContentPane(Screen1);
-        this.setSize(650, 450);
+        this.setSize(600, 450);
         this.setLocationRelativeTo(parent);
 
         styles.styleTextField(textTheme);

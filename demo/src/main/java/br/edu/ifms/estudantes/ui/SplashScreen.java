@@ -13,7 +13,7 @@ public class SplashScreen extends JFrame{
     public SplashScreen() {
         setTitle("início");
         setContentPane(SplashScreen);
-        this.setSize(600, 450);
+        this.setSize(800, 500);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 

@@ -117,20 +117,6 @@ public class ResultsForm extends JFrame {
 
                     new BookController().UpdateBook(book);
 
-//                    String title = textFieldTitle.getText();
-//                    String theme = textFieldTheme.getText();
-//                    String author = textFieldAuthor.getText();
-//                    String isbn = textFieldIsbn.getText();
-//                    String date = formattedTextDateUser.getText();
-//                    String quantity = textFieldQtd.getText();
-//
-//                    System.out.println("Título: " + title);
-//                    System.out.println("Tema: " + theme);
-//                    System.out.println("Autor: " + author);
-//                    System.out.println("ISBN: " + isbn);
-//                    System.out.println("Data: " + date);
-//                    System.out.println("Quantidade: " + quantity);
-
                     editarButton.setText("Editar");
                 }
             }

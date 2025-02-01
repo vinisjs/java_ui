@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.util.Objects;
 
 public class Styles {
     public Styles(){
@@ -22,7 +23,7 @@ public class Styles {
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         button.setUI(new BasicButtonUI() {
             @Override
             public void installUI(JComponent c) {
@@ -125,4 +126,63 @@ public class Styles {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setForeground(new Color(50, 50, 50));
     }
+
+    public ImageIcon loadIcon(String path) {
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
+        Image img = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
+    }
+
+
+//    private void configureSearchInput() {
+//        SearchInput.setText("Busque por id ou nome do livro");
+//        SearchInput.setForeground(Color.GRAY);
+//        SearchInput.addFocusListener(new FocusAdapter() {
+//            public void focusGained(FocusEvent e) {
+//                if (SearchInput.getText().equals("Busque por id ou nome do livro")) {
+//                    SearchInput.setText("");
+//                    SearchInput.setForeground(Color.BLACK);
+//                }
+//            }
+//
+//            public void focusLost(FocusEvent e) {
+//                if (SearchInput.getText().equals("")) {
+//                    SearchInput.setText("Busque por id ou nome do livro");
+//                    SearchInput.setForeground(Color.GRAY);
+//                }
+//            }
+//        });
+//    }
+    //    private void searchBook() {
+//        String value = SearchInput.getText().trim();
+//        BookController controller = new BookController();
+//        BookModel resultado;
+//
+//        try {
+//            int id = Integer.parseInt(value);
+//            resultado = controller.getBook(id);
+//        } catch (NumberFormatException e) {
+//            resultado = controller.getBook(value);
+//        }
+//
+//        if (resultado != null) {
+//            BookModel finalResultado = resultado;
+//            SwingUtilities.invokeLater(() -> new ResultsForm(MenuScreen, finalResultado).setVisible(true));
+//            displayBookDetails(resultado);
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
+//        }
+//    }
+
+    //    private void showAllBooks() {
+//        BookController controller = new BookController();
+//        List<BookModel> livros = controller.getAllBooks();
+//
+//        if (livros != null && !livros.isEmpty()) {
+//            ShowAllData.showAllBooks(livros);
+//            livros.forEach(this::displayBookDetails);
+//        } else {
+//            System.out.println("Nenhum livro encontrado.");
+//        }
+//    }
 }

@@ -19,71 +19,36 @@ public class MenuView extends JFrame {
     private JButton livrosButton;
     private JButton usuariosButton;
     private JButton emprestimosButton;
-    private JButton sairButton;
     private JPanel Content;
-    private JLabel titleLabel;
-    private JButton SearchButton;
-    private JTextField SearchInput;
-    private JPanel SearchPanel;
-    private JButton allBooksButton;
+    private JButton sairButton;
+    private JLabel titleLabel;;
 
     private Styles styles = new Styles();
 
     public MenuView(JPanel splashScreen) {
         setTitle("Menu de opções");
         setContentPane(MenuScreen);
-        this.setSize(600, 450);
+        this.setSize(800, 500);
         this.setLocationRelativeTo(splashScreen);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        configureSearchPanel();
-        configureSearchInput();
         styleComponents();
         addActionListeners();
 
+        MenuBorder.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
+
         this.setVisible(true);
-    }
-
-    private void configureSearchPanel() {
-        SearchPanel.setBorder(new CompoundBorder(
-                new MatteBorder(0, 0, 1, 0, Color.BLACK),
-                new EmptyBorder(0, 0, 15, 0)
-        ));
-    }
-
-    private void configureSearchInput() {
-        SearchInput.setText("Busque por id ou nome do livro");
-        SearchInput.setForeground(Color.GRAY);
-        SearchInput.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (SearchInput.getText().equals("Busque por id ou nome do livro")) {
-                    SearchInput.setText("");
-                    SearchInput.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (SearchInput.getText().equals("")) {
-                    SearchInput.setText("Busque por id ou nome do livro");
-                    SearchInput.setForeground(Color.GRAY);
-                }
-            }
-        });
     }
 
     private void styleComponents() {
         MenuBorder.setLayout(new BoxLayout(MenuBorder, BoxLayout.Y_AXIS));
         MenuBorder.setBorder(new EmptyBorder(20, 20, 20, 20));
-        SearchButton.setIcon(loadIcon("/images/search.png"));
-        livrosButton.setIcon(loadIcon("/images/book.png"));
-        usuariosButton.setIcon(loadIcon("/images/users.png"));
-        emprestimosButton.setIcon(loadIcon("/images/thumbs-up.png"));
-        sairButton.setIcon(loadIcon("/images/log-out.png"));
+        livrosButton.setIcon(styles.loadIcon("/images/book.png"));
+        usuariosButton.setIcon(styles.loadIcon("/images/users.png"));
+        emprestimosButton.setIcon(styles.loadIcon("/images/thumbs-up.png"));
+        sairButton.setIcon(styles.loadIcon("/images/log-out.png"));
 
         styles.styleTitleLabelMenu(titleLabel);
-        styles.styleButton(SearchButton);
-        styles.styleButton(allBooksButton);
-        styles.styleTextField(SearchInput);
         styles.styleButtonMenu(livrosButton);
         styles.styleButtonMenu(usuariosButton);
         styles.styleButtonMenu(emprestimosButton);
@@ -101,32 +66,9 @@ public class MenuView extends JFrame {
     }
 
     private void addActionListeners() {
-        livrosButton.addActionListener(e -> openBookForm());
+        livrosButton.addActionListener(e -> openSearchForm());
         usuariosButton.addActionListener(e -> openUserForm());
         sairButton.addActionListener(e -> dispose());
-        SearchButton.addActionListener(e -> searchBook());
-        allBooksButton.addActionListener(e -> showAllBooks());
-    }
-
-    private void searchBook() {
-        String value = SearchInput.getText().trim();
-        BookController controller = new BookController();
-        BookModel resultado;
-
-        try {
-            int id = Integer.parseInt(value);
-            resultado = controller.getBook(id);
-        } catch (NumberFormatException e) {
-            resultado = controller.getBook(value);
-        }
-
-        if (resultado != null) {
-            BookModel finalResultado = resultado;
-            SwingUtilities.invokeLater(() -> new ResultsForm(MenuScreen, finalResultado).setVisible(true));
-            displayBookDetails(resultado);
-        } else {
-            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
-        }
     }
 
     private void displayBookDetails(BookModel book) {
@@ -138,29 +80,11 @@ public class MenuView extends JFrame {
         System.out.println("Data de Publicação: " + book.getData_publicacao());
     }
 
-    private void showAllBooks() {
-        BookController controller = new BookController();
-        List<BookModel> livros = controller.getAllBooks();
-
-        if (livros != null && !livros.isEmpty()) {
-            ShowAllData.showAllBooks(livros);
-            livros.forEach(this::displayBookDetails);
-        } else {
-            System.out.println("Nenhum livro encontrado.");
-        }
-    }
-
-    private void openBookForm() {
-        new BookFormView(this);
+    private void openSearchForm() {
+        new SearchBook(this);
     }
 
     private void openUserForm() {
         new UserFormView(this);
-    }
-
-    private ImageIcon loadIcon(String path) {
-        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
-        Image img = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        return new ImageIcon(img);
     }
 }
