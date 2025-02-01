@@ -85,6 +85,6 @@ public class MenuView extends JFrame {
     }
 
     private void openUserForm() {
-        new UserFormView(this);
+        new SearchUser(this);
     }
 }
