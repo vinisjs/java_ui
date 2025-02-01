@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.BookController;
+import br.edu.ifms.estudantes.model.BookModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -77,6 +80,18 @@ public class SearchBook extends JFrame{
             }
         });
     }
+
+//    private void showAllBooks() {
+//        BookController controller = new BookController();
+//        List<BookModel> livros = controller.getAllBooks();
+//
+//        if (livros != null && !livros.isEmpty()) {
+//            ShowAllData.showAllBooks(livros);
+//            livros.forEach(this::displayBookDetails);
+//        } else {
+//            System.out.println("Nenhum livro encontrado.");
+//        }
+//    }
 
     public void openSearchBookForm() {
         new BookFormView(this);

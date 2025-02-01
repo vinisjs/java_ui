@@ -52,7 +52,7 @@ public class Styles {
         panel.setLayout(new BorderLayout());
         JLabel label = new JLabel(labelText);
         label.setPreferredSize(new Dimension(100, 30));
-        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         panel.add(label, BorderLayout.WEST);
         panel.add(component, BorderLayout.CENTER);
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
@@ -62,7 +62,7 @@ public class Styles {
         panel.setLayout(new GridBagLayout());
         JLabel label = new JLabel(labelText);
         label.setPreferredSize(new Dimension(100, 30));
-        label.setFont(new Font("Arial", Font.BOLD, 14));
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -82,7 +82,7 @@ public class Styles {
 
     public void styleRadioButton(JRadioButton radioButton) {
         radioButton.setBackground(new Color(240, 240, 240));
-        radioButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        radioButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         radioButton.setForeground(Color.BLACK);
     }
 
@@ -133,26 +133,6 @@ public class Styles {
         return new ImageIcon(img);
     }
 
-
-//    private void configureSearchInput() {
-//        SearchInput.setText("Busque por id ou nome do livro");
-//        SearchInput.setForeground(Color.GRAY);
-//        SearchInput.addFocusListener(new FocusAdapter() {
-//            public void focusGained(FocusEvent e) {
-//                if (SearchInput.getText().equals("Busque por id ou nome do livro")) {
-//                    SearchInput.setText("");
-//                    SearchInput.setForeground(Color.BLACK);
-//                }
-//            }
-//
-//            public void focusLost(FocusEvent e) {
-//                if (SearchInput.getText().equals("")) {
-//                    SearchInput.setText("Busque por id ou nome do livro");
-//                    SearchInput.setForeground(Color.GRAY);
-//                }
-//            }
-//        });
-//    }
     //    private void searchBook() {
 //        String value = SearchInput.getText().trim();
 //        BookController controller = new BookController();
@@ -171,18 +151,6 @@ public class Styles {
 //            displayBookDetails(resultado);
 //        } else {
 //            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
-//        }
-//    }
-
-    //    private void showAllBooks() {
-//        BookController controller = new BookController();
-//        List<BookModel> livros = controller.getAllBooks();
-//
-//        if (livros != null && !livros.isEmpty()) {
-//            ShowAllData.showAllBooks(livros);
-//            livros.forEach(this::displayBookDetails);
-//        } else {
-//            System.out.println("Nenhum livro encontrado.");
 //        }
 //    }
 }

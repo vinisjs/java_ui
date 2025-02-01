@@ -54,15 +54,22 @@ public class MenuView extends JFrame {
         styles.styleButtonMenu(emprestimosButton);
         styles.styleButtonMenu(sairButton);
 
-        addCenteredButtonMenu(livrosButton);
-        addCenteredButtonMenu(usuariosButton);
-        addCenteredButtonMenu(emprestimosButton);
-        addCenteredButtonMenu(sairButton);
-    }
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.add(livrosButton);
+        buttonPanel.add(usuariosButton);
+        buttonPanel.add(emprestimosButton);
 
-    private void addCenteredButtonMenu(JButton button) {
-        MenuBorder.add(button);
-        MenuBorder.add(Box.createVerticalStrut(10));
+        Dimension buttonSize = new Dimension(180, 50);
+        livrosButton.setPreferredSize(buttonSize);
+        usuariosButton.setPreferredSize(buttonSize);
+        emprestimosButton.setPreferredSize(buttonSize);
+        sairButton.setPreferredSize(new Dimension(180, 40));
+
+        JPanel exitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        exitPanel.add(sairButton);
+
+        MenuBorder.add(buttonPanel, BorderLayout.CENTER);
+        MenuBorder.add(exitPanel, BorderLayout.SOUTH);
     }
 
     private void addActionListeners() {
