@@ -3,6 +3,7 @@ package br.edu.ifms.estudantes.ui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.Objects;
 
@@ -126,6 +127,18 @@ public class Styles {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
         Image img = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         return new ImageIcon(img);
+    }
+
+    public void styleTable(JTable table) {
+        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setRowHeight(25);
+        table.setSelectionBackground(new Color(184, 207, 229));
+        table.setSelectionForeground(Color.BLACK);
+
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setBackground(new Color(100, 149, 237));
+        header.setForeground(Color.WHITE);
     }
 
     //    private void searchBook() {

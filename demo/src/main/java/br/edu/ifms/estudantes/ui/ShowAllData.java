@@ -14,27 +14,27 @@ public class ShowAllData extends JFrame {
     private JButton buttonOk;
     private JPanel Boby;
     private JScrollPane Jscroll;
+    private Styles styles = new Styles();
 
     public ShowAllData(BookModel book) {
         setTitle("Detalhes do Livro");
         setContentPane(Boby);
         setSize(600, 450);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        String[] columnNames = {"ID","Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
+        String[] columnNames = {"ID", "Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
         DefaultTableModel tableModel = getDefaultTableModel(book, columnNames);
 
         table.setModel(tableModel);
+        table.setEnabled(false);
 
         Jscroll.setViewportView(table);
 
-        buttonOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        styles.styleTable(table);
+        styles.styleButton(buttonOk);
+
+        buttonOk.addActionListener(e -> dispose());
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(buttonOk);
@@ -42,29 +42,22 @@ public class ShowAllData extends JFrame {
     }
 
     private static DefaultTableModel getDefaultTableModel(BookModel book, String[] columnNames) {
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-
-        if (book != null) {
-            Object[] rowData = {
-                    book.getTitulo(),
-                    book.getAutor(),
-                    book.getISBN(),
-                    book.getQuantidade(),
-                    book.getTema(),
-                    book.getData_publicacao()
-            };
-            tableModel.addRow(rowData);
-        } else {
-            Object[] rowData = {"Nenhum dado encontrado", "", "", "", "", ""};
-            tableModel.addRow(rowData);
-        }
-        return tableModel;
+        return new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     }
 
     public static void showAllBooks(List<BookModel> livros) {
-
-        String[] columnNames = {"ID","Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        String[] columnNames = {"ID", "Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         for (BookModel livro : livros) {
             Object[] rowData = {
@@ -81,13 +74,17 @@ public class ShowAllData extends JFrame {
 
         JFrame frame = new JFrame("Todos os Livros");
         JTable table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
+        table.setEnabled(false);
 
+        JScrollPane scrollPane = new JScrollPane(table);
         JButton buttonOk = new JButton("Ok");
         buttonOk.addActionListener(e -> frame.dispose());
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        Styles styles = new Styles();
+        styles.styleTable(table);
+        styles.styleButton(buttonOk);
+
+        JPanel panel = new JPanel(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
