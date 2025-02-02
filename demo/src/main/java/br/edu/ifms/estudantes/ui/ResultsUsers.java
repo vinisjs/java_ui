@@ -99,6 +99,7 @@ public class ResultsUsers extends JFrame{
                     String email = textFieldEmail.getText();
                     String phone = formattedTextPhone.getText().replaceAll("[^0-9]", "");
                     boolean isValid = true;
+
                     if (!email.contains("@")) {
                         emailErrorLabel.setText("E-mail inválido");
                         isValid = false;
@@ -117,11 +118,6 @@ public class ResultsUsers extends JFrame{
                         return;
                     }
 
-                    textFieldName.setEditable(false);
-                    textFieldSex.setEditable(false);
-                    formattedTextPhone.setEditable(false);
-                    textFieldEmail.setEditable(false);
-
                     user.setNumberId(finalResultado.getNumberId());
                     user.setNome(textFieldName.getText());
                     user.setNumberPhone(formattedTextPhone.getText());
@@ -130,6 +126,10 @@ public class ResultsUsers extends JFrame{
 
                     new UserController().UpdateUser(user);
 
+                    textFieldName.setEditable(false);
+                    textFieldSex.setEditable(false);
+                    formattedTextPhone.setEditable(false);
+                    textFieldEmail.setEditable(false);
                     editButton.setText("Editar");
                 }
             }
@@ -151,6 +151,7 @@ public class ResultsUsers extends JFrame{
             }
         });
     }
+
     private void configureEmailValidation() {
         textFieldEmail.getDocument().addDocumentListener(new SimpleDocumentListener() {
             @Override
