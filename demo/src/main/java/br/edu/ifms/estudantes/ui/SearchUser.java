@@ -96,10 +96,10 @@ public class SearchUser extends JFrame{
         List<UserModel> users = controller.getAllUser();
 
         if (users != null && !users.isEmpty()) {
-          // new ShowAllData().ShowAllUser((UserModel) users);
+           new ShowAllData().showAllUsers(users);
             users.forEach(this::displayBookDetails);
         } else {
-            System.out.println("Nenhum livro encontrado.");
+            System.out.println("Nenhum usuário encontrado.");
         }
     }
 
