@@ -59,24 +59,19 @@ public class Styles {
     }
 
     public void alignRadioButtonField(JPanel panel, String labelText, JComponent... components) {
-        panel.setLayout(new GridBagLayout());
+        panel.setLayout(new BorderLayout());
+
         JLabel label = new JLabel(labelText);
         label.setPreferredSize(new Dimension(100, 30));
         label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.WEST;
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(label, gbc);
-
-        for (int i = 0; i < components.length; i++) {
-            gbc.gridx = i + 1;
-            panel.add(components[i], gbc);
+        JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        for (JComponent component : components) {
+            radioPanel.add(component);
         }
 
+        panel.add(label, BorderLayout.WEST);
+        panel.add(radioPanel, BorderLayout.CENTER);
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
     }
 
