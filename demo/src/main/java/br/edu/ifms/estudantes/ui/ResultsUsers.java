@@ -1,10 +1,12 @@
 package br.edu.ifms.estudantes.ui;
 
-import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
 
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
+import java.text.ParseException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,12 +23,12 @@ public class ResultsUsers extends JFrame{
     private JPanel JPanelSex;
     private JPanel JPanelPhone;
     private JPanel JPanelEmail;
-    private JTextField textFieldPhone;
     private JTextField textFieldEmail;
     private JLabel emailErrorLabel;
     private JButton fecharButton;
     private JButton editButton;
     private JButton excluirButton;
+    private JFormattedTextField formattedTextPhone;
 
     public Styles styles = new Styles();
 
@@ -39,14 +41,16 @@ public class ResultsUsers extends JFrame{
         this.setLocationRelativeTo(MenuView);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        configurePhoneMask();
+
         styles.styleTextField(textFieldName);
         styles.styleTextField(textFieldSex);
-        styles.styleTextField(textFieldPhone);
+        styles.styleTextField(formattedTextPhone);
         styles.styleTextField(textFieldEmail);
 
         textFieldName.setText(finalResultado.getNome());
         textFieldSex.setText(finalResultado.getSexo());
-        textFieldPhone.setText(finalResultado.getNumberPhone());
+        formattedTextPhone.setText(finalResultado.getNumberPhone());
         textFieldEmail.setText(finalResultado.getEmail());
 
         System.out.println(finalResultado.getSexo());
@@ -54,12 +58,16 @@ public class ResultsUsers extends JFrame{
 
         styles.alignFields(JPanelName, "Nome:", textFieldName);
         styles.alignFields(JPanelSex, "Sexo:", textFieldSex);
-        styles.alignFields(JPanelPhone, "Telefone:", textFieldPhone);
+        styles.alignFields(JPanelPhone, "Telefone:", formattedTextPhone);
         styles.alignFields(JPanelEmail, "E-mail:", textFieldEmail);
 
         emailErrorLabel = new JLabel("");
         emailErrorLabel.setForeground(Color.RED);
         JPanelEmail.add(emailErrorLabel, BorderLayout.SOUTH);
+
+        JLabel phoneErrorLabel = new JLabel("");
+        phoneErrorLabel.setForeground(Color.RED);
+        JPanelPhone.add(phoneErrorLabel, BorderLayout.SOUTH);
 
         styles.styleButton(fecharButton);
         styles.styleButton(editButton);
@@ -67,16 +75,11 @@ public class ResultsUsers extends JFrame{
 
         textFieldName.setEditable(false);
         textFieldSex.setEditable(false);
-        textFieldPhone.setEditable(false);
+        formattedTextPhone.setEditable(false);
         textFieldEmail.setEditable(false);
         this.setVisible(true);
 
-        fecharButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        fecharButton.addActionListener(e -> dispose());
 
         editButton.addActionListener(new ActionListener() {
             @Override
@@ -84,7 +87,7 @@ public class ResultsUsers extends JFrame{
                 if (editButton.getText().equals("Editar")) {
                     textFieldName.setEditable(true);
                     textFieldSex.setEditable(true);
-                    textFieldPhone.setEditable(true);
+                    formattedTextPhone.setEditable(true);
                     textFieldEmail.setEditable(true);
 
                     editButton.setText("Aplicar");
@@ -94,19 +97,34 @@ public class ResultsUsers extends JFrame{
                 } else {
 
                     String email = textFieldEmail.getText();
+                    String phone = formattedTextPhone.getText().replaceAll("[^0-9]", "");
+                    boolean isValid = true;
                     if (!email.contains("@")) {
-                        JOptionPane.showMessageDialog(null, "E-mail inválido. Insira um e-mail válido com '@'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        emailErrorLabel.setText("E-mail inválido");
+                        isValid = false;
+                    } else {
+                        emailErrorLabel.setText("");
+                    }
+
+                    if (phone.length() < 11) {
+                        phoneErrorLabel.setText("Número de telefone inválido, complete todos os dígitos.");
+                        isValid = false;
+                    } else {
+                        phoneErrorLabel.setText("");
+                    }
+
+                    if (!isValid) {
                         return;
                     }
 
                     textFieldName.setEditable(false);
                     textFieldSex.setEditable(false);
-                    textFieldPhone.setEditable(false);
+                    formattedTextPhone.setEditable(false);
                     textFieldEmail.setEditable(false);
 
                     user.setNumberId(finalResultado.getNumberId());
                     user.setNome(textFieldName.getText());
-                    user.setNumberPhone(textFieldPhone.getText());
+                    user.setNumberPhone(formattedTextPhone.getText());
                     user.setEmail(textFieldEmail.getText());
                     user.setSexo(textFieldSex.getText());
 
@@ -152,6 +170,16 @@ public class ResultsUsers extends JFrame{
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    private void configurePhoneMask() {
+        try {
+            MaskFormatter phoneMask = new MaskFormatter("+## (##) ##### - ####");
+            phoneMask.setPlaceholderCharacter('_');
+            formattedTextPhone.setFormatterFactory(new DefaultFormatterFactory(phoneMask));
+        } catch (ParseException ex) {
+            System.out.println("Erro ao aplicar a máscara do telefone.");
+        }
     }
 
     public abstract class SimpleDocumentListener implements javax.swing.event.DocumentListener {
