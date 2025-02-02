@@ -130,13 +130,13 @@ public class Styles {
     }
 
     public void styleTable(JTable table) {
-        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.setRowHeight(25);
         table.setSelectionBackground(new Color(184, 207, 229));
         table.setSelectionForeground(Color.BLACK);
 
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 14));
+        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
         header.setBackground(new Color(100, 149, 237));
         header.setForeground(Color.WHITE);
     }

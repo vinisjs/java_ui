@@ -14,28 +14,27 @@ public class UserRepo extends UserModel {
             session.beginTransaction();
             System.out.println("Tentando Atualizar Usuário");
 
-            // Usar merge para evitar conflitos de sessão
             session.merge(user);
 
-            session.getTransaction().commit(); // Confirmar a transação
+            session.getTransaction().commit();
             System.out.println("Usuário atualizado com sucesso!");
         } catch (Exception e) {
             if (session.getTransaction() != null) {
-                session.getTransaction().rollback(); // Reverter a transação em caso de erro
+                session.getTransaction().rollback();
             }
-            e.printStackTrace(); // Para ajudar no diagnóstico
+            e.printStackTrace();
         }
     }
 
     public void saveOnBook(UserModel user, Session session) {
         try {
-            session.beginTransaction(); // Iniciar transação na chamada
+            session.beginTransaction();
             session.save(user);
-            session.getTransaction().commit(); // Confirmar a transação
+            session.getTransaction().commit();
             System.out.println("Usuário salvo com sucesso!");
         } catch (Exception e) {
             if (session.getTransaction() != null) {
-                session.getTransaction().rollback(); // Reverter a transação em caso de erro
+                session.getTransaction().rollback();
             }
             System.err.println("Erro ao salvar o Usuário: " + e.getMessage());
         }
@@ -43,7 +42,6 @@ public class UserRepo extends UserModel {
 
     public List<UserModel> getAllUser(Session session) {
         try {
-            // Consulta para listar todos os livros usando HQL
             return session.createQuery("FROM UserModel", UserModel.class).list();
         } catch (Exception e) {
             System.err.println("Erro ao buscar todos os livros: " + e.getMessage());

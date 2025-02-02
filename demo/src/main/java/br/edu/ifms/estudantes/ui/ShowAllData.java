@@ -17,7 +17,34 @@ public class ShowAllData extends JFrame {
     private JScrollPane Jscroll;
     private Styles styles = new Styles();
 
-    public void showAllUsers(List<UserModel> user) {
+    public ShowAllData() {
+        setTitle("Exibição de Dados");
+        setSize(600, 450);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        table = new JTable();
+        table.setEnabled(false);
+        styles.styleTable(table);
+
+        buttonOk = new JButton("Ok");
+        styles.styleButton(buttonOk);
+        buttonOk.addActionListener(e -> dispose());
+
+        Boby = new JPanel(new BorderLayout());
+        Jscroll = new JScrollPane(table);
+        Boby.add(Jscroll, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(buttonOk);
+        Boby.add(buttonPanel, BorderLayout.SOUTH);
+
+        add(Boby);
+    }
+
+    public void showAllUsers(List<UserModel> users) {
+        setTitle("Todos os Usuários");
+
         String[] columnNames = {"Id", "Nome", "Sexo", "Número", "Email"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -26,45 +53,28 @@ public class ShowAllData extends JFrame {
             }
         };
 
-        for (UserModel users : user) {
-            Object[] rowData = {
-                    users.getNumberId(),
-                    users.getNome(),
-                    users.getSexo(),
-                    users.getNumberPhone(),
-                    users.getEmail()
-            };
-            tableModel.addRow(rowData);
+        for (UserModel user : users) {
+            tableModel.addRow(new Object[]{
+                    user.getNumberId(),
+                    user.getNome(),
+                    user.getSexo(),
+                    user.getNumberPhone(),
+                    user.getEmail()
+            });
         }
 
-        JFrame frame = new JFrame("Todos os Livros");
-        JTable table = new JTable(tableModel);
-        table.setEnabled(false);
-
-        JScrollPane scrollPane = new JScrollPane(table);
-        JButton buttonOk = new JButton("Ok");
-        buttonOk.addActionListener(e -> frame.dispose());
-
-        Styles styles = new Styles();
-        styles.styleTable(table);
-        styles.styleButton(buttonOk);
-
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(buttonOk);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        frame.add(panel);
-        frame.setSize(600, 450);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
+        loadDataToTable(tableModel);
+        setVisible(true);
     }
 
+    private void loadDataToTable(DefaultTableModel tableModel) {
+        table.setModel(tableModel);
+        table.repaint();
+    }
 
     public void showAllBooks(List<BookModel> livros) {
+        setTitle("Todos os Livros");
+
         String[] columnNames = {"ID", "Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -74,7 +84,7 @@ public class ShowAllData extends JFrame {
         };
 
         for (BookModel livro : livros) {
-            Object[] rowData = {
+            tableModel.addRow(new Object[]{
                     livro.getNumberId(),
                     livro.getTitulo(),
                     livro.getAutor(),
@@ -82,33 +92,10 @@ public class ShowAllData extends JFrame {
                     livro.getQuantidade(),
                     livro.getTema(),
                     livro.getData_publicacao()
-            };
-            tableModel.addRow(rowData);
+            });
         }
 
-        JFrame frame = new JFrame("Todos os Livros");
-        JTable table = new JTable(tableModel);
-        table.setEnabled(false);
-
-        JScrollPane scrollPane = new JScrollPane(table);
-        JButton buttonOk = new JButton("Ok");
-        buttonOk.addActionListener(e -> frame.dispose());
-
-        Styles styles = new Styles();
-        styles.styleTable(table);
-        styles.styleButton(buttonOk);
-
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(buttonOk);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        frame.add(panel);
-        frame.setSize(600, 450);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
+        loadDataToTable(tableModel);
+        setVisible(true);
     }
 }

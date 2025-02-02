@@ -134,7 +134,7 @@ public class UserFormView extends JDialog {
 
         JOptionPane.showMessageDialog(
                 this,
-                "Livro salvo com sucesso!",
+                "Usuário salvo com sucesso!",
                 "Sucesso",
                 JOptionPane.INFORMATION_MESSAGE
         );

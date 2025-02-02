@@ -12,28 +12,27 @@ public class BookRepo {
             session.beginTransaction();
             System.out.println("Tentando Atualizar Livro");
 
-            // Usar merge para evitar conflitos de sessão
             session.merge(book);
 
-            session.getTransaction().commit(); // Confirmar a transação
+            session.getTransaction().commit();
             System.out.println("Livro atualizado com sucesso!");
         } catch (Exception e) {
             if (session.getTransaction() != null) {
-                session.getTransaction().rollback(); // Reverter a transação em caso de erro
+                session.getTransaction().rollback();
             }
-            e.printStackTrace(); // Para ajudar no diagnóstico
+            e.printStackTrace();
         }
     }
 
     public void saveOnBook(BookModel book, Session session) {
         try {
-            session.beginTransaction(); // Iniciar transação na chamada
+            session.beginTransaction();
             session.save(book);
-            session.getTransaction().commit(); // Confirmar a transação
+            session.getTransaction().commit();
             System.out.println("Livro salvo com sucesso!");
         } catch (Exception e) {
             if (session.getTransaction() != null) {
-                session.getTransaction().rollback(); // Reverter a transação em caso de erro
+                session.getTransaction().rollback();
             }
             System.err.println("Erro ao salvar o livro: " + e.getMessage());
         }
@@ -41,7 +40,6 @@ public class BookRepo {
 
     public List<BookModel> getAllBooks(Session session) {
         try {
-            // Consulta para listar todos os livros usando HQL
             return session.createQuery("FROM BookModel", BookModel.class).list();
         } catch (Exception e) {
             System.err.println("Erro ao buscar todos os livros: " + e.getMessage());
