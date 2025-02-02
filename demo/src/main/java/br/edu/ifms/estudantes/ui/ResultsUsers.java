@@ -25,6 +25,7 @@ public class ResultsUsers extends JFrame{
     private JLabel emailErrorLabel;
     private JButton fecharButton;
     private JButton editButton;
+    private JButton excluirButton;
 
     public Styles styles = new Styles();
 
@@ -111,6 +112,12 @@ public class ResultsUsers extends JFrame{
 
                     editButton.setText("Editar");
                 }
+            }
+        });
+        excluirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
