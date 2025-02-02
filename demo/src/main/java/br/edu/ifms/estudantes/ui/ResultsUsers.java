@@ -4,8 +4,11 @@ import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ResultsUsers extends JFrame{
     private JPanel ResultScreenUser;
@@ -19,6 +22,7 @@ public class ResultsUsers extends JFrame{
     private JPanel JPanelEmail;
     private JTextField textFieldPhone;
     private JTextField textFieldEmail;
+    private JLabel emailErrorLabel;
     private JButton fecharButton;
     private JButton editButton;
 
@@ -51,6 +55,10 @@ public class ResultsUsers extends JFrame{
         styles.alignFields(JPanelPhone, "Telefone:", textFieldPhone);
         styles.alignFields(JPanelEmail, "E-mail:", textFieldEmail);
 
+        emailErrorLabel = new JLabel("");
+        emailErrorLabel.setForeground(Color.RED);
+        JPanelEmail.add(emailErrorLabel, BorderLayout.SOUTH);
+
         styles.styleButton(fecharButton);
         styles.styleButton(editButton);
 
@@ -78,7 +86,15 @@ public class ResultsUsers extends JFrame{
 
                     editButton.setText("Aplicar");
 
+                    configureEmailValidation();
+
                 } else {
+
+                    String email = textFieldEmail.getText();
+                    if (!email.contains("@")) {
+                        JOptionPane.showMessageDialog(null, "E-mail inválido. Insira um e-mail válido com '@'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
 
                     textFieldName.setEditable(false);
                     textFieldSex.setEditable(false);
@@ -97,5 +113,38 @@ public class ResultsUsers extends JFrame{
                 }
             }
         });
+    }
+    private void configureEmailValidation() {
+        textFieldEmail.getDocument().addDocumentListener(new SimpleDocumentListener() {
+            @Override
+            public void update() {
+                String email = textFieldEmail.getText();
+                if (!isValidEmail(email)) {
+                    emailErrorLabel.setText("E-mail inválido");
+                } else {
+                    emailErrorLabel.setText("");
+                }
+            }
+        });
+    }
+
+    private boolean isValidEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public abstract class SimpleDocumentListener implements javax.swing.event.DocumentListener {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            update();
+        }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            update();
+        }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            update();
+        }
+        public abstract void update();
     }
 }

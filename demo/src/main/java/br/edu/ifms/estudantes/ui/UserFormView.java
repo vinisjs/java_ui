@@ -106,6 +106,18 @@ public class UserFormView extends JDialog {
     }
 
     private void registerUser() {
+
+        String email = textEmail.getText();
+
+        if (!email.contains("@")) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "E-mail inválido. Insira um e-mail válido com '@'.",
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
         user.setNome(textName.getText());
         user.setEmail(textEmail.getText());
         user.setNumberPhone(formattedTextTelefone.getText());
