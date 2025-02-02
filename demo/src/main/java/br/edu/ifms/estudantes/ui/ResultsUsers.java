@@ -1,5 +1,6 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
 
@@ -62,6 +63,7 @@ public class ResultsUsers extends JFrame{
 
         styles.styleButton(fecharButton);
         styles.styleButton(editButton);
+        styles.styleButton(excluirButton);
 
         textFieldName.setEditable(false);
         textFieldSex.setEditable(false);
@@ -117,7 +119,17 @@ public class ResultsUsers extends JFrame{
         excluirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int confirmation = JOptionPane.showConfirmDialog(
+                        ResultsUsers.this,
+                        "Tem certeza de que deseja excluir este usuário?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    user.setNumberId(finalResultado.getNumberId());
+                    new UserController().DeleteUserById(finalResultado.getNumberId());
+                    dispose();
+                }
             }
         });
     }

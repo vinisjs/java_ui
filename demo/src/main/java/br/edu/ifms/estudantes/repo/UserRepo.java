@@ -79,7 +79,7 @@ public class UserRepo extends UserModel {
         }
 
         try {
-            UserModel userToDelete = session.createQuery("FROM UserModel WHERE id = :id", UserModel.class)
+            UserModel userToDelete = session.createQuery("FROM UserModel WHERE NumberId = :id", UserModel.class)
                     .setParameter("id", param)
                     .uniqueResult();
 
@@ -87,12 +87,12 @@ public class UserRepo extends UserModel {
                 session.beginTransaction();
                 session.delete(userToDelete);
                 session.getTransaction().commit();
-                System.out.println("Livro excluído com sucesso!");
+                System.out.println("Usuário excluído com sucesso!");
             } else {
-                System.out.println("Livro não encontrado para exclusão.");
+                System.out.println("Usuário não encontrado para exclusão.");
             }
         } catch (Exception e) {
-            System.err.println("Erro ao deletar o livro: " + e.getMessage());
+            System.err.println("Erro ao deletar o Usuário: " + e.getMessage());
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
             }
