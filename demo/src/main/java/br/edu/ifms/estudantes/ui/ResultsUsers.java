@@ -89,7 +89,7 @@ public class ResultsUsers extends JFrame{
                     user.setNome(textFieldName.getText());
                     user.setNumberPhone(textFieldPhone.getText());
                     user.setEmail(textFieldEmail.getText());
-                    user.setSexo(textFieldPhone.getText());
+                    user.setSexo(textFieldSex.getText());
 
                     new UserController().UpdateUser(user);
 
