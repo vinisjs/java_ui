@@ -93,7 +93,7 @@ public class SearchBook extends JFrame{
         List<BookModel> livros = controller.getAllBooks();
 
         if (livros != null && !livros.isEmpty()) {
-            ShowAllData.showAllBooks(livros);
+            new ShowAllData().showAllBooks(livros);
             livros.forEach(this::displayBookDetails);
         } else {
             System.out.println("Nenhum livro encontrado.");

@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.List;
 
 public class SearchUser extends JFrame{
     private JPanel SearchUser;
@@ -49,7 +50,8 @@ public class SearchUser extends JFrame{
         listarTodosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+//
+            showAllUsers();
             }
         });
         sairButton.addActionListener(new ActionListener() {
@@ -83,13 +85,25 @@ public class SearchUser extends JFrame{
         if (resultado != null) {
             UserModel finalResultado = resultado;
             SwingUtilities.invokeLater(() -> new ResultsUsers(SearchUser, finalResultado).setVisible(true));
-            displayUserDetails(resultado);
+            displayBookDetails(resultado);
         } else {
             JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    private void displayUserDetails(UserModel user) {
+    private void showAllUsers() {
+        UserController controller = new UserController();
+        List<UserModel> users = controller.getAllUser();
+
+        if (users != null && !users.isEmpty()) {
+          // new ShowAllData().ShowAllUser((UserModel) users);
+            users.forEach(this::displayBookDetails);
+        } else {
+            System.out.println("Nenhum livro encontrado.");
+        }
+    }
+
+    private void displayBookDetails(UserModel user) {
         System.out.println("Id: " + user.getNumberId());
         System.out.println("Nome: " + user.getNome());
         System.out.println("Email: " + user.getEmail());

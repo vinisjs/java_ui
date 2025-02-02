@@ -1,6 +1,7 @@
 package br.edu.ifms.estudantes.ui;
 
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.UserModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,41 +17,8 @@ public class ShowAllData extends JFrame {
     private JScrollPane Jscroll;
     private Styles styles = new Styles();
 
-    public ShowAllData(BookModel book) {
-        setTitle("Detalhes do Livro");
-        setContentPane(Boby);
-        setSize(600, 450);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
 
-        String[] columnNames = {"ID", "Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
-        DefaultTableModel tableModel = getDefaultTableModel(book, columnNames);
-
-        table.setModel(tableModel);
-        table.setEnabled(false);
-
-        Jscroll.setViewportView(table);
-
-        styles.styleTable(table);
-        styles.styleButton(buttonOk);
-
-        buttonOk.addActionListener(e -> dispose());
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(buttonOk);
-        Boby.add(buttonPanel, BorderLayout.SOUTH);
-    }
-
-    private static DefaultTableModel getDefaultTableModel(BookModel book, String[] columnNames) {
-        return new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-    }
-
-    public static void showAllBooks(List<BookModel> livros) {
+    public void showAllBooks(List<BookModel> livros) {
         String[] columnNames = {"ID", "Título", "Autor", "ISBN", "Quantidade", "Tema", "Data de Publicação"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
