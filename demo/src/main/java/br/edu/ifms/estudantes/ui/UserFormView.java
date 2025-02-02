@@ -118,7 +118,7 @@ public class UserFormView extends JDialog {
             user.setSexo(naoBinarioRadioButton.getText());
         }
 
-        new UserController().controllerSave(user);
+        new UserController().saveOneUser(user);
 
         JOptionPane.showMessageDialog(
                 this,

@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.UserController;
+import br.edu.ifms.estudantes.model.UserModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,23 +24,27 @@ public class ResultsUsers extends JFrame{
 
     public Styles styles = new Styles();
 
-    public ResultsUsers(JPanel MenuView) {
+    private UserModel user = new UserModel();
+
+    public ResultsUsers(JPanel MenuView, UserModel finalResultado) {
         setTitle("Resultados de Usuários");
         setContentPane(ResultScreenUser);
         this.setSize(600, 450);
         this.setLocationRelativeTo(MenuView);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setVisible(true);
 
         styles.styleTextField(textFieldName);
         styles.styleTextField(textFieldSex);
         styles.styleTextField(textFieldPhone);
         styles.styleTextField(textFieldEmail);
 
-        textFieldName.setText("Pedro");
-        textFieldSex.setText("Masculino");
-        textFieldPhone.setText("+55 67 984677777");
-        textFieldEmail.setText("pd10@gmail.com");
+        textFieldName.setText(finalResultado.getNome());
+        textFieldSex.setText(finalResultado.getSexo());
+        textFieldPhone.setText(finalResultado.getNumberPhone());
+        textFieldEmail.setText(finalResultado.getEmail());
+
+        System.out.println(finalResultado.getSexo());
+        System.out.println(finalResultado.getEmail());
 
         styles.alignFields(JPanelName, "Nome:", textFieldName);
         styles.alignFields(JPanelSex, "Sexo:", textFieldSex);
@@ -51,12 +58,15 @@ public class ResultsUsers extends JFrame{
         textFieldSex.setEditable(false);
         textFieldPhone.setEditable(false);
         textFieldEmail.setEditable(false);
+        this.setVisible(true);
+
         fecharButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
+
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,22 +77,21 @@ public class ResultsUsers extends JFrame{
                     textFieldEmail.setEditable(true);
 
                     editButton.setText("Aplicar");
+
                 } else {
-
-                    String name = textFieldName.getText();
-                    String sex = textFieldSex.getText();
-                    String phone = textFieldPhone.getText();
-                    String email = textFieldEmail.getText();
-
-                    System.out.println("Nome: " + name);
-                    System.out.println("Sexo: " + sex);
-                    System.out.println("Telefone: " + phone);
-                    System.out.println("E-mail: " + email);
 
                     textFieldName.setEditable(false);
                     textFieldSex.setEditable(false);
                     textFieldPhone.setEditable(false);
                     textFieldEmail.setEditable(false);
+
+                    user.setNumberId(finalResultado.getNumberId());
+                    user.setNome(textFieldName.getText());
+                    user.setNumberPhone(textFieldPhone.getText());
+                    user.setEmail(textFieldEmail.getText());
+                    user.setSexo(textFieldPhone.getText());
+
+                    new UserController().UpdateUser(user);
 
                     editButton.setText("Editar");
                 }

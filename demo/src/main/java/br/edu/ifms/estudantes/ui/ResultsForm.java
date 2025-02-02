@@ -36,7 +36,7 @@ public class ResultsForm extends JFrame {
 
     BookModel book = new BookModel();
 
-    public ResultsForm(JPanel MenuView,   BookModel resultado) {
+    public ResultsForm(JPanel MenuView, BookModel resultado) {
 
         setTitle("Resultados de Livros");
         setContentPane(ResultScreenBook);
@@ -97,7 +97,6 @@ public class ResultsForm extends JFrame {
 
                     editarButton.setText("Aplicar");
 
-
                 } else {
 
                     textFieldTitle.setEditable(false);
@@ -119,6 +118,7 @@ public class ResultsForm extends JFrame {
 
                     editarButton.setText("Editar");
                 }
+
             }
         });
 

@@ -105,10 +105,10 @@ de dados vamos utilizar o ORM Hibernate.
 
 #### Usuário
 - [x] Criar Usuário 
-- [ ] Visualizar Usuário 
+- [x] Visualizar Usuário 
 - [ ] Visualizar Usuário (Todos) 
-- [ ] Editar Usuário 
-- [ ] Deletar Usuário 
+- [x] Editar Usuário 
+- [x] Deletar Usuário 
 
 #### Livro
 - [x] Criar Livro 

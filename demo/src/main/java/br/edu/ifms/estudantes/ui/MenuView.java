@@ -78,14 +78,6 @@ public class MenuView extends JFrame {
         sairButton.addActionListener(e -> dispose());
     }
 
-    private void displayBookDetails(BookModel book) {
-        System.out.println("Título: " + book.getTitulo());
-        System.out.println("Autor: " + book.getAutor());
-        System.out.println("ISBN: " + book.getISBN());
-        System.out.println("Quantidade: " + book.getQuantidade());
-        System.out.println("Tema: " + book.getTema());
-        System.out.println("Data de Publicação: " + book.getData_publicacao());
-    }
 
     private void openSearchForm() {
         new SearchBook(this);
