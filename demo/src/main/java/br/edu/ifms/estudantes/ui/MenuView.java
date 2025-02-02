@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.List;
@@ -75,9 +77,13 @@ public class MenuView extends JFrame {
     private void addActionListeners() {
         livrosButton.addActionListener(e -> openSearchForm());
         usuariosButton.addActionListener(e -> openUserForm());
+        emprestimosButton.addActionListener(e -> openSearchLoan());
         sairButton.addActionListener(e -> dispose());
     }
 
+    private void openSearchLoan() {
+        new SearchLoan(this);
+    }
 
     private void openSearchForm() {
         new SearchBook(this);

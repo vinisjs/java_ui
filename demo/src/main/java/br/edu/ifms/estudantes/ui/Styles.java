@@ -140,25 +140,4 @@ public class Styles {
         header.setBackground(new Color(100, 149, 237));
         header.setForeground(Color.WHITE);
     }
-
-    //    private void searchBook() {
-//        String value = SearchInput.getText().trim();
-//        BookController controller = new BookController();
-//        BookModel resultado;
-//
-//        try {
-//            int id = Integer.parseInt(value);
-//            resultado = controller.getBook(id);
-//        } catch (NumberFormatException e) {
-//            resultado = controller.getBook(value);
-//        }
-//
-//        if (resultado != null) {
-//            BookModel finalResultado = resultado;
-//            SwingUtilities.invokeLater(() -> new ResultsForm(MenuScreen, finalResultado).setVisible(true));
-//            displayBookDetails(resultado);
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
-//        }
-//    }
 }
