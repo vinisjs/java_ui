@@ -49,6 +49,37 @@ public class Styles {
         });
     }
 
+    public void styleButtonSplash(JButton button) {
+        button.setPreferredSize(new Dimension(200, 30));
+        button.setBackground(new Color(2, 133, 199));
+        button.setFocusPainted(false);
+        button.setForeground(Color.WHITE);
+        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        button.setUI(new BasicButtonUI() {
+            @Override
+            public void installUI(JComponent c) {
+                super.installUI(c);
+                AbstractButton button = (AbstractButton) c;
+                button.setBorderPainted(false);
+                button.setContentAreaFilled(false);
+                button.setOpaque(false);
+            }
+
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                JButton b = (JButton) c;
+
+                g2.setColor(b.getBackground());
+                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
+
+                super.paint(g, c);
+            }
+        });
+    }
+
     public void alignFields(JPanel panel, String labelText, JComponent component) {
         panel.setLayout(new BorderLayout());
         JLabel label = new JLabel(labelText);
