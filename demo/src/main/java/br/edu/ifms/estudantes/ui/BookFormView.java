@@ -29,6 +29,7 @@ public class BookFormView extends JDialog {
     private JFormattedTextField formattedTextDate;
 
     public Styles styles = new Styles();
+    public Utils utils = new Utils();
 
     public BookFormView(JFrame parent) {
         super(parent, "Cadastro de Livros", true);
@@ -53,18 +54,7 @@ public class BookFormView extends JDialog {
         styles.styleButton(cadastrarButton);
         styles.styleButton(cancelarButton);
 
-        try {
-            MaskFormatter mascaradata = new MaskFormatter("##/##/####");
-            mascaradata.setPlaceholderCharacter('_');
-            formattedTextDate.setFormatterFactory(new DefaultFormatterFactory(mascaradata));
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Erro ao aplicar máscara no campo de data.",
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+        utils.maskDate(formattedTextDate);
 
         cadastrarButton.addActionListener(e -> cadastrarLivro());
 

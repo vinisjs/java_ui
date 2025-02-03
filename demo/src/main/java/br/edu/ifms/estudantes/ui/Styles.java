@@ -59,6 +59,17 @@ public class Styles {
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
     }
 
+    public void alignFieldsLoan(JPanel panel, String labelText, JComponent component, JButton button) {
+        panel.setLayout(new BorderLayout());
+        JLabel label = new JLabel(labelText);
+        label.setPreferredSize(new Dimension(100, 30));
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        panel.add(label, BorderLayout.WEST);
+        panel.add(component, BorderLayout.CENTER);
+        panel.add(button, BorderLayout.EAST);
+        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
+    }
+
     public void alignRadioButtonField(JPanel panel, String labelText, JComponent... components) {
         panel.setLayout(new BorderLayout());
 

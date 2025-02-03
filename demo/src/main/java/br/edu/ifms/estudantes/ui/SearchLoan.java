@@ -42,6 +42,12 @@ public class SearchLoan extends JFrame{
                 dispose();
             }
         });
+        novoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openSearchLoan();
+            }
+        });
     }
 
     private void configureSearchInput() {
@@ -64,7 +70,7 @@ public class SearchLoan extends JFrame{
         });
     }
 
-//    public void openSearchLoan() {
-//        new SearchLoan(this);
-//    }
+    public void openSearchLoan() {
+        new LoanFormView(this);
+    }
 }
