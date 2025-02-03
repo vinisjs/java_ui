@@ -3,6 +3,7 @@ package br.edu.ifms.estudantes.ui;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
+import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
@@ -32,7 +33,7 @@ public class ResultsUsers extends JFrame{
     private JFormattedTextField formattedTextPhone;
 
     public Styles styles = new Styles();
-
+    private Utils utils = new Utils();
     private UserModel user = new UserModel();
 
     public ResultsUsers(JPanel MenuView, UserModel finalResultado) {
@@ -42,7 +43,7 @@ public class ResultsUsers extends JFrame{
         this.setLocationRelativeTo(MenuView);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        configurePhoneMask();
+        utils.configurePhoneMask(formattedTextPhone);
 
         styles.styleTextField(textFieldName);
         styles.styleTextField(textFieldSex);
@@ -93,7 +94,7 @@ public class ResultsUsers extends JFrame{
 
                     editButton.setText("Aplicar");
 
-                    configureEmailValidation();
+                    utils.configureEmailValidation(textFieldEmail, emailErrorLabel);
 
                 } else {
 
@@ -151,49 +152,5 @@ public class ResultsUsers extends JFrame{
                 }
             }
         });
-    }
-
-    private void configureEmailValidation() {
-        textFieldEmail.getDocument().addDocumentListener(new SimpleDocumentListener() {
-            @Override
-            public void update() {
-                String email = textFieldEmail.getText();
-                if (!isValidEmail(email)) {
-                    emailErrorLabel.setText("E-mail inválido");
-                } else {
-                    emailErrorLabel.setText("");
-                }
-            }
-        });
-    }
-
-    private boolean isValidEmail(String email) {
-        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private void configurePhoneMask() {
-        try {
-            MaskFormatter phoneMask = new MaskFormatter("+## (##) ##### - ####");
-            phoneMask.setPlaceholderCharacter('_');
-            formattedTextPhone.setFormatterFactory(new DefaultFormatterFactory(phoneMask));
-        } catch (ParseException ex) {
-            System.out.println("Erro ao aplicar a máscara do telefone.");
-        }
-    }
-
-    public abstract class SimpleDocumentListener implements javax.swing.event.DocumentListener {
-        public void insertUpdate(javax.swing.event.DocumentEvent e) {
-            update();
-        }
-        public void removeUpdate(javax.swing.event.DocumentEvent e) {
-            update();
-        }
-        public void changedUpdate(javax.swing.event.DocumentEvent e) {
-            update();
-        }
-        public abstract void update();
     }
 }
