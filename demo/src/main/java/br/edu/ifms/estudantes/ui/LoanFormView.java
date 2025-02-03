@@ -1,16 +1,19 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.controller.BookController;
+import br.edu.ifms.estudantes.controller.UserController;
+import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.List;
 
-public class LoanFormView extends JDialog{
+public class LoanFormView extends JDialog {
     private JPanel Screen3;
     private JTextField NameLoanInput;
     private JButton SearchButton1;
@@ -25,6 +28,9 @@ public class LoanFormView extends JDialog{
 
     public Styles styles = new Styles();
     public Utils utils = new Utils();
+
+    public UserController userController = new UserController();
+    public BookController bookController = new BookController();
 
     public LoanFormView(JFrame parentLoan) {
         super(parentLoan, "Cadastro de Emprestimos", true);
@@ -48,23 +54,17 @@ public class LoanFormView extends JDialog{
         styles.styleButtonMenu(salvarButton);
         styles.styleButton(cancelarButton);
 
-        System.out.println(DateLoanInput.getText());
-
         utils.maskDate(DateLoanInput);
 
         configureSearchInputName();
         configureSearchInputBook();
 
-
         cancelarButton.addActionListener(e -> dispose());
 
-        salvarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(DateLoanInput.getText());
-                utils.validationDate(DateLoanInput);
-            }
-        });
+        salvarButton.addActionListener(e -> utils.validationDate(DateLoanInput));
+
+        SearchButton1.addActionListener(e -> searchUser());
+        SearchButton2.addActionListener(e -> searchBook());
 
         this.setVisible(true);
     }
@@ -108,4 +108,54 @@ public class LoanFormView extends JDialog{
             }
         });
     }
+
+    private void searchUser() {
+        String searchTerm = NameLoanInput.getText().trim();
+        if (searchTerm.isEmpty() || searchTerm.equals("Busque por id ou nome do usuário")) {
+            JOptionPane.showMessageDialog(this, "Por favor, insira um ID ou nome para buscar.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        System.out.println("Iniciando busca de usuário com o termo: " + searchTerm); // Print adicionado
+
+        try {
+            List<UserModel> users = (List<UserModel>) userController.getUser(searchTerm);
+            if (users.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Usuário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Nenhum usuário encontrado para o termo: " + searchTerm); // Print adicionado
+            } else {
+                NameLoanInput.setText(users.get(0).getNome());
+                System.out.println("Usuário encontrado: " + users.get(0)); // Print adicionado
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar usuário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Erro ao buscar usuário: " + e.getMessage()); // Print adicionado
+        }
+    }
+
+    private void searchBook() {
+        String searchTerm = BookLoanInput.getText().trim();
+        if (searchTerm.isEmpty() || searchTerm.equals("Busque por id ou nome do livro")) {
+            JOptionPane.showMessageDialog(this, "Por favor, insira um ID ou nome para buscar.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        System.out.println("Iniciando busca de livro com o termo: " + searchTerm); // Print adicionado
+
+        try {
+            List <BookModel> books = (List<BookModel>) bookController.getBook(searchTerm);
+            if (books.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Livro não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Nenhum livro encontrado para o termo: " + searchTerm); // Print adicionado
+            } else {
+                BookLoanInput.setText(books.get(0).getTitulo());
+                System.out.println("Livro encontrado: " + books.get(0)); // Print adicionado
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao buscar livro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Erro ao buscar livro: " + e.getMessage()); // Print adicionado
+        }
+    }
+
+
 }

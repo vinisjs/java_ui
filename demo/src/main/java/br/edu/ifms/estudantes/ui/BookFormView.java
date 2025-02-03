@@ -105,14 +105,6 @@ public class BookFormView extends JDialog {
                     JOptionPane.INFORMATION_MESSAGE
             );
 
-            System.out.println("Consultando o livro...");
-            BookModel retrievedBook = controller.getBook(2);
-            if (retrievedBook != null) {
-                System.out.println("Livro encontrado: " + retrievedBook.getTitulo());
-            } else {
-                System.out.println("Livro não encontrado.");
-            }
-
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(
                     this,
