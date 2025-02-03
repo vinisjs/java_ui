@@ -1,5 +1,8 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.util.Styles;
+import br.edu.ifms.estudantes.util.Utils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -45,6 +48,8 @@ public class LoanFormView extends JDialog{
         styles.styleButtonMenu(salvarButton);
         styles.styleButton(cancelarButton);
 
+        System.out.println(DateLoanInput.getText());
+
         utils.maskDate(DateLoanInput);
 
         configureSearchInputName();
@@ -53,13 +58,15 @@ public class LoanFormView extends JDialog{
 
         cancelarButton.addActionListener(e -> dispose());
 
-        this.setVisible(true);
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                utils.validationDate(DateLoanInput);
+                System.out.println(DateLoanInput.getText());
+                utils.validationDate(DateLoanInput);
             }
         });
+
+        this.setVisible(true);
     }
 
     private void configureSearchInputName() {

@@ -1,5 +1,7 @@
 package br.edu.ifms.estudantes.ui;
 
+import br.edu.ifms.estudantes.util.Styles;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

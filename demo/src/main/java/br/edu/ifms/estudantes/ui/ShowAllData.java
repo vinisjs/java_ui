@@ -2,12 +2,11 @@ package br.edu.ifms.estudantes.ui;
 
 import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.util.Styles;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ShowAllData extends JFrame {

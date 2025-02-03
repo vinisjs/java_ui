@@ -2,6 +2,7 @@ package br.edu.ifms.estudantes.ui;
 
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.util.Styles;
 
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;

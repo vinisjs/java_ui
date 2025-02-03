@@ -1,4 +1,4 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.util;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

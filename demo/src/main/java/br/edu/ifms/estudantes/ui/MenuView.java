@@ -1,19 +1,11 @@
 package br.edu.ifms.estudantes.ui;
 
-import br.edu.ifms.estudantes.controller.BookController;
-import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.util.Styles;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.util.List;
-import java.util.Objects;
 
 public class MenuView extends JFrame {
     private JPanel MenuScreen;

@@ -2,13 +2,12 @@ package br.edu.ifms.estudantes.ui;
 
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.util.Styles;
 
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

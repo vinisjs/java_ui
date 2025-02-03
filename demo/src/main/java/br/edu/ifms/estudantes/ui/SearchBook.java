@@ -2,6 +2,7 @@ package br.edu.ifms.estudantes.ui;
 
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.util.Styles;
 
 import java.util.List;
 import javax.swing.*;
