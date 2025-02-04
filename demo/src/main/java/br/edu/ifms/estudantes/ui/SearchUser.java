@@ -3,13 +3,12 @@ package br.edu.ifms.estudantes.ui;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
+import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.util.List;
 
 public class SearchUser extends JFrame{
@@ -22,6 +21,7 @@ public class SearchUser extends JFrame{
     private JPanel SearchPanel;
 
     public Styles styles = new Styles();
+    public Utils utils = new Utils();
 
     public SearchUser(JFrame searchUser) {
         setContentPane(SearchUser);
@@ -39,7 +39,7 @@ public class SearchUser extends JFrame{
 
         SearchButton.setIcon(styles.loadIcon("/images/search.png"));
 
-        configureSearchInput();
+        utils.configureSearchInput(SearchInput, "Busque por id ou nome do usuário");
         novoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,7 +49,6 @@ public class SearchUser extends JFrame{
         listarTodosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//
             showAllUsers();
             }
         });
@@ -109,26 +108,6 @@ public class SearchUser extends JFrame{
         System.out.println("Sexo" + user.getSexo());
     }
 
-
-    private void configureSearchInput() {
-        SearchInput.setText("Busque por id ou nome do usuário");
-        SearchInput.setForeground(Color.GRAY);
-        SearchInput.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (SearchInput.getText().equals("Busque por id ou nome do usuário")) {
-                    SearchInput.setText("");
-                    SearchInput.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (SearchInput.getText().equals("")) {
-                    SearchInput.setText("Busque por id ou nome do usuário");
-                    SearchInput.setForeground(Color.GRAY);
-                }
-            }
-        });
-    }
     public void openSearchUserForm() {
         new UserFormView(this);
     }

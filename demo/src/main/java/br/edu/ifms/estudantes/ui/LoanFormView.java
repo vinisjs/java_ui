@@ -3,14 +3,13 @@ package br.edu.ifms.estudantes.ui;
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.util.List;
 
 public class LoanFormView extends JDialog {
@@ -56,8 +55,8 @@ public class LoanFormView extends JDialog {
 
         utils.maskDate(DateLoanInput);
 
-        configureSearchInputName();
-        configureSearchInputBook();
+        utils.configureSearchInput(NameLoanInput, "Busque por id ou nome do usuário");
+        utils.configureSearchInput(BookLoanInput, "Busque por id ou nome do livro");
 
         cancelarButton.addActionListener(e -> dispose());
 
@@ -69,46 +68,6 @@ public class LoanFormView extends JDialog {
         this.setVisible(true);
     }
 
-    private void configureSearchInputName() {
-        NameLoanInput.setText("Busque por id ou nome do usuário");
-        NameLoanInput.setForeground(Color.GRAY);
-        NameLoanInput.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (NameLoanInput.getText().equals("Busque por id ou nome do usuário")) {
-                    NameLoanInput.setText("");
-                    NameLoanInput.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (NameLoanInput.getText().equals("")) {
-                    NameLoanInput.setText("Busque por id ou nome do usuário");
-                    NameLoanInput.setForeground(Color.GRAY);
-                }
-            }
-        });
-    }
-
-    private void configureSearchInputBook() {
-        BookLoanInput.setText("Busque por id ou nome do livro");
-        BookLoanInput.setForeground(Color.GRAY);
-        BookLoanInput.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (BookLoanInput.getText().equals("Busque por id ou nome do livro")) {
-                    BookLoanInput.setText("");
-                    BookLoanInput.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (BookLoanInput.getText().equals("")) {
-                    BookLoanInput.setText("Busque por id ou nome do livro");
-                    BookLoanInput.setForeground(Color.GRAY);
-                }
-            }
-        });
-    }
-
     private void searchUser() {
         String searchTerm = NameLoanInput.getText().trim();
         if (searchTerm.isEmpty() || searchTerm.equals("Busque por id ou nome do usuário")) {
@@ -116,20 +75,20 @@ public class LoanFormView extends JDialog {
             return;
         }
 
-        System.out.println("Iniciando busca de usuário com o termo: " + searchTerm); // Print adicionado
+        System.out.println("Iniciando busca de usuário com o termo: " + searchTerm);
 
         try {
             List<UserModel> users = (List<UserModel>) userController.getUser(searchTerm);
             if (users.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Nenhum usuário encontrado para o termo: " + searchTerm); // Print adicionado
+                System.out.println("Nenhum usuário encontrado para o termo: " + searchTerm);
             } else {
                 NameLoanInput.setText(users.get(0).getNome());
-                System.out.println("Usuário encontrado: " + users.get(0)); // Print adicionado
+                System.out.println("Usuário encontrado: " + users.get(0));
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao buscar usuário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Erro ao buscar usuário: " + e.getMessage()); // Print adicionado
+            System.out.println("Erro ao buscar usuário: " + e.getMessage());
         }
     }
 
@@ -140,22 +99,20 @@ public class LoanFormView extends JDialog {
             return;
         }
 
-        System.out.println("Iniciando busca de livro com o termo: " + searchTerm); // Print adicionado
+        System.out.println("Iniciando busca de livro com o termo: " + searchTerm);
 
         try {
             List <BookModel> books = (List<BookModel>) bookController.getBook(searchTerm);
             if (books.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Livro não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Nenhum livro encontrado para o termo: " + searchTerm); // Print adicionado
+                System.out.println("Nenhum livro encontrado para o termo: " + searchTerm);
             } else {
                 BookLoanInput.setText(books.get(0).getTitulo());
-                System.out.println("Livro encontrado: " + books.get(0)); // Print adicionado
+                System.out.println("Livro encontrado: " + books.get(0));
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao buscar livro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Erro ao buscar livro: " + e.getMessage()); // Print adicionado
+            System.out.println("Erro ao buscar livro: " + e.getMessage());
         }
     }
-
-
 }

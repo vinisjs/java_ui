@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -93,5 +95,28 @@ public class Utils extends Component {
             update();
         }
         public abstract void update();
+    }
+
+    public void configureSearchInput(JTextField inputField, String placeholderText) {
+        inputField.setText(placeholderText);
+        inputField.setForeground(Color.GRAY);
+
+        inputField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (inputField.getText().equals(placeholderText)) {
+                    inputField.setText("");
+                    inputField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (inputField.getText().isEmpty()) {
+                    inputField.setText(placeholderText);
+                    inputField.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 }

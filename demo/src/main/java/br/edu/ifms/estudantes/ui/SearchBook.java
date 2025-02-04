@@ -3,14 +3,13 @@ package br.edu.ifms.estudantes.ui;
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.util.Styles;
+import br.edu.ifms.estudantes.util.Utils;
 
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class SearchBook extends JFrame{
     private JPanel SearchBook;
@@ -24,6 +23,7 @@ public class SearchBook extends JFrame{
     private JLabel BookLabel;
 
     public Styles styles = new Styles();
+    public Utils utils = new Utils();
 
     public SearchBook(JFrame search) {
         setContentPane(SearchBook);
@@ -41,7 +41,7 @@ public class SearchBook extends JFrame{
 
         SearchButton.setIcon(styles.loadIcon("/images/search.png"));
 
-        configureSearchInput();
+        utils.configureSearchInput(SearchInput, "Busque por id ou nome do livro");
         novoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,26 +65,6 @@ public class SearchBook extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchBook();
-            }
-        });
-    }
-
-    private void configureSearchInput() {
-        SearchInput.setText("Busque por id ou nome do livro");
-        SearchInput.setForeground(Color.GRAY);
-        SearchInput.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (SearchInput.getText().equals("Busque por id ou nome do livro")) {
-                    SearchInput.setText("");
-                    SearchInput.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (SearchInput.getText().equals("")) {
-                    SearchInput.setText("Busque por id ou nome do livro");
-                    SearchInput.setForeground(Color.GRAY);
-                }
             }
         });
     }
@@ -121,7 +101,6 @@ public class SearchBook extends JFrame{
             JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }
-
 
     private void displayBookDetails(BookModel book) {
         System.out.println("Título: " + book.getTitulo());

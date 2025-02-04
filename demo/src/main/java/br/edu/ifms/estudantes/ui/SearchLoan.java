@@ -1,13 +1,12 @@
 package br.edu.ifms.estudantes.ui;
 
 import br.edu.ifms.estudantes.util.Styles;
+import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class SearchLoan extends JFrame{
     private JPanel LoanMain;
@@ -20,6 +19,7 @@ public class SearchLoan extends JFrame{
     private JPanel panel;
 
     public Styles styles = new Styles();
+    public Utils utils = new Utils();
 
     public SearchLoan(JFrame searchLoan) {
         setContentPane(LoanMain);
@@ -35,7 +35,7 @@ public class SearchLoan extends JFrame{
         styles.styleButtonMenu(sairButton);
 
         SearchLoan.setIcon(styles.loadIcon("/images/search.png"));
-        configureSearchInput();
+        utils.configureSearchInput(SearchLoanInput, "Busque por id ou nome do empréstimo");
 
         this.setVisible(true);
         sairButton.addActionListener(new ActionListener() {
@@ -48,26 +48,6 @@ public class SearchLoan extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 openSearchLoan();
-            }
-        });
-    }
-
-    private void configureSearchInput() {
-        SearchLoanInput.setText("Busque por id do Empréstimo");
-        SearchLoanInput.setForeground(Color.GRAY);
-        SearchLoanInput.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (SearchLoanInput.getText().equals("Busque por id do Empréstimo")) {
-                    SearchLoanInput.setText("");
-                    SearchLoanInput.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (SearchLoanInput.getText().equals("")) {
-                    SearchLoanInput.setText("Busque por id do Empréstimo");
-                    SearchLoanInput.setForeground(Color.GRAY);
-                }
             }
         });
     }
