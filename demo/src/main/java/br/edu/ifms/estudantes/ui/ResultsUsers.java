@@ -55,9 +55,6 @@ public class ResultsUsers extends JFrame{
         formattedTextPhone.setText(finalResultado.getNumberPhone());
         textFieldEmail.setText(finalResultado.getEmail());
 
-        System.out.println(finalResultado.getSexo());
-        System.out.println(finalResultado.getEmail());
-
         styles.alignFields(JPanelName, "Nome:", textFieldName);
         styles.alignFields(JPanelSex, "Sexo:", textFieldSex);
         styles.alignFields(JPanelPhone, "Telefone:", formattedTextPhone);

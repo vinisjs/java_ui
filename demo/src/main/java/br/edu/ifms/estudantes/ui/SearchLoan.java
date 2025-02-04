@@ -50,6 +50,16 @@ public class SearchLoan extends JFrame{
                 openSearchLoan();
             }
         });
+        devolucoesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openResultsLoan();
+            }
+        });
+    }
+
+    public void openResultsLoan() {
+        new ResultsLoans(this);
     }
 
     public void openSearchLoan() {
