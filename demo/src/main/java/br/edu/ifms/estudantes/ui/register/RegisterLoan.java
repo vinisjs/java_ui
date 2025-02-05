@@ -6,13 +6,10 @@ import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.ui.menu.LoanTablesBook;
 import br.edu.ifms.estudantes.ui.menu.LoanTablesUsers;
-import br.edu.ifms.estudantes.ui.menu.ShowAllTables;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class RegisterLoan extends JDialog {
@@ -71,22 +68,6 @@ public class RegisterLoan extends JDialog {
         this.setVisible(true);
     }
 
-    private void showAllBooks() {
-        List<BookModel> livros = bookController.getAllBooks();
-
-        if (livros != null && !livros.isEmpty()) {
-            LoanTablesBook loanTablesBook = new LoanTablesBook(this, livros);
-            BookModel selectedBook = loanTablesBook.getSelectedBook();
-
-            if (selectedBook != null) {
-                BookLoanInput.setText(selectedBook.getTitulo());
-                BookLoanInput.setEditable(false);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Nenhum livro encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void showAllUsers() {
         List<UserModel> users = userController.getAllUser();
 
@@ -97,9 +78,27 @@ public class RegisterLoan extends JDialog {
             if (selectedUser != null) {
                 NameLoanInput.setText(selectedUser.getNome());
                 NameLoanInput.setEditable(false);
+                SearchButton1.setIcon(styles.loadIcon("/images/pencil.png"));
             }
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum usuário encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void showAllBooks() {
+        List<BookModel> livros = bookController.getAllBooks();
+
+        if (livros != null && !livros.isEmpty()) {
+            LoanTablesBook loanTablesBook = new LoanTablesBook(this, livros);
+            BookModel selectedBook = loanTablesBook.getSelectedBook();
+
+            if (selectedBook != null) {
+                BookLoanInput.setText(selectedBook.getTitulo());
+                BookLoanInput.setEditable(false);
+                SearchButton2.setIcon(styles.loadIcon("/images/pencil.png"));
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum livro encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
