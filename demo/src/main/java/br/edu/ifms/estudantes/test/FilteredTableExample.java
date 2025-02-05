@@ -18,7 +18,6 @@ public class FilteredTableExample extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Dados da tabela
         String[] columnNames = {"Nome", "Idade", "Cidade"};
         Object[][] data = {
                 {"Alice", 23, "São Paulo"},
@@ -28,16 +27,13 @@ public class FilteredTableExample extends JFrame {
                 {"Eva", 22, "Porto Alegre"}
         };
 
-        // Criando a tabela
         table = new JTable(data, columnNames);
         sorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(sorter);
 
-        // Adicionando a tabela a um JScrollPane
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Campo de texto para filtragem
         filterField = new JTextField();
         filterField.addKeyListener(new KeyAdapter() {
             @Override
@@ -51,14 +47,7 @@ public class FilteredTableExample extends JFrame {
             }
         });
 
-        // Adicionando o campo de texto ao topo da janela
         add(filterField, BorderLayout.NORTH);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            FilteredTableExample example = new FilteredTableExample();
-            example.setVisible(true);
-        });
+        this.setVisible(true);
     }
 }

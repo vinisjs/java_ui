@@ -4,10 +4,15 @@ import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.ui.menu.LoanTablesBook;
+import br.edu.ifms.estudantes.ui.menu.LoanTablesUsers;
+import br.edu.ifms.estudantes.ui.menu.ShowAllTables;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class RegisterLoan extends JDialog {
@@ -60,77 +65,39 @@ public class RegisterLoan extends JDialog {
 
         salvarButton.addActionListener(e -> utils.validationDate(DateLoanInput));
 
-        SearchButton1.addActionListener(e -> searchUser());
-        SearchButton2.addActionListener(e -> searchBook());
+        SearchButton1.addActionListener(e -> showAllUsers());
+        SearchButton2.addActionListener(e -> showAllBooks());
 
         this.setVisible(true);
     }
 
-    private void searchUser() {
+    private void showAllBooks() {
+        List<BookModel> livros = bookController.getAllBooks();
 
-        String value = NameLoanInput.getText().trim();
-        UserController controller = new UserController();
-        UserModel resultado;
+        if (livros != null && !livros.isEmpty()) {
+            LoanTablesBook loanTablesBook = new LoanTablesBook(this, livros);
+            BookModel selectedBook = loanTablesBook.getSelectedBook();
 
-        try {
-            int id = Integer.parseInt(value);
-            resultado = controller.getUser(id);
-        } catch (NumberFormatException e) {
-            resultado = controller.getUser(value);
-        }
-
-        if (resultado != null) {
-            UserModel finalResultado = resultado;
-         //   SwingUtilities.invokeLater(() -> new ResultsUsers(SearchUser, finalResultado).setVisible(true));
-          //  displayBookDetails(resultado);
-        } else {
-            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
-        }
-
-        String searchTerm = NameLoanInput.getText().trim();
-        if (searchTerm.isEmpty() || searchTerm.equals("Busque por id ou nome do usuário")) {
-            JOptionPane.showMessageDialog(this, "Por favor, insira um ID ou nome para buscar.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        System.out.println("Iniciando busca de usuário com o termo: " + searchTerm);
-
-        try {
-            List<UserModel> users = (List<UserModel>) userController.getUser(searchTerm);
-            if (users.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Usuário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Nenhum usuário encontrado para o termo: " + searchTerm);
-            } else {
-                NameLoanInput.setText(users.get(0).getNome());
-                System.out.println("Usuário encontrado: " + users.get(0));
+            if (selectedBook != null) {
+                BookLoanInput.setText(selectedBook.getTitulo());
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao buscar usuário: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Erro ao buscar usuário: " + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum livro encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void searchBook() {
-        String searchTerm = BookLoanInput.getText().trim();
-        if (searchTerm.isEmpty() || searchTerm.equals("Busque por id ou nome do livro")) {
-            JOptionPane.showMessageDialog(this, "Por favor, insira um ID ou nome para buscar.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    private void showAllUsers() {
+        List<UserModel> users = userController.getAllUser();
 
-        System.out.println("Iniciando busca de livro com o termo: " + searchTerm);
+        if (users != null && !users.isEmpty()) {
+            LoanTablesUsers loanTablesUser = new LoanTablesUsers(this, users);
+            UserModel selectedUser = loanTablesUser.getSelectedUser();
 
-        try {
-            List <BookModel> books = (List<BookModel>) bookController.getBook(searchTerm);
-            if (books.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Livro não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Nenhum livro encontrado para o termo: " + searchTerm);
-            } else {
-                BookLoanInput.setText(books.get(0).getTitulo());
-                System.out.println("Livro encontrado: " + books.get(0));
+            if (selectedUser != null) {
+                NameLoanInput.setText(selectedUser.getNome());
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao buscar livro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Erro ao buscar livro: " + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum usuário encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -25,6 +25,9 @@ public class BookModel {
     @Column(name = "id")
     private int NumberId;
 
+    public BookModel() {
+    }
+
     public String getTitulo() {
         return Titulo;
     }
