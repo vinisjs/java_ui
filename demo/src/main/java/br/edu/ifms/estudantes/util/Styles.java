@@ -6,6 +6,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.Objects;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Styles {
     public Styles(){
@@ -25,26 +27,18 @@ public class Styles {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
         button.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        button.setUI(new BasicButtonUI() {
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        borderRadius(button);
+
+        button.addMouseListener(new MouseAdapter() {
             @Override
-            public void installUI(JComponent c) {
-                super.installUI(c);
-                AbstractButton button = (AbstractButton) c;
-                button.setBorderPainted(false);
-                button.setContentAreaFilled(false);
-                button.setOpaque(false);
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(180, 180, 180));
             }
 
             @Override
-            public void paint(Graphics g, JComponent c) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                JButton b = (JButton) c;
-                g2.setColor(b.getBackground());
-                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
-
-                super.paint(g, c);
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(217, 217, 217));
             }
         });
     }
@@ -55,27 +49,18 @@ public class Styles {
         button.setFocusPainted(false);
         button.setForeground(Color.WHITE);
         button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        borderRadius(button);
 
-        button.setUI(new BasicButtonUI() {
+        button.addMouseListener(new MouseAdapter() {
             @Override
-            public void installUI(JComponent c) {
-                super.installUI(c);
-                AbstractButton button = (AbstractButton) c;
-                button.setBorderPainted(false);
-                button.setContentAreaFilled(false);
-                button.setOpaque(false);
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(0, 110, 165));
             }
 
             @Override
-            public void paint(Graphics g, JComponent c) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                JButton b = (JButton) c;
-
-                g2.setColor(b.getBackground());
-                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
-
-                super.paint(g, c);
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(2, 133, 199));
             }
         });
     }
@@ -131,31 +116,23 @@ public class Styles {
         button.setBackground(new Color(2, 133, 199));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        borderRadius(button);
 
         button.setHorizontalTextPosition(SwingConstants.RIGHT);
         button.setIconTextGap(10);
 
         button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        button.setUI(new BasicButtonUI() {
+
+        button.addMouseListener(new MouseAdapter() {
             @Override
-            public void installUI(JComponent c) {
-                super.installUI(c);
-                AbstractButton button = (AbstractButton) c;
-                button.setBorderPainted(false);
-                button.setContentAreaFilled(false);
-                button.setOpaque(false);
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(0, 110, 165));
             }
 
             @Override
-            public void paint(Graphics g, JComponent c) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                JButton b = (JButton) c;
-
-                g2.setColor(b.getBackground());
-                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
-
-                super.paint(g, c);
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(2, 133, 199));
             }
         });
     }
@@ -181,5 +158,30 @@ public class Styles {
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
         header.setBackground(new Color(100, 149, 237));
         header.setForeground(Color.WHITE);
+    }
+
+    public void borderRadius(JButton button) {
+        button.setUI(new BasicButtonUI() {
+            @Override
+            public void installUI(JComponent c) {
+                super.installUI(c);
+                AbstractButton button = (AbstractButton) c;
+                button.setBorderPainted(false);
+                button.setContentAreaFilled(false);
+                button.setOpaque(false);
+            }
+
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                JButton b = (JButton) c;
+
+                g2.setColor(b.getBackground());
+                g2.fillRoundRect(0, 0, b.getWidth(), b.getHeight(), 20, 20);
+
+                super.paint(g, c);
+            }
+        });
     }
 }
