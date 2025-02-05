@@ -1,5 +1,7 @@
 package br.edu.ifms.estudantes.ui.results;
 
+import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
@@ -28,6 +30,9 @@ public class ResultsLoans extends JFrame{
 
     public Styles styles = new Styles();
     public Utils utils = new Utils();
+
+    public UserModel user = new UserModel();
+    public BookModel book = new BookModel();
 
     public ResultsLoans(JFrame resultsLoan) {
         setTitle("");

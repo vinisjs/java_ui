@@ -7,9 +7,32 @@ public class BorrowModel {
     private int id_book;
     private int id_user;
     private Date dateOut;
+    private Date dataReturnPreview;
     private Date dataReturn;
-    private Date LastUpdate;
 
+    public Date getDataReturnPreview() {
+        return dataReturnPreview;
+    }
+
+    public void setDataReturnPreview(Date dataReturnPreview) {
+        this.dataReturnPreview = dataReturnPreview;
+    }
+
+    public Date getDateOut() {
+        return dateOut;
+    }
+
+    public void setDateOut(Date dateOut) {
+        this.dateOut = dateOut;
+    }
+
+    public Date getDataReturn() {
+        return dataReturn;
+    }
+
+    public void setDataReturn(Date dataReturn) {
+        this.dataReturn = dataReturn;
+    }
 
     public int getId() {
         return id;
