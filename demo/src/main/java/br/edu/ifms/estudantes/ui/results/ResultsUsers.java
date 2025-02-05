@@ -10,12 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ResultsUsers extends JFrame{
+public class ResultsUsers extends JFrame {
     private JPanel ResultScreenUser;
     private JPanel JPanelUserScreen;
     private JPanel JPanelLabelUser;
     private JTextField textFieldName;
-    private JTextField textFieldSex;
     private JPanel JPanelName;
     private JPanel JPanelSex;
     private JPanel JPanelPhone;
@@ -26,6 +25,9 @@ public class ResultsUsers extends JFrame{
     private JButton editButton;
     private JButton excluirButton;
     private JFormattedTextField formattedTextPhone;
+    private JRadioButton masculinoRadioButton;
+    private JRadioButton femininoRadioButton;
+    private JRadioButton naoBinarioRadioButton;
 
     public Styles styles = new Styles();
     private Utils utils = new Utils();
@@ -41,17 +43,31 @@ public class ResultsUsers extends JFrame{
         utils.configurePhoneMask(formattedTextPhone);
 
         styles.styleTextField(textFieldName);
-        styles.styleTextField(textFieldSex);
         styles.styleTextField(formattedTextPhone);
         styles.styleTextField(textFieldEmail);
 
+        styles.styleRadioButton(masculinoRadioButton);
+        styles.styleRadioButton(femininoRadioButton);
+        styles.styleRadioButton(naoBinarioRadioButton);
+
         textFieldName.setText(finalResultado.getNome());
-        textFieldSex.setText(finalResultado.getSexo());
         formattedTextPhone.setText(finalResultado.getNumberPhone());
         textFieldEmail.setText(finalResultado.getEmail());
 
+        switch (finalResultado.getSexo().toLowerCase()) {
+            case "masculino":
+                masculinoRadioButton.setSelected(true);
+                break;
+            case "feminino":
+                femininoRadioButton.setSelected(true);
+                break;
+            default:
+                naoBinarioRadioButton.setSelected(true);
+                break;
+        }
+
         styles.alignFields(JPanelName, "Nome:", textFieldName);
-        styles.alignFields(JPanelSex, "Sexo:", textFieldSex);
+        styles.alignRadioButtonField(JPanelSex, "Sexo:", masculinoRadioButton, femininoRadioButton, naoBinarioRadioButton);
         styles.alignFields(JPanelPhone, "Telefone:", formattedTextPhone);
         styles.alignFields(JPanelEmail, "E-mail:", textFieldEmail);
 
@@ -68,9 +84,10 @@ public class ResultsUsers extends JFrame{
         styles.styleButton(excluirButton);
 
         textFieldName.setEditable(false);
-        textFieldSex.setEditable(false);
         formattedTextPhone.setEditable(false);
         textFieldEmail.setEditable(false);
+        setRadioButtonsEnabled(false);
+
         this.setVisible(true);
 
         fecharButton.addActionListener(e -> dispose());
@@ -80,9 +97,9 @@ public class ResultsUsers extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if (editButton.getText().equals("Editar")) {
                     textFieldName.setEditable(true);
-                    textFieldSex.setEditable(true);
                     formattedTextPhone.setEditable(true);
                     textFieldEmail.setEditable(true);
+                    setRadioButtonsEnabled(true);
 
                     editButton.setText("Aplicar");
 
@@ -112,22 +129,33 @@ public class ResultsUsers extends JFrame{
                         return;
                     }
 
+                    // Capturar o sexo selecionado
+                    String sexoSelecionado = "";
+                    if (masculinoRadioButton.isSelected()) {
+                        sexoSelecionado = "Masculino";
+                    } else if (femininoRadioButton.isSelected()) {
+                        sexoSelecionado = "Feminino";
+                    } else {
+                        sexoSelecionado = "Não Binário";
+                    }
+
                     user.setNumberId(finalResultado.getNumberId());
                     user.setNome(textFieldName.getText());
                     user.setNumberPhone(formattedTextPhone.getText());
                     user.setEmail(textFieldEmail.getText());
-                    user.setSexo(textFieldSex.getText());
+                    user.setSexo(sexoSelecionado);
 
                     new UserController().UpdateUser(user);
 
                     textFieldName.setEditable(false);
-                    textFieldSex.setEditable(false);
                     formattedTextPhone.setEditable(false);
                     textFieldEmail.setEditable(false);
+                    setRadioButtonsEnabled(false);
                     editButton.setText("Editar");
                 }
             }
         });
+
         excluirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,5 +172,11 @@ public class ResultsUsers extends JFrame{
                 }
             }
         });
+    }
+
+    private void setRadioButtonsEnabled(boolean enabled) {
+        masculinoRadioButton.setEnabled(enabled);
+        femininoRadioButton.setEnabled(enabled);
+        naoBinarioRadioButton.setEnabled(enabled);
     }
 }
