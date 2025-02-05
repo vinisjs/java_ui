@@ -86,6 +86,42 @@ public class Styles {
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
     }
 
+    public void alignFieldsQtd(JPanel panel, String labelText, JButton button1, JComponent component, JButton button2) {
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel label = new JLabel(labelText);
+        label.setPreferredSize(new Dimension(280, 30));
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        component.setPreferredSize(new Dimension(60, 30));
+
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridy = 0;
+
+        gbc.gridx = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 0;
+        panel.add(label, gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 0;
+        panel.add(button1, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(component, gbc);
+
+        gbc.gridx = 3;
+        gbc.weightx = 0;
+        panel.add(button2, gbc);
+
+        panel.setBorder(new EmptyBorder(5, 10, 5, 10)); // Pequeno espaçamento externo
+    }
+
+
     public void alignRadioButtonField(JPanel panel, String labelText, JComponent... components) {
         panel.setLayout(new BorderLayout());
 
