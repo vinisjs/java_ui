@@ -1,4 +1,4 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.results;
 
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ResultsForm extends JFrame {
+public class ResultBook extends JFrame {
     private JPanel ResultScreenBook;
     private JPanel JPanelAllScreen;
     private JPanel JPanelLabel;
@@ -37,7 +37,7 @@ public class ResultsForm extends JFrame {
 
     BookModel book = new BookModel();
 
-    public ResultsForm(JPanel MenuView, BookModel resultado) {
+    public ResultBook(JPanel MenuView, BookModel resultado) {
 
         setTitle("Resultados de Livros");
         setContentPane(ResultScreenBook);
@@ -127,7 +127,7 @@ public class ResultsForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int confirmation = JOptionPane.showConfirmDialog(
-                        ResultsForm.this,
+                        ResultBook.this,
                         "Tem certeza de que deseja excluir este livro?",
                         "Confirmação",
                         JOptionPane.YES_NO_OPTION

@@ -1,18 +1,16 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.register;
 
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.BookModel;
-import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
-public class LoanFormView extends JDialog {
+public class RegisterLoan extends JDialog {
     private JPanel Screen3;
     private JTextField NameLoanInput;
     private JButton SearchButton1;
@@ -31,7 +29,7 @@ public class LoanFormView extends JDialog {
     public UserController userController = new UserController();
     public BookController bookController = new BookController();
 
-    public LoanFormView(JFrame parentLoan) {
+    public RegisterLoan(JFrame parentLoan) {
         super(parentLoan, "Cadastro de Emprestimos", true);
         this.setContentPane(Screen3);
         this.setSize(600, 450);

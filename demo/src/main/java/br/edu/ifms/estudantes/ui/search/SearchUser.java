@@ -1,12 +1,14 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.search;
 
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.ui.menu.ShowAllTables;
+import br.edu.ifms.estudantes.ui.register.RegisterUser;
+import br.edu.ifms.estudantes.ui.results.ResultsUsers;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -94,7 +96,7 @@ public class SearchUser extends JFrame{
         List<UserModel> users = controller.getAllUser();
 
         if (users != null && !users.isEmpty()) {
-           new ShowAllData().showAllUsers(users);
+           new ShowAllTables().showAllUsers(users);
             users.forEach(this::displayBookDetails);
         } else {
             System.out.println("Nenhum usuário encontrado.");
@@ -109,6 +111,6 @@ public class SearchUser extends JFrame{
     }
 
     public void openSearchUserForm() {
-        new UserFormView(this);
+        new RegisterUser(this);
     }
 }

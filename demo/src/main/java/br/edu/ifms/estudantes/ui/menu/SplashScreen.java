@@ -1,11 +1,8 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.menu;
 
 import br.edu.ifms.estudantes.util.Styles;
-import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,7 +24,7 @@ public class SplashScreen extends JFrame{
         continuarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MenuView(SplashScreen);
+                new MainMenu(SplashScreen);
                 dispose();
             }
         });

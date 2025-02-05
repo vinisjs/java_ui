@@ -1,13 +1,15 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.search;
 
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.ui.menu.ShowAllTables;
+import br.edu.ifms.estudantes.ui.register.RegisterBook;
+import br.edu.ifms.estudantes.ui.results.ResultBook;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import java.util.List;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -74,7 +76,7 @@ public class SearchBook extends JFrame{
         List<BookModel> livros = controller.getAllBooks();
 
         if (livros != null && !livros.isEmpty()) {
-            new ShowAllData().showAllBooks(livros);
+            new ShowAllTables().showAllBooks(livros);
             livros.forEach(this::displayBookDetails);
         } else {
             System.out.println("Nenhum livro encontrado.");
@@ -95,7 +97,7 @@ public class SearchBook extends JFrame{
 
         if (resultado != null) {
             BookModel finalResultado = resultado;
-            SwingUtilities.invokeLater(() -> new ResultsForm(SearchBook, finalResultado).setVisible(true));
+            SwingUtilities.invokeLater(() -> new ResultBook(SearchBook, finalResultado).setVisible(true));
             displayBookDetails(resultado);
         } else {
             JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -112,6 +114,6 @@ public class SearchBook extends JFrame{
     }
 
     public void openSearchBookForm() {
-        new BookFormView(this);
+        new RegisterBook(this);
     }
 }

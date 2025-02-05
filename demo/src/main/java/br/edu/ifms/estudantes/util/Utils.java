@@ -1,7 +1,5 @@
 package br.edu.ifms.estudantes.util;
 
-import br.edu.ifms.estudantes.ui.UserFormView;
-
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;

@@ -1,4 +1,4 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.menu;
 
 import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.UserModel;
@@ -9,14 +9,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ShowAllData extends JFrame {
+public class ShowAllTables extends JFrame {
     private JTable table;
     private JButton buttonOk;
     private JPanel Boby;
     private JScrollPane Jscroll;
     private Styles styles = new Styles();
 
-    public ShowAllData() {
+    public ShowAllTables() {
         setTitle("Exibição de Dados");
         setSize(600, 450);
         setLocationRelativeTo(null);

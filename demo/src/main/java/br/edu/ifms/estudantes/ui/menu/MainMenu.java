@@ -1,5 +1,8 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.menu;
 
+import br.edu.ifms.estudantes.ui.search.SearchBook;
+import br.edu.ifms.estudantes.ui.search.SearchLoan;
+import br.edu.ifms.estudantes.ui.search.SearchUser;
 import br.edu.ifms.estudantes.util.Styles;
 
 import java.awt.*;
@@ -7,7 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
-public class MenuView extends JFrame {
+public class MainMenu extends JFrame {
     private JPanel MenuScreen;
     private JPanel MenuBorder;
     private JButton livrosButton;
@@ -19,7 +22,7 @@ public class MenuView extends JFrame {
 
     private Styles styles = new Styles();
 
-    public MenuView(JPanel splashScreen) {
+    public MainMenu(JPanel splashScreen) {
         setTitle("Menu de opções");
         setContentPane(MenuScreen);
         this.setSize(800, 500);

@@ -1,4 +1,4 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.register;
 
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.UserModel;
@@ -6,14 +6,9 @@ import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.text.ParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class UserFormView extends JDialog {
+public class RegisterUser extends JDialog {
     private JPanel Screen2;
     private JTextField textName;
     private JPanel CampoNome;
@@ -35,7 +30,7 @@ public class UserFormView extends JDialog {
     private Utils utils = new Utils();
     private UserModel user = new UserModel();
 
-    public UserFormView(JFrame parentUser) {
+    public RegisterUser(JFrame parentUser) {
         super(parentUser, "Cadastro de Usuários", true);
         setContentPane(Screen2);
         this.setSize(600, 450);

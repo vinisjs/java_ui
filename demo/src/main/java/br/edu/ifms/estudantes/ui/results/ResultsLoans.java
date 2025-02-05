@@ -1,6 +1,5 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.results;
 
-import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 

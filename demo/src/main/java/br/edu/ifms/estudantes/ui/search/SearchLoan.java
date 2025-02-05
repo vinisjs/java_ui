@@ -1,10 +1,11 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.search;
 
+import br.edu.ifms.estudantes.ui.register.RegisterLoan;
+import br.edu.ifms.estudantes.ui.results.ResultsLoans;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -63,6 +64,6 @@ public class SearchLoan extends JFrame{
     }
 
     public void openSearchLoan() {
-        new LoanFormView(this);
+        new RegisterLoan(this);
     }
 }

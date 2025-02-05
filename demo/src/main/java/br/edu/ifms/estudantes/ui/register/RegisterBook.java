@@ -1,4 +1,4 @@
-package br.edu.ifms.estudantes.ui;
+package br.edu.ifms.estudantes.ui.register;
 
 import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.model.BookModel;
@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class BookFormView extends JDialog {
+public class RegisterBook extends JDialog {
     private JPanel Screen1;
     private JTextField textTheme;
     private JTextField textTitle;
@@ -30,7 +30,7 @@ public class BookFormView extends JDialog {
     public Styles styles = new Styles();
     public Utils utils = new Utils();
 
-    public BookFormView(JFrame parent) {
+    public RegisterBook(JFrame parent) {
         super(parent, "Cadastro de Livros", true);
         this.setContentPane(Screen1);
         this.setSize(600, 450);
