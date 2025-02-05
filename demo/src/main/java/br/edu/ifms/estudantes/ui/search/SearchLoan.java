@@ -6,8 +6,6 @@ import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SearchLoan extends JFrame{
     private JPanel LoanMain;
@@ -37,26 +35,11 @@ public class SearchLoan extends JFrame{
 
         SearchLoan.setIcon(styles.loadIcon("/images/search.png"));
         utils.configureSearchInput(SearchLoanInput, "Busque por id ou nome do empréstimo");
+        sairButton.addActionListener(e -> dispose());
+        novoButton.addActionListener(e -> openSearchLoan());
+        devolucoesButton.addActionListener(e -> openResultsLoan());
 
         this.setVisible(true);
-        sairButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        novoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openSearchLoan();
-            }
-        });
-        devolucoesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openResultsLoan();
-            }
-        });
     }
 
     public void openResultsLoan() {

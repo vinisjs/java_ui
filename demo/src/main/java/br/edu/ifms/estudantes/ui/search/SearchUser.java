@@ -42,32 +42,14 @@ public class SearchUser extends JFrame{
         SearchButton.setIcon(styles.loadIcon("/images/search.png"));
 
         utils.configureSearchInput(SearchInput, "Busque por id ou nome do usuário");
-        novoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openSearchUserForm();
-            }
-        });
-        listarTodosButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            showAllUsers();
-            }
-        });
-        sairButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        this.setVisible(true);
-        SearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            searchUser();
-            }
-        });
 
+        novoButton.addActionListener(e -> openSearchUserForm());
+        listarTodosButton.addActionListener(e -> showAllUsers());
+        sairButton.addActionListener(e -> dispose());
+        SearchButton.addActionListener(e -> searchUser());
+        SearchInput.addActionListener(e -> searchUser());
+
+        this.setVisible(true);
     }
 
     private void searchUser() {

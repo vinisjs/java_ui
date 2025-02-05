@@ -77,7 +77,9 @@ public class RegisterLoan extends JDialog {
         });
 
         SearchButton1.addActionListener(e -> showAllUsers());
+        NameLoanInput.addActionListener(e -> showAllUsers());
         SearchButton2.addActionListener(e -> showAllBooks());
+        BookLoanInput.addActionListener(e -> showAllBooks());
 
         this.setVisible(true);
     }

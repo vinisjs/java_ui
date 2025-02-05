@@ -43,32 +43,13 @@ public class SearchBook extends JFrame{
 
         SearchButton.setIcon(styles.loadIcon("/images/search.png"));
 
-        utils.configureSearchInput(SearchInput, "Busque por id ou nome do livro");
-        novoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openSearchBookForm();
-            }
-        });
-        listarTodosButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAllBooks();
-            }
-        });
-        sairButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        novoButton.addActionListener(e -> openSearchBookForm());
+        listarTodosButton.addActionListener(e -> showAllBooks());
+        sairButton.addActionListener(e -> dispose());
+        SearchButton.addActionListener(e -> searchBook());
+        SearchInput.addActionListener(e -> searchBook());
+
         this.setVisible(true);
-        SearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchBook();
-            }
-        });
     }
 
     private void showAllBooks() {
