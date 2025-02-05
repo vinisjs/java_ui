@@ -80,6 +80,7 @@ public class RegisterLoan extends JDialog {
 
             if (selectedBook != null) {
                 BookLoanInput.setText(selectedBook.getTitulo());
+                BookLoanInput.setEditable(false);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum livro encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -95,6 +96,7 @@ public class RegisterLoan extends JDialog {
 
             if (selectedUser != null) {
                 NameLoanInput.setText(selectedUser.getNome());
+                NameLoanInput.setEditable(false);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum usuário encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
