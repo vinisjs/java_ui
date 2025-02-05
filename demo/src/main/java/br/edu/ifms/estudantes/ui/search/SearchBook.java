@@ -42,6 +42,7 @@ public class SearchBook extends JFrame{
         SearchPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
         SearchButton.setIcon(styles.loadIcon("/images/search.png"));
+        utils.configureSearchInput(SearchInput, "Busque por id ou nome do livro");
 
         novoButton.addActionListener(e -> openSearchBookForm());
         listarTodosButton.addActionListener(e -> showAllBooks());
