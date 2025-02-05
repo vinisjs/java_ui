@@ -1,9 +1,15 @@
 package br.edu.ifms.estudantes.model;
 
+import java.util.Date;
+
 public class BorrowModel {
     private int id;
     private int id_book;
     private int id_user;
+    private Date dateOut;
+    private Date dataReturn;
+    private Date LastUpdate;
+
 
     public int getId() {
         return id;

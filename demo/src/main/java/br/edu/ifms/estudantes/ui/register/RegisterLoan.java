@@ -67,6 +67,26 @@ public class RegisterLoan extends JDialog {
     }
 
     private void searchUser() {
+
+        String value = NameLoanInput.getText().trim();
+        UserController controller = new UserController();
+        UserModel resultado;
+
+        try {
+            int id = Integer.parseInt(value);
+            resultado = controller.getUser(id);
+        } catch (NumberFormatException e) {
+            resultado = controller.getUser(value);
+        }
+
+        if (resultado != null) {
+            UserModel finalResultado = resultado;
+         //   SwingUtilities.invokeLater(() -> new ResultsUsers(SearchUser, finalResultado).setVisible(true));
+          //  displayBookDetails(resultado);
+        } else {
+            JOptionPane.showMessageDialog(this, "Item não encontrado.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+
         String searchTerm = NameLoanInput.getText().trim();
         if (searchTerm.isEmpty() || searchTerm.equals("Busque por id ou nome do usuário")) {
             JOptionPane.showMessageDialog(this, "Por favor, insira um ID ou nome para buscar.", "Erro", JOptionPane.ERROR_MESSAGE);
