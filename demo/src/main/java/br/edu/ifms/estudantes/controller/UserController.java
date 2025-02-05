@@ -1,13 +1,10 @@
 package br.edu.ifms.estudantes.controller;
 
 
-import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.UserModel;
-import br.edu.ifms.estudantes.repo.BookRepo;
 import br.edu.ifms.estudantes.repo.UserRepo;
 import br.edu.ifms.estudantes.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ public class UserController {
 
     public void saveOneUser(UserModel user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            userRepo.saveOnBook(user, session);
+            userRepo.saveOneBook(user, session);
         }
     }
     public void UpdateUser(UserModel user) {

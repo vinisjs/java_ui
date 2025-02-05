@@ -1,9 +1,7 @@
 package br.edu.ifms.estudantes.repo;
 
-import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class UserRepo extends UserModel {
         }
     }
 
-    public void saveOnBook(UserModel user, Session session) {
+    public void saveOneBook(UserModel user, Session session) {
         try {
             session.beginTransaction();
             session.save(user);

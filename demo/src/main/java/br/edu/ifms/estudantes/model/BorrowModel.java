@@ -1,13 +1,30 @@
 package br.edu.ifms.estudantes.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "borrows")
 public class BorrowModel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column()
     private int id_book;
+
+    @Column()
     private int id_user;
+
+    @Column()
     private Date dateOut;
+
+    @Column()
     private Date dataReturnPreview;
+
+    @Column()
     private Date dataReturn;
 
     public Date getDataReturnPreview() {

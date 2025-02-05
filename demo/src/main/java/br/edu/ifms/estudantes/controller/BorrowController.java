@@ -1,36 +1,69 @@
 package br.edu.ifms.estudantes.controller;
 
 import br.edu.ifms.estudantes.model.BorrowModel;
+import br.edu.ifms.estudantes.repo.BorrowRepo;
 import br.edu.ifms.estudantes.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
 
 public class BorrowController {
 
-    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-    Transaction transaction = session.beginTransaction();
+    public BorrowModel Create(BorrowModel data) {
+        System.out.println("Id: " + data.getId());
+        System.out.println("Id Usuário: " + data.getId_user());
+        System.out.println("Id Livro: " + data.getId_book());
+        System.out.println("Saída: " + data.getDateOut());
 
-    public void Get(){
+        LocalDate dateOut = data.getDateOut().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
 
+        LocalDate previsaoLocalDate = dateOut.plusDays(14);
+
+        Date previsao = Date.from(previsaoLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        System.out.println("Previsão: " + previsao);
+        System.out.println("Retorno: " + data.getDataReturn());
+
+        data.setDataReturnPreview(previsao);
+
+        return data;
     }
 
-    public void Create(BorrowModel data){
+    BorrowRepo borrowRepo = new BorrowRepo();
 
-        System.out.println(data.getId());
-        System.out.println(data.getId_user());
-        System.out.println(data.getId_book());
-        System.out.println(data.getDateOut());
-        System.out.println(data.getDataReturnPreview());
-        System.out.println(data.getDataReturn());
-
-
+    public void saveOneBorrow(BorrowModel borrow) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            borrowRepo.saveOneBorrow(borrow, session);
+        }
+    }
+    public void UpdateBook(BorrowModel borrow) {
+        System.out.println("Deu ruim!");
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            borrowRepo.saveOneBorrow(borrow, session);
+        }
     }
 
-    public void Update(){
-
+    public BorrowModel getBook(Object param) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return borrowRepo.getBorrow(param, session);
+        }
     }
 
-    public void Desative(){
-
+    public List<BorrowModel> getAllBooks(){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return borrowRepo.getAllBorrow(session);
+        }
     }
+
+    public void DeleteById(Object param) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            borrowRepo.DeleteById(param, session);
+        }
+    }
+
 }

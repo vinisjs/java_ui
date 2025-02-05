@@ -4,19 +4,25 @@ import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import org.hibernate.Session;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 public class BorrowRepo {
 
-    public void UpdateBorrow(UserModel user, Session session) {
+    public void UpdateBorrow(BorrowModel borrow, Session session) {
         try {
             session.beginTransaction();
-            System.out.println("Tentando Atualizar Usuário");
+            System.out.println("Tentando Atualizar Empréstimo");
 
-            session.merge(user);
+            session.merge(borrow);
 
             session.getTransaction().commit();
-            System.out.println("Usuário atualizado com sucesso!");
+
+
+
+            System.out.println("Empréstimo atualizado com sucesso!");
+            System.out.println("Data de devolução!" + borrow.getDataReturnPreview());
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
@@ -25,25 +31,25 @@ public class BorrowRepo {
         }
     }
 
-    public void saveOneBorrow(UserModel user, Session session) {
+    public void saveOneBorrow(BorrowModel borrow, Session session) {
         try {
             session.beginTransaction();
-            session.save(user);
+            session.save(borrow);
             session.getTransaction().commit();
-            System.out.println("Usuário salvo com sucesso!");
+            System.out.println("Empréstimo salvo com sucesso!");
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
             }
-            System.err.println("Erro ao salvar o Usuário: " + e.getMessage());
+            System.err.println("Erro ao salvar o Empréstimo: " + e.getMessage());
         }
     }
 
-    public List<UserModel> getAllBorrow(Session session) {
+    public List<BorrowModel> getAllBorrow(Session session) {
         try {
-            return session.createQuery("FROM UserModel", UserModel.class).list();
+            return session.createQuery("FROM BorrowModel", BorrowModel.class).list();
         } catch (Exception e) {
-            System.err.println("Erro ao buscar todos os livros: " + e.getMessage());
+            System.err.println("Erro ao buscar todos os Empréstimo: " + e.getMessage());
             return null;
         }
     }
@@ -61,11 +67,7 @@ public class BorrowRepo {
                         .setParameter("id", param)
                         .uniqueResult();
             }
-//            else if (param instanceof String) {
-//                return session.createQuery("FROM BorrowModel WHERE Nome = :nome", BorrowModel.class)
-//                        .setParameter("nome", param)
-//                        .uniqueResult();
-//            }
+
         } catch (Exception e) {
             System.err.println("Erro ao buscar o livro: " + e.getMessage());
         }
@@ -87,12 +89,12 @@ public class BorrowRepo {
                 session.beginTransaction();
                 session.delete(userToDelete);
                 session.getTransaction().commit();
-                System.out.println("Usuário excluído com sucesso!");
+                System.out.println("Empréstimo excluído com sucesso!");
             } else {
-                System.out.println("Usuário não encontrado para exclusão.");
+                System.out.println("Empréstimo não encontrado para exclusão.");
             }
         } catch (Exception e) {
-            System.err.println("Erro ao deletar o Usuário: " + e.getMessage());
+            System.err.println("Erro ao deletar o Empréstimo: " + e.getMessage());
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
             }

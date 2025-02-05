@@ -91,7 +91,6 @@ public class RegisterLoan extends JDialog {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
             Date dateOut = dateFormat.parse(DateLoanInput.getText());
-
             BorrowModel borrowModel = new BorrowModel();
 
             utils.validationDate(DateLoanInput);
@@ -99,10 +98,12 @@ public class RegisterLoan extends JDialog {
             borrowModel.setId_user(selectedUser.getNumberId());
             borrowModel.setId_book(selectedBook.getNumberId());
             borrowModel.setDateOut(dateOut);
+            borrowModel.setDataReturnPreview(null);
+            borrowModel.setDataReturn(null);
 
-            borrowController.Create(borrowModel);
+            BorrowModel data_return = borrowController.Create(borrowModel);
 
-
+            borrowController.saveOneBorrow(data_return);
         } catch (ParseException e) {
             e.printStackTrace();
         }
