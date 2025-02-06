@@ -7,6 +7,7 @@ import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.ui.menu.BagMenu;
 import br.edu.ifms.estudantes.ui.menu.LoanTablesBook;
 import br.edu.ifms.estudantes.ui.menu.LoanTablesUsers;
 import br.edu.ifms.estudantes.util.Styles;
@@ -135,6 +136,12 @@ public class RegisterLoan extends JDialog {
         });
 
         this.setVisible(true);
+        BagButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showCart();
+            }
+        });
     }
 
     private void addToCart() {
@@ -169,31 +176,7 @@ public class RegisterLoan extends JDialog {
             return;
         }
 
-        Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-        calendar.add(Calendar.DAY_OF_MONTH, 14);
-        Date returnDate = calendar.getTime();
-
-        StringBuilder cartContent = new StringBuilder();
-        cartContent.append("ID do Usuário: ").append(selectedUser.getNumberId()).append("\n");
-        cartContent.append("Nome do Usuário: ").append(selectedUser.getNome()).append("\n");
-        cartContent.append("Data Atual: ").append(dateFormat.format(currentDate)).append("\n");
-        cartContent.append("Data de Devolução: ").append(dateFormat.format(returnDate)).append("\n\n");
-        cartContent.append("Livros no Carrinho:\n");
-
-        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-            BookModel book = entry.getKey();
-            int quantity = entry.getValue();
-            cartContent.append("- ").append(book.getTitulo())
-                    .append(" (Quantidade: ").append(quantity).append(")\n");
-        }
-
-        cartContent.append("\nTotal de Livros: ").append(cartModel.getTotalBooks());
-
-        JOptionPane.showMessageDialog(this, cartContent.toString(), "Carrinho", JOptionPane.INFORMATION_MESSAGE);
+        new BagMenu(this, cartModel, selectedUser);
     }
 
     private void saveLoan() throws ParseException {
