@@ -117,4 +117,7 @@ public class Utils extends Component {
             }
         });
     }
+    public static boolean isCartLimitReached(int totalBooks, int maxBooks) {
+        return totalBooks >= maxBooks;
+    }
 }

@@ -94,7 +94,6 @@ public class RegisterLoan extends JDialog {
                 if (salvarButton.getText().equals("Adicionar")) {
                     addToCart();
                 } else {
-                    finalizeLoan();
                     saveLoan();
                 }
             } catch (ParseException ex) {
@@ -164,7 +163,40 @@ public class RegisterLoan extends JDialog {
         }
     }
 
-    private void finalizeLoan() throws ParseException {
+    private void showCart() {
+        if (selectedUser == null) {
+            JOptionPane.showMessageDialog(this, "Nenhum usuário selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_MONTH, 14);
+        Date returnDate = calendar.getTime();
+
+        StringBuilder cartContent = new StringBuilder();
+        cartContent.append("ID do Usuário: ").append(selectedUser.getNumberId()).append("\n");
+        cartContent.append("Nome do Usuário: ").append(selectedUser.getNome()).append("\n");
+        cartContent.append("Data Atual: ").append(dateFormat.format(currentDate)).append("\n");
+        cartContent.append("Data de Devolução: ").append(dateFormat.format(returnDate)).append("\n\n");
+        cartContent.append("Livros no Carrinho:\n");
+
+        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+            BookModel book = entry.getKey();
+            int quantity = entry.getValue();
+            cartContent.append("- ").append(book.getTitulo())
+                    .append(" (Quantidade: ").append(quantity).append(")\n");
+        }
+
+        cartContent.append("\nTotal de Livros: ").append(cartModel.getTotalBooks());
+
+        JOptionPane.showMessageDialog(this, cartContent.toString(), "Carrinho", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void saveLoan() throws ParseException {
         if (cartModel.getBooks().isEmpty()) {
             JOptionPane.showMessageDialog(this, "O carrinho está vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
@@ -202,74 +234,11 @@ public class RegisterLoan extends JDialog {
         dispose();
     }
 
-
-    private void showCart() {
-        if (selectedUser == null) {
-            JOptionPane.showMessageDialog(this, "Nenhum usuário selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-        calendar.add(Calendar.DAY_OF_MONTH, 14);
-        Date returnDate = calendar.getTime();
-
-        StringBuilder cartContent = new StringBuilder();
-        cartContent.append("ID do Usuário: ").append(selectedUser.getNumberId()).append("\n");
-        cartContent.append("Nome do Usuário: ").append(selectedUser.getNome()).append("\n");
-        cartContent.append("Data Atual: ").append(dateFormat.format(currentDate)).append("\n");
-        cartContent.append("Data de Devolução: ").append(dateFormat.format(returnDate)).append("\n\n");
-        cartContent.append("Livros no Carrinho:\n");
-
-        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-            BookModel book = entry.getKey();
-            int quantity = entry.getValue();
-            cartContent.append("- ").append(book.getTitulo())
-                    .append(" (Quantidade: ").append(quantity).append(")\n");
-        }
-
-        cartContent.append("\nTotal de Livros: ").append(cartModel.getTotalBooks());
-
-        JOptionPane.showMessageDialog(this, cartContent.toString(), "Carrinho", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void saveLoan() throws ParseException {
-        if (selectedBook == null) {
-            JOptionPane.showMessageDialog(this, "Nenhum livro selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        BorrowController borrowController = new BorrowController();
-
-        try {
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-            Date dateOut = dateFormat.parse(DateLoanInput.getText());
-            BorrowModel borrowModel = new BorrowModel();
-
-            utils.validationDate(DateLoanInput);
-
-            borrowModel.setId_user(selectedUser.getNumberId());
-            borrowModel.setId_book(selectedBook.getNumberId());
-            borrowModel.setDateOut(dateOut);
-            borrowModel.setDataReturnPreview(null);
-            borrowModel.setDataReturn(null);
-
-            BorrowModel data_return = borrowController.Create(borrowModel);
-
-            borrowController.saveOneBorrow(data_return);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void updateSaveButton() {
-        System.out.println("Total de livros no carrinho: " + cartModel.getTotalBooks());
-        if (cartModel.getTotalBooks() >= 5) {
+        int totalBooks = cartModel.getTotalBooks();
+        int maxBooks = 5;
+
+        if (Utils.isCartLimitReached(totalBooks, maxBooks)) {
             salvarButton.setText("Finalizar");
         } else {
             salvarButton.setText("Adicionar");
