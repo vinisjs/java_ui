@@ -95,6 +95,7 @@ public class RegisterLoan extends JDialog {
                     addToCart();
                 } else {
                     finalizeLoan();
+                    saveLoan();
                 }
             } catch (ParseException ex) {
                 throw new RuntimeException(ex);
@@ -120,19 +121,28 @@ public class RegisterLoan extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     value += 1;
-                    if(value <= 5) {
-                        salvarButton.getText().equals("Adicionar");
+                    if (value <= 5) {
                         QtdInput.setText(String.valueOf(value));
                     } else {
-                        salvarButton.setText("Finalizar");
                         JOptionPane.showMessageDialog(parentLoan, "O empréstimo máximo é de 5 livros.", "Aviso", JOptionPane.WARNING_MESSAGE);
                     }
+
+                    updateSaveButton();
                 } catch (NumberFormatException ex) {
                     QtdInput.setText("0");
                 }
             }
         });
+
         this.setVisible(true);
+    }
+
+    private void updateSaveButton() {
+        if (cartModel.getTotalBooks() >= 5) {
+            salvarButton.setText("Finalizar");
+        } else {
+            salvarButton.setText("Adicionar");
+        }
     }
 
     private void addToCart() {
@@ -147,11 +157,14 @@ public class RegisterLoan extends JDialog {
 
             cartModel.addBook(selectedBook, quantity);
             JOptionPane.showMessageDialog(this, "Livro adicionado ao carrinho!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+            updateSaveButton();
+
             BookLoanInput.setText("");
             BookLoanInput.setEditable(true);
             SearchButton2.setIcon(styles.loadIcon("/images/search.png"));
             selectedBook = null;
-            QtdInput.setText("1"); // Reseta a quantidade para 1
+            QtdInput.setText("1");
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum livro selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -203,17 +216,14 @@ public class RegisterLoan extends JDialog {
             return;
         }
 
-        // Obtém a data atual
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        // Calcula a data de devolução (data atual + 14 dias)
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         calendar.add(Calendar.DAY_OF_MONTH, 14);
         Date returnDate = calendar.getTime();
 
-        // Constrói o conteúdo do carrinho
         StringBuilder cartContent = new StringBuilder();
         cartContent.append("ID do Usuário: ").append(selectedUser.getNumberId()).append("\n");
         cartContent.append("Nome do Usuário: ").append(selectedUser.getNome()).append("\n");
@@ -230,7 +240,6 @@ public class RegisterLoan extends JDialog {
 
         cartContent.append("\nTotal de Livros: ").append(cartModel.getTotalBooks());
 
-        // Exibe o conteúdo do carrinho em uma caixa de diálogo
         JOptionPane.showMessageDialog(this, cartContent.toString(), "Carrinho", JOptionPane.INFORMATION_MESSAGE);
     }
 
