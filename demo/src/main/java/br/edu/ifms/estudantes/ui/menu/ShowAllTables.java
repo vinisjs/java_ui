@@ -1,6 +1,7 @@
 package br.edu.ifms.estudantes.ui.menu;
 
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
 
@@ -15,6 +16,11 @@ public class ShowAllTables extends JFrame {
     private JPanel Boby;
     private JScrollPane Jscroll;
     private Styles styles = new Styles();
+
+    private void loadDataToTable(DefaultTableModel tableModel) {
+        table.setModel(tableModel);
+        table.repaint();
+    }
 
     public ShowAllTables() {
         setTitle("Exibição de Dados");
@@ -66,10 +72,7 @@ public class ShowAllTables extends JFrame {
         setVisible(true);
     }
 
-    private void loadDataToTable(DefaultTableModel tableModel) {
-        table.setModel(tableModel);
-        table.repaint();
-    }
+
 
     public void showAllBooks(List<BookModel> livros) {
         setTitle("Todos os Livros");
@@ -91,6 +94,30 @@ public class ShowAllTables extends JFrame {
                     livro.getQuantidade(),
                     livro.getTema(),
                     livro.getData_publicacao()
+            });
+        }
+
+        loadDataToTable(tableModel);
+        setVisible(true);
+    }
+    public void showAllBorrow(List<BorrowModel> borrow) {
+        setTitle("Todos os Livros");
+
+        String[] columnNames = {"ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (BorrowModel borrowData : borrow) {
+            tableModel.addRow(new Object[]{
+                    borrowData.getId(),
+                    borrowData.getId_user(),
+                    borrowData.getId_book(),
+                    borrowData.getDateOut(),
+                    borrowData.getDataReturnPreview()
             });
         }
 

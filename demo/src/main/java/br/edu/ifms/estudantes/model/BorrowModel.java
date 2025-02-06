@@ -27,6 +27,18 @@ public class BorrowModel {
     @Column()
     private Date dataReturn;
 
+    @Column()
+    private Integer Qnt;
+
+    // Getters e Setters
+    public Integer getQnt() {
+        return Qnt;
+    }
+
+    public void setQnt(Integer Qnt) {
+        this.Qnt = Qnt;
+    }
+
     public Date getDataReturnPreview() {
         return dataReturnPreview;
     }

@@ -1,6 +1,8 @@
 package br.edu.ifms.estudantes.ui.results;
 
+import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
@@ -33,6 +35,9 @@ public class ResultsLoans extends JFrame{
 
     public UserModel user = new UserModel();
     public BookModel book = new BookModel();
+    public BorrowModel borrow = new BorrowModel();
+
+    public BorrowController borrowController = new BorrowController();
 
     public ResultsLoans(JFrame resultsLoan) {
         setTitle("");
@@ -75,5 +80,12 @@ public class ResultsLoans extends JFrame{
                 dispose();
             }
         });
+
     }
+
+        private void fetch() {
+
+        }
+
+
 }

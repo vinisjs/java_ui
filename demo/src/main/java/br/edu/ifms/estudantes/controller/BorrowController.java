@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public class BorrowController {
+    BorrowRepo borrowRepo = new BorrowRepo();
 
     public BorrowModel Create(BorrowModel data) {
         System.out.println("Id: " + data.getId());
@@ -34,8 +35,6 @@ public class BorrowController {
         return data;
     }
 
-    BorrowRepo borrowRepo = new BorrowRepo();
-
     public void saveOneBorrow(BorrowModel borrow) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             borrowRepo.saveOneBorrow(borrow, session);
@@ -54,7 +53,7 @@ public class BorrowController {
         }
     }
 
-    public List<BorrowModel> getAllBooks(){
+    public List<BorrowModel> getAllBorrow(){
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return borrowRepo.getAllBorrow(session);
         }

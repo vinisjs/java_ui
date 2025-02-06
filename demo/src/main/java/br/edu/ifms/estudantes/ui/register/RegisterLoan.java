@@ -5,6 +5,7 @@ import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.BorrowModel;
+import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.ui.menu.LoanTablesBook;
 import br.edu.ifms.estudantes.ui.menu.LoanTablesUsers;
@@ -16,8 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class RegisterLoan extends JDialog {
     private JPanel Screen3;
@@ -46,6 +46,8 @@ public class RegisterLoan extends JDialog {
 
     UserModel selectedUser = new UserModel();
     BookModel selectedBook = new BookModel();
+
+    private CartModel cartModel = new CartModel();
 
     public RegisterLoan(JFrame parentLoan) {
         super(parentLoan, "Cadastro de Emprestimos", true);
@@ -84,11 +86,16 @@ public class RegisterLoan extends JDialog {
         utils.configureSearchInput(NameLoanInput, "Busque por id ou nome do usuário");
         utils.configureSearchInput(BookLoanInput, "Busque por id ou nome do livro");
 
+        BagButton.addActionListener(e -> showCart());
         cancelarButton.addActionListener(e -> dispose());
 
         salvarButton.addActionListener(e -> {
             try {
-                saveLoan();
+                if (salvarButton.getText().equals("Adicionar")) {
+                    addToCart();
+                } else {
+                    finalizeLoan();
+                }
             } catch (ParseException ex) {
                 throw new RuntimeException(ex);
             }
@@ -126,6 +133,105 @@ public class RegisterLoan extends JDialog {
             }
         });
         this.setVisible(true);
+    }
+
+    private void addToCart() {
+        if (selectedBook != null) {
+            int quantity = Integer.parseInt(QtdInput.getText());
+            int totalBooksAfterAddition = cartModel.getTotalBooks() + quantity;
+
+            if (totalBooksAfterAddition > 5) {
+                JOptionPane.showMessageDialog(this, "Limite de 5 livros por empréstimo excedido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            cartModel.addBook(selectedBook, quantity);
+            JOptionPane.showMessageDialog(this, "Livro adicionado ao carrinho!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            BookLoanInput.setText("");
+            BookLoanInput.setEditable(true);
+            SearchButton2.setIcon(styles.loadIcon("/images/search.png"));
+            selectedBook = null;
+            QtdInput.setText("1"); // Reseta a quantidade para 1
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum livro selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    private void finalizeLoan() throws ParseException {
+        if (cartModel.getBooks().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "O carrinho está vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (selectedUser == null) {
+            JOptionPane.showMessageDialog(this, "Nenhum usuário selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateOut = dateFormat.parse(DateLoanInput.getText());
+
+        BorrowController borrowController = new BorrowController();
+
+        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+            BookModel book = entry.getKey();
+            int quantity = entry.getValue();
+
+            for (int i = 0; i < quantity; i++) {
+                BorrowModel borrowModel = new BorrowModel();
+                borrowModel.setId_user(selectedUser.getNumberId());
+                borrowModel.setId_book(book.getNumberId());
+                borrowModel.setDateOut(dateOut);
+                borrowModel.setDataReturnPreview(null);
+                borrowModel.setDataReturn(null);
+
+                BorrowModel data_return = borrowController.Create(borrowModel);
+                borrowController.saveOneBorrow(data_return);
+            }
+        }
+
+        cartModel.clearCart();
+        JOptionPane.showMessageDialog(this, "Empréstimo finalizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+    }
+
+
+    private void showCart() {
+        if (selectedUser == null) {
+            JOptionPane.showMessageDialog(this, "Nenhum usuário selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtém a data atual
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Calcula a data de devolução (data atual + 14 dias)
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_MONTH, 14);
+        Date returnDate = calendar.getTime();
+
+        // Constrói o conteúdo do carrinho
+        StringBuilder cartContent = new StringBuilder();
+        cartContent.append("ID do Usuário: ").append(selectedUser.getNumberId()).append("\n");
+        cartContent.append("Nome do Usuário: ").append(selectedUser.getNome()).append("\n");
+        cartContent.append("Data Atual: ").append(dateFormat.format(currentDate)).append("\n");
+        cartContent.append("Data de Devolução: ").append(dateFormat.format(returnDate)).append("\n\n");
+        cartContent.append("Livros no Carrinho:\n");
+
+        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+            BookModel book = entry.getKey();
+            int quantity = entry.getValue();
+            cartContent.append("- ").append(book.getTitulo())
+                    .append(" (Quantidade: ").append(quantity).append(")\n");
+        }
+
+        cartContent.append("\nTotal de Livros: ").append(cartModel.getTotalBooks());
+
+        // Exibe o conteúdo do carrinho em uma caixa de diálogo
+        JOptionPane.showMessageDialog(this, cartContent.toString(), "Carrinho", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void saveLoan() throws ParseException {
