@@ -13,25 +13,23 @@ public class CartModel {
     // Adiciona um livro ao carrinho com uma quantidade específica
     public void addBook(BookModel book, int quantity) {
         if (books.containsKey(book)) {
-            // Se o livro já está no carrinho, atualiza a quantidade
-            int currentQuantity = books.get(book);
-            books.put(book, currentQuantity + quantity);
+            books.put(book, books.get(book) + quantity);
         } else {
-            // Se o livro não está no carrinho, adiciona com a quantidade
             books.put(book, quantity);
         }
     }
 
+
     // Remove um livro do carrinho
     public void removeBook(BookModel book) {
         books.remove(book);
+//        updateSaveButton();
     }
 
     // Retorna o mapa de livros e quantidades
     public Map<BookModel, Integer> getBooks() {
         return books;
     }
-
     // Limpa o carrinho
     public void clearCart() {
         books.clear();
@@ -39,6 +37,11 @@ public class CartModel {
 
     // Retorna o total de livros no carrinho
     public int getTotalBooks() {
-        return books.values().stream().mapToInt(Integer::intValue).sum();
+        int total = 0;
+        for (Map.Entry<BookModel, Integer> entry : books.entrySet()) {
+            total += entry.getValue();
+        }
+        return total;
     }
+
 }

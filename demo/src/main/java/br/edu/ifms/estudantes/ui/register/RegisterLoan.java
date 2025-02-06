@@ -114,6 +114,7 @@ public class RegisterLoan extends JDialog {
                     value -= 1;
                 }
                 QtdInput.setText(String.valueOf(value));
+                updateSaveButton();
             }
         });
         PlusButton.addActionListener(new ActionListener() {
@@ -125,8 +126,8 @@ public class RegisterLoan extends JDialog {
                         QtdInput.setText(String.valueOf(value));
                     } else {
                         JOptionPane.showMessageDialog(parentLoan, "O empréstimo máximo é de 5 livros.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                        value = 5;
                     }
-
                     updateSaveButton();
                 } catch (NumberFormatException ex) {
                     QtdInput.setText("0");
@@ -135,14 +136,6 @@ public class RegisterLoan extends JDialog {
         });
 
         this.setVisible(true);
-    }
-
-    private void updateSaveButton() {
-        if (cartModel.getTotalBooks() >= 5) {
-            salvarButton.setText("Finalizar");
-        } else {
-            salvarButton.setText("Adicionar");
-        }
     }
 
     private void addToCart() {
@@ -156,9 +149,10 @@ public class RegisterLoan extends JDialog {
             }
 
             cartModel.addBook(selectedBook, quantity);
-            JOptionPane.showMessageDialog(this, "Livro adicionado ao carrinho!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Livro adicionado ao carrinho: " + selectedBook.getTitulo() + ", Quantidade: " + quantity);
+            System.out.println("Total de livros no carrinho após adição: " + cartModel.getTotalBooks());
 
-            updateSaveButton();
+            SwingUtilities.invokeLater(() -> updateSaveButton());
 
             BookLoanInput.setText("");
             BookLoanInput.setEditable(true);
@@ -169,7 +163,6 @@ public class RegisterLoan extends JDialog {
             JOptionPane.showMessageDialog(this, "Nenhum livro selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     private void finalizeLoan() throws ParseException {
         if (cartModel.getBooks().isEmpty()) {
@@ -244,6 +237,10 @@ public class RegisterLoan extends JDialog {
     }
 
     private void saveLoan() throws ParseException {
+        if (selectedBook == null) {
+            JOptionPane.showMessageDialog(this, "Nenhum livro selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         BorrowController borrowController = new BorrowController();
 
@@ -268,6 +265,16 @@ public class RegisterLoan extends JDialog {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateSaveButton() {
+        System.out.println("Total de livros no carrinho: " + cartModel.getTotalBooks());
+        if (cartModel.getTotalBooks() >= 5) {
+            salvarButton.setText("Finalizar");
+        } else {
+            salvarButton.setText("Adicionar");
+        }
+        salvarButton.repaint();
     }
 
     private void showAllUsers() {
