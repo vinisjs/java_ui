@@ -7,7 +7,9 @@ import br.edu.ifms.estudantes.ui.register.RegisterLoan;
 import br.edu.ifms.estudantes.util.Styles;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,8 @@ public class BagMenu extends JDialog {
     private JLabel DevolutionLabel;
     private JButton cancelarButton;
     private JButton finalizarButton;
+    private JPanel DevolutionField;
+    private JPanel UserField;
     private Styles styles = new Styles();
 
     public BagMenu(RegisterLoan parentBag, CartModel cartModel, UserModel selectedUser) {
@@ -35,6 +39,8 @@ public class BagMenu extends JDialog {
         styles.styleTable(tableBag);
         styles.styleButton(cancelarButton);
         styles.styleButtonMenu(finalizarButton);
+        UserField.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
+        DevolutionField.setBorder(new MatteBorder(1, 0, 1, 0, Color.BLACK));
 
         if (selectedUser != null) {
             UserLabel.setText(selectedUser.getNome());
@@ -44,7 +50,12 @@ public class BagMenu extends JDialog {
         Date currentDate = new Date();
         DateLabel.setText(dateFormat.format(currentDate));
 
-        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
             BookModel book = entry.getKey();
             int quantity = entry.getValue();
