@@ -38,16 +38,9 @@ public class CartModel {
         return totalBooks;
     }
 
-    public void setTotalBooks() {
-        totalBooks = 0;
-        for (int quantity : books.values()) {
-            totalBooks += quantity;
-        }
-        // Limite de 5 livros por título
-        for (Map.Entry<BookModel, Integer> entry : books.entrySet()) {
-            if (entry.getValue() > 5) {
-                books.put(entry.getKey(), 5); // Limita a quantidade a 5
-            }
+    public void updateBookQuantity(BookModel book, int newQuantity) {
+        if (books.containsKey(book)) {
+            books.put(book, newQuantity);
         }
     }
 
