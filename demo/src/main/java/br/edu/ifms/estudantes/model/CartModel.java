@@ -19,11 +19,8 @@ public class CartModel {
         }
     }
 
-
-    // Remove um livro do carrinho
     public void removeBook(BookModel book) {
         books.remove(book);
-//        updateSaveButton();
     }
 
     // Retorna o mapa de livros e quantidades

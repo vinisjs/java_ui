@@ -16,8 +16,6 @@ import br.edu.ifms.estudantes.util.Utils;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class RegisterLoan extends JDialog {
@@ -31,12 +29,18 @@ public class RegisterLoan extends JDialog {
     private JButton cancelarButton;
     private JPanel CampoNome;
     private JPanel CampoLivro;
-    private JPanel CampoData;
+    private JPanel CampoTitulo;
     private JButton BagButton;
     private JPanel CampoQtd;
     private JButton PlusButton;
     private JButton LessButton;
     private JTextField QtdInput;
+    private JTextField TitleInput;
+    private JTextField AuthorInput;
+    private JTextField ExempleInput;
+    private JPanel CampoAutor;
+    private JPanel CampoData;
+    private JPanel CampoExemplares;
 
     public Styles styles = new Styles();
     public Utils utils = new Utils();
@@ -53,18 +57,24 @@ public class RegisterLoan extends JDialog {
     public RegisterLoan(JFrame parentLoan) {
         super(parentLoan, "Cadastro de Emprestimos", true);
         this.setContentPane(Screen3);
-        this.setSize(600, 450);
+        this.setSize(600, 500);
         this.setLocationRelativeTo(parentLoan);
 
         styles.styleTextField(NameLoanInput);
         styles.styleTextField(BookLoanInput);
-        styles.styleTextField(DateLoanInput);
         styles.styleTextField(QtdInput);
+        styles.styleTextField(TitleInput);
+        styles.styleTextField(AuthorInput);
+        styles.styleTextField(DateLoanInput);
+        styles.styleTextField(ExempleInput);
 
         styles.alignFieldsLoan(CampoNome, "Nome:", NameLoanInput, SearchButton1);
         styles.alignFieldsLoan(CampoLivro, "livro:", BookLoanInput, SearchButton2);
+        styles.alignFields(CampoTitulo, "Titulo:", TitleInput);
+        styles.alignFields(CampoAutor, "Autor:", AuthorInput);
+        styles.alignFields(CampoData, "Data publicação:", DateLoanInput);
+        styles.alignFields(CampoExemplares, "Exemplares:", ExempleInput);
         styles.alignFieldsQtd(CampoQtd, "Quantidade:", LessButton, QtdInput, PlusButton);
-        styles.alignFields(CampoData, "Data devolução:", DateLoanInput);
 
         SearchButton1.setIcon(styles.loadIcon("/images/search.png"));
         SearchButton2.setIcon(styles.loadIcon("/images/search.png"));
@@ -82,25 +92,17 @@ public class RegisterLoan extends JDialog {
         QtdInput.setText(String.valueOf(1));
         value = Integer.parseInt(QtdInput.getText());
 
-        utils.maskDate(DateLoanInput);
-
         utils.configureSearchInput(NameLoanInput, "Busque por id ou nome do usuário");
         utils.configureSearchInput(BookLoanInput, "Busque por id ou nome do livro");
 
+        TitleInput.setEditable(false);
+        AuthorInput.setEditable(false);
+        DateLoanInput.setEditable(false);
+        ExempleInput.setEditable(false);
+
         BagButton.addActionListener(e -> showCart());
         cancelarButton.addActionListener(e -> dispose());
-
-        salvarButton.addActionListener(e -> {
-            try {
-                if (salvarButton.getText().equals("Adicionar")) {
-                    addToCart();
-                } else {
-                    saveLoan();
-                }
-            } catch (ParseException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        salvarButton.addActionListener(e -> addToCart());
 
         SearchButton1.addActionListener(e -> showAllUsers());
         NameLoanInput.addActionListener(e -> showAllUsers());
@@ -114,7 +116,6 @@ public class RegisterLoan extends JDialog {
                     value -= 1;
                 }
                 QtdInput.setText(String.valueOf(value));
-                updateSaveButton();
             }
         });
         PlusButton.addActionListener(new ActionListener() {
@@ -128,7 +129,6 @@ public class RegisterLoan extends JDialog {
                         JOptionPane.showMessageDialog(parentLoan, "O empréstimo máximo é de 5 livros.", "Aviso", JOptionPane.WARNING_MESSAGE);
                         value = 5;
                     }
-                    updateSaveButton();
                 } catch (NumberFormatException ex) {
                     QtdInput.setText("0");
                 }
@@ -136,12 +136,6 @@ public class RegisterLoan extends JDialog {
         });
 
         this.setVisible(true);
-        BagButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showCart();
-            }
-        });
     }
 
     private void addToCart() {
@@ -158,8 +152,6 @@ public class RegisterLoan extends JDialog {
             System.out.println("Livro adicionado ao carrinho: " + selectedBook.getTitulo() + ", Quantidade: " + quantity);
             System.out.println("Total de livros no carrinho após adição: " + cartModel.getTotalBooks());
 
-            SwingUtilities.invokeLater(() -> updateSaveButton());
-
             BookLoanInput.setText("");
             BookLoanInput.setEditable(true);
             SearchButton2.setIcon(styles.loadIcon("/images/search.png"));
@@ -175,58 +167,7 @@ public class RegisterLoan extends JDialog {
             JOptionPane.showMessageDialog(this, "Nenhum usuário selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         new BagMenu(this, cartModel, selectedUser);
-    }
-
-    private void saveLoan() throws ParseException {
-        if (cartModel.getBooks().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "O carrinho está vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (selectedUser == null) {
-            JOptionPane.showMessageDialog(this, "Nenhum usuário selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date dateOut = dateFormat.parse(DateLoanInput.getText());
-
-        BorrowController borrowController = new BorrowController();
-
-        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-            BookModel book = entry.getKey();
-            int quantity = entry.getValue();
-
-            for (int i = 0; i < quantity; i++) {
-                BorrowModel borrowModel = new BorrowModel();
-                borrowModel.setId_user(selectedUser.getNumberId());
-                borrowModel.setId_book(book.getNumberId());
-                borrowModel.setDateOut(dateOut);
-                borrowModel.setDataReturnPreview(null);
-                borrowModel.setDataReturn(null);
-
-                BorrowModel data_return = borrowController.Create(borrowModel);
-                borrowController.saveOneBorrow(data_return);
-            }
-        }
-
-        cartModel.clearCart();
-        JOptionPane.showMessageDialog(this, "Empréstimo finalizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
-    }
-
-    private void updateSaveButton() {
-        int totalBooks = cartModel.getTotalBooks();
-        int maxBooks = 5;
-
-        if (Utils.isCartLimitReached(totalBooks, maxBooks)) {
-            salvarButton.setText("Finalizar");
-        } else {
-            salvarButton.setText("Adicionar");
-        }
-        salvarButton.repaint();
     }
 
     private void showAllUsers() {
@@ -257,6 +198,11 @@ public class RegisterLoan extends JDialog {
                 BookLoanInput.setText(selectedBook.getTitulo());
                 BookLoanInput.setEditable(false);
                 SearchButton2.setIcon(styles.loadIcon("/images/pencil.png"));
+
+                TitleInput.setText(selectedBook.getTitulo());
+                AuthorInput.setText(selectedBook.getAutor());
+                DateLoanInput.setText(selectedBook.getData_publicacao());
+                ExempleInput.setText(String.valueOf(selectedBook.getQuantidade()));
             }
         } else {
             JOptionPane.showMessageDialog(this, "Nenhum livro encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
