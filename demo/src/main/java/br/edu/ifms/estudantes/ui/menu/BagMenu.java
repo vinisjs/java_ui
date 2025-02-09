@@ -69,6 +69,7 @@ public class BagMenu extends JDialog {
         calendar.add(Calendar.DAY_OF_MONTH, 14);
         Date returnDate = calendar.getTime();
         DevolutionLabel.setText("" + dateFormat.format(returnDate));
+        QtdInput.setText(String.valueOf(cartModel.getTotalBooks()));
 
         cancelarButton.addActionListener(new ActionListener() {
             @Override
@@ -125,7 +126,7 @@ public class BagMenu extends JDialog {
 
     private void updateTotalLabel(CartModel cartModel) {
         int total = cartModel.getTotalBooks();
+        QtdInput.setText(String.valueOf(total));
         totalLabel.setText("Total de livros: " + total);
     }
-
 }
