@@ -41,8 +41,8 @@ public class BagMenu extends JDialog {
         setLocationRelativeTo(parentBag);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-//        LessButton.setIcon(styles.loadIcon("/images/less.png"));
-//        PlusButton.setIcon(styles.loadIcon("/images/plus.png"));
+        LessButton.setIcon(styles.loadIcon("/images/less.png"));
+        PlusButton.setIcon(styles.loadIcon("/images/plus.png"));
 
         styles.styleButton(PlusButton);
         styles.styleButton(LessButton);
@@ -91,48 +91,50 @@ public class BagMenu extends JDialog {
             tableModel.addRow(new Object[]{book.getNumberId(), book.getTitulo()});
         }
         tableBag.setModel(tableModel);
-//        alignQuantityPanel(cartModel);
+        alignQuantityPanel(cartModel);
     }
 
-//    private void alignQuantityPanel(CartModel cartModel) {
-//        TotalField.removeAll();
-//
-//        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-//            BookModel book = entry.getKey();
-//            int quantity = entry.getValue();
-//
-//            JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//            JTextField quantityInput = new JTextField(String.valueOf(quantity), 3);
-//            quantityInput.setEditable(false);
-//
-//            LessButton.addActionListener(e -> {
-//                int currentQuantity = Integer.parseInt(quantityInput.getText());
-//                if (currentQuantity > 1) {
-//                    currentQuantity--;
-//                    quantityInput.setText(String.valueOf(currentQuantity));
-//                    cartModel.addBook(book, currentQuantity);
-//                }
-//            });
-//
-//            PlusButton.addActionListener(e -> {
-//                int currentQuantity = Integer.parseInt(quantityInput.getText());
-//                if (currentQuantity < 5) {
-//                    currentQuantity++;
-//                    quantityInput.setText(String.valueOf(currentQuantity));
-//                    cartModel.addBook(book, currentQuantity);
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Máximo de 5 livros por título.", "Aviso", JOptionPane.WARNING_MESSAGE);
-//                }
-//            });
-//
-//            quantityPanel.add(LessButton);
-//            quantityPanel.add(quantityInput);
-//            quantityPanel.add(PlusButton);
-//
-//            TotalField.add(quantityPanel);
-//        }
-//
-//        TotalField.revalidate();
-//        TotalField.repaint();
-//    }
+    private void alignQuantityPanel(CartModel cartModel) {
+        TotalField.removeAll();
+
+        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+            BookModel book = entry.getKey();
+            int quantity = entry.getValue();
+
+            JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JTextField quantityInput = new JTextField(String.valueOf(quantity), 3);
+            quantityInput.setEditable(false);
+
+            LessButton.addActionListener(e -> {
+                int currentQuantity = Integer.parseInt(quantityInput.getText());
+                if (currentQuantity > 1) {
+                    currentQuantity--;
+                    quantityInput.setText(String.valueOf(currentQuantity));
+                    cartModel.addBook(book, currentQuantity);
+                }
+            });
+
+            PlusButton.addActionListener(e -> {
+                int currentQuantity = Integer.parseInt(quantityInput.getText());
+                if (currentQuantity < 5) {
+                    currentQuantity++;
+                    quantityInput.setText(String.valueOf(currentQuantity));
+                    cartModel.addBook(book, currentQuantity);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Máximo de 5 livros por título.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
+            });
+            TotalField.setLayout(new FlowLayout(FlowLayout.LEFT));
+            TotalField.add(quantityPanel);
+
+            quantityPanel.add(LessButton);
+            quantityPanel.add(quantityInput);
+            quantityPanel.add(PlusButton);
+
+            TotalField.add(quantityPanel);
+        }
+
+        TotalField.revalidate();
+        TotalField.repaint();
+    }
 }
