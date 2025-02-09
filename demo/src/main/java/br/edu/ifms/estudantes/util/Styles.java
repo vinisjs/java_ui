@@ -21,11 +21,37 @@ public class Styles {
         ));
     }
 
+    public void styleTextFieldQuantity(JTextField textField) {
+        textField.setPreferredSize(new Dimension(40, 28));
+    }
+
     public void styleButton(JButton button) {
         button.setBackground(new Color(217, 217, 217));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+        button.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        borderRadius(button);
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(180, 180, 180));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(217, 217, 217));
+            }
+        });
+    }
+
+    public void styleButtonQuantity(JButton button) {
+        button.setBackground(new Color(217, 217, 217));
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         button.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         borderRadius(button);

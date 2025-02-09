@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CartModel {
-    private Map<BookModel, Integer> books; // Mapa para armazenar livro e quantidade
+    private Map<BookModel, Integer> books;
+    private int totalBooks;
 
     public CartModel() {
         this.books = new HashMap<>();
@@ -34,11 +35,20 @@ public class CartModel {
 
     // Retorna o total de livros no carrinho
     public int getTotalBooks() {
-        int total = 0;
-        for (Map.Entry<BookModel, Integer> entry : books.entrySet()) {
-            total += entry.getValue();
+        return totalBooks;
+    }
+
+    public void setTotalBooks() {
+        totalBooks = 0;
+        for (int quantity : books.values()) {
+            totalBooks += quantity;
         }
-        return total;
+        // Limite de 5 livros por título
+        for (Map.Entry<BookModel, Integer> entry : books.entrySet()) {
+            if (entry.getValue() > 5) {
+                books.put(entry.getKey(), 5); // Limita a quantidade a 5
+            }
+        }
     }
 
 }

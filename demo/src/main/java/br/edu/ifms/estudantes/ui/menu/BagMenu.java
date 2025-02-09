@@ -32,25 +32,26 @@ public class BagMenu extends JDialog {
     private JButton LessButton;
     private JTextField QtdInput;
     private JButton PlusButton;
+    private JPanel QuantityField;
     private Styles styles = new Styles();
 
     public BagMenu(RegisterLoan parentBag, CartModel cartModel, UserModel selectedUser) {
         super(parentBag, "Sacola", true);
         setContentPane(BagScreen);
-        this.setSize(600, 500);
+        this.setSize(800, 500);
         setLocationRelativeTo(parentBag);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         LessButton.setIcon(styles.loadIcon("/images/less.png"));
         PlusButton.setIcon(styles.loadIcon("/images/plus.png"));
 
-        styles.styleButton(PlusButton);
-        styles.styleButton(LessButton);
+        styles.styleButtonQuantity(PlusButton);
+        styles.styleButtonQuantity(LessButton);
         styles.styleButton(cancelarButton);
         styles.styleButtonMenu(finalizarButton);
 
         styles.styleTable(tableBag);
-        styles.styleTextField(QtdInput);
+        styles.styleTextFieldQuantity(QtdInput);
         UserField.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
         DevolutionField.setBorder(new MatteBorder(1, 0, 1, 0, Color.BLACK));
 
@@ -87,54 +88,44 @@ public class BagMenu extends JDialog {
         };
         for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
             BookModel book = entry.getKey();
-            int quantity = entry.getValue();
             tableModel.addRow(new Object[]{book.getNumberId(), book.getTitulo()});
         }
         tableBag.setModel(tableModel);
-        alignQuantityPanel(cartModel);
+        setupQuantityControls(cartModel);
     }
 
-    private void alignQuantityPanel(CartModel cartModel) {
-        TotalField.removeAll();
+    private void setupQuantityControls(CartModel cartModel) {
+        int totalBooks = cartModel.getTotalBooks();
+        QtdInput.setText(String.valueOf(totalBooks));
 
-        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-            BookModel book = entry.getKey();
-            int quantity = entry.getValue();
+        LessButton.addActionListener(e -> {
+            int currentQuantity = Integer.parseInt(QtdInput.getText());
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                cartModel.setTotalBooks();
+                QtdInput.setText(String.valueOf(currentQuantity));
+                updateTotalLabel(cartModel);
+            }
+        });
 
-            JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            JTextField quantityInput = new JTextField(String.valueOf(quantity), 3);
-            quantityInput.setEditable(false);
+        PlusButton.addActionListener(e -> {
+            int currentQuantity = Integer.parseInt(QtdInput.getText());
+            if (currentQuantity < 5) {
+                currentQuantity++;
+                cartModel.setTotalBooks();
+                QtdInput.setText(String.valueOf(currentQuantity));
+                updateTotalLabel(cartModel);
+            } else {
+                JOptionPane.showMessageDialog(this, "Máximo de 5 livros no total.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        });
 
-            LessButton.addActionListener(e -> {
-                int currentQuantity = Integer.parseInt(quantityInput.getText());
-                if (currentQuantity > 1) {
-                    currentQuantity--;
-                    quantityInput.setText(String.valueOf(currentQuantity));
-                    cartModel.addBook(book, currentQuantity);
-                }
-            });
-
-            PlusButton.addActionListener(e -> {
-                int currentQuantity = Integer.parseInt(quantityInput.getText());
-                if (currentQuantity < 5) {
-                    currentQuantity++;
-                    quantityInput.setText(String.valueOf(currentQuantity));
-                    cartModel.addBook(book, currentQuantity);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Máximo de 5 livros por título.", "Aviso", JOptionPane.WARNING_MESSAGE);
-                }
-            });
-            TotalField.setLayout(new FlowLayout(FlowLayout.LEFT));
-            TotalField.add(quantityPanel);
-
-            quantityPanel.add(LessButton);
-            quantityPanel.add(quantityInput);
-            quantityPanel.add(PlusButton);
-
-            TotalField.add(quantityPanel);
-        }
-
-        TotalField.revalidate();
-        TotalField.repaint();
+        updateTotalLabel(cartModel);
     }
+
+    private void updateTotalLabel(CartModel cartModel) {
+        int total = cartModel.getTotalBooks();
+        totalLabel.setText("Total de livros: " + total);
+    }
+
 }
