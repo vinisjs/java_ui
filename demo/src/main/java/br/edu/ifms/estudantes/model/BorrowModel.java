@@ -30,6 +30,9 @@ public class BorrowModel {
     @Column()
     private Integer Qnt;
 
+    @Column(name = "transaction_id", nullable = false)
+    private String transactionId;
+
     // Getters e Setters
     public Integer getQnt() {
         return Qnt;
@@ -85,5 +88,13 @@ public class BorrowModel {
 
     public void setId_user(int id_user) {
         this.id_user = id_user;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

@@ -17,10 +17,10 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 public class BagMenu extends JDialog {
     private JPanel BagScreen;
@@ -81,54 +81,56 @@ public class BagMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 assert selectedUser != null;
-                saveLoan(cartModel, selectedUser);
+                saveLoan(cartModel, selectedUser, now, back);
             }
         });
 
         setVisible(true);
     }
 
-    private void saveLoan(CartModel cartModel, UserModel selectedUser ) {
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date currentDate = new Date();
-        DateLabel.setText(dateFormat.format(currentDate));
-
+    private void saveLoan(CartModel cartModel, UserModel selectedUser, String now, String back) {
         BookController bookController = new BookController();
-        BorrowModel borrowModel;
-        borrowModel = new BorrowModel();
         BorrowController borrowController = new BorrowController();
 
-        borrowModel.setId_user(selectedUser.getNumberId());
+        try {
+            // Converte as datas fornecidas
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date dateOut = dateFormat.parse(now);
+            Date dateReturnPreview = dateFormat.parse(back);
 
-        System.out.println(selectedUser.getNumberId());
-        System.out.println(selectedUser.getNome());
-        System.out.println(selectedUser.getNumberPhone());
+            // Configura o empréstimo principal
+            BorrowModel mainBorrow = new BorrowModel();
+            mainBorrow.setId_user(selectedUser.getNumberId());
+            mainBorrow.setDateOut(dateOut);
+            mainBorrow.setDataReturnPreview(dateReturnPreview);
 
-        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-            BookModel book = entry.getKey();
-            int quantity = entry.getValue();
+            // Configura os itens do empréstimo
+            List<BorrowModel> borrowItems = new ArrayList<>();
+            for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+                BookModel book = entry.getKey();
+                int quantity = entry.getValue();
 
-            System.out.println(book.getNumberId());
-            System.out.println(book.getTitulo());
-            System.out.println(book.getTema());
-            System.out.println(book.getAutor());
-            System.out.println(book.getQuantidade());
-            System.out.println(quantity);
+                // Atualiza o estoque do livro
+                book.setQuantidade(book.getQuantidade() - quantity);
+                bookController.UpdateBook(book);
 
-            System.out.println("Novo Stock: " + (book.getQuantidade() - quantity));
+                // Adiciona o item ao empréstimo
+                BorrowModel item = new BorrowModel();
+                item.setId_book(book.getNumberId());
+                item.setQnt(quantity);
+                borrowItems.add(item);
+            }
 
-            book.setQuantidade(book.getQuantidade() - quantity);
-            bookController.UpdateBook(book);
-
-            borrowModel.setId_book(book.getNumberId());
-//            borrowModel.setDateOut();
-//            borrowModel.setDataReturnPreview();
-//
-//            borrowController.Create();
+            // Salva o empréstimo e seus itens relacionados
+            borrowController.saveLoan(mainBorrow, borrowItems);
+        } catch (ParseException e) {
+            System.err.println("Erro ao converter as datas: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar o empréstimo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 
     private void setupTable(CartModel cartModel) {
         DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade", "Ações"}, 0) {

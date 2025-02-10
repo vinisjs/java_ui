@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class BorrowController {
     BorrowRepo borrowRepo = new BorrowRepo();
@@ -64,5 +65,43 @@ public class BorrowController {
             borrowRepo.DeleteById(param, session);
         }
     }
+
+
+
+    public void saveLoan(BorrowModel mainBorrow, List<BorrowModel> borrowItems) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try (session) {
+            session.beginTransaction();
+
+            String transactionId = UUID.randomUUID().toString();
+            mainBorrow.setTransactionId(transactionId);
+
+            System.out.println("Transaction ID: " + transactionId);
+            // Salva o empréstimo principal
+            borrowRepo.saveOneBorrow(mainBorrow, session);
+
+            // Atualiza as informações dos itens relacionados ao empréstimo
+            for (BorrowModel item : borrowItems) {
+                item.setDateOut(mainBorrow.getDateOut());
+                item.setDataReturnPreview(mainBorrow.getDataReturnPreview());
+                item.setId_user(mainBorrow.getId_user());
+                item.setTransactionId(transactionId); // Aplica a mesma chave de transação
+                borrowRepo.saveOneBorrow(item, session);
+            }
+
+            // Faz o commit da transação
+            session.getTransaction().commit();
+            System.out.println("Empréstimo salvo com sucesso com Transaction ID: " + transactionId);
+        } catch (Exception e) {
+            // Reverte a transação em caso de erro
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            System.err.println("Erro ao salvar o empréstimo: " + e.getMessage());
+            throw new RuntimeException("Erro ao salvar o empréstimo e itens relacionados.", e);
+        }
+    }
+
+
 
 }

@@ -16,7 +16,6 @@ public class BookController {
         }
     }
     public void UpdateBook(BookModel book) {
-        System.out.println("Deu ruim!");
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             bookRepo.SaveOrUpdate(book, session);
         }
