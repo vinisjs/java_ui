@@ -3,89 +3,121 @@ package br.edu.ifms.estudantes.ui.results;
 import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.BorrowModel;
+import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.model.UserModel;
+import br.edu.ifms.estudantes.ui.menu.BagMenu;
+import br.edu.ifms.estudantes.ui.search.SearchLoan;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
-public class ResultsLoans extends JFrame{
+public class ResultsLoans extends JDialog{
     private JPanel ResultsScreenLoan;
     private JButton SearchResult;
     private JTextField LoanInput;
-    private JTextField StatusInput;
-    private JTextField NameInput;
-    private JTextField BookInput;
-    private JButton salvarButton;
+    private JButton devolverButton;
     private JButton cancelarButton;
     private JButton atualizarButton;
     private JFormattedTextField DateInputPreview;
     private JFormattedTextField DateInput;
+    private JPanel JpanelUser;
     private JPanel JpanelStatus;
-    private JPanel JpanelName;
-    private JPanel JpanelBook;
+    private JPanel JpanelTable;
     private JPanel JpanelPreview;
     private JPanel JpanelDate;
     private JPanel SearchPanel;
+    private JLabel UserLabel;
+    private JLabel DateLabel;
+    private JLabel StatusLabel;
+    private JTable tableLoan;
+    private JScrollPane tableScrollPane;
+    private JLabel TotalLabel;
+    private JLabel PreviewLabel;
+    private JLabel DevolutionLabel;
+    private JPanel JPanelDevolution;
+    private JLabel StatusLabelFix;
 
     public Styles styles = new Styles();
     public Utils utils = new Utils();
 
-    public UserModel user = new UserModel();
-    public BookModel book = new BookModel();
-    public BorrowModel borrow = new BorrowModel();
-
-    public BorrowController borrowController = new BorrowController();
-
-    public ResultsLoans(JFrame resultsLoan) {
-        setTitle("");
+    public ResultsLoans(SearchLoan parentLoan , CartModel cartModel) {
+        super(parentLoan, "Sacola", true);
         setContentPane(ResultsScreenLoan);
-        this.setSize(600, 450);
-        this.setLocationRelativeTo(resultsLoan);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setSize(800, 500);
+        this.setLocationRelativeTo(parentLoan);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         utils.configureSearchInput(LoanInput, "Busque por id ou nome do empréstimo");
 
-        utils.maskDate(DateInputPreview);
-        utils.maskDate(DateInput);
-
-        SearchPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-
         styles.styleButton(SearchResult);
         styles.styleTextField(LoanInput);
-        styles.styleTextField(StatusInput);
-        styles.styleTextField(NameInput);
-        styles.styleTextField(BookInput);
-        styles.styleTextField(DateInputPreview);
-        styles.styleTextField(DateInput);
-
-        styles.alignFields(JpanelStatus, "Status:", StatusInput);
-        styles.alignFields(JpanelName, "Nome:", NameInput);
-        styles.alignFields(JpanelBook, "livro:", BookInput);
-        styles.alignFields(JpanelPreview, "Data devolução prevista:", DateInputPreview);
-        styles.alignFields(JpanelDate, "Data devolução:", DateInput);
+        styles.styleTable(tableLoan);
 
         SearchResult.setIcon(styles.loadIcon("/images/search.png"));
 
-        styles.styleButton(cancelarButton);
-        styles.styleButton(atualizarButton);
-        styles.styleButtonMenu(salvarButton);
+        JpanelDate.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
+        JPanelDevolution.setBorder(new MatteBorder(1, 0, 1, 0, Color.BLACK));
 
-        this.setVisible(true);
+        styles.styleButton(cancelarButton);
+        styles.styleButtonMenu(devolverButton);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date currentDate = new Date();
+        DateLabel.setText(dateFormat.format(currentDate));
+
+        setupTable(cartModel);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_MONTH, 14);
+        Date returnDate = calendar.getTime();
+        PreviewLabel.setText(dateFormat.format(returnDate));
+//        updateTotalLabel(cartModel);
+
         cancelarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
-
+        this.setVisible(true);
+        devolverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirmation = JOptionPane.showConfirmDialog(
+                        ResultsLoans.this,
+                        "Tem certeza que deseja devolver o(s) livros?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION
+                );
+            }
+        });
     }
 
-        private void fetch() {
+    private void setupTable(CartModel cartModel) {
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
+        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+            BookModel book = entry.getKey();
+            int quantity = entry.getValue();
+            tableModel.addRow(new Object[]{book.getNumberId(), book.getTitulo(), quantity, ""});
         }
 
-
+        tableLoan.setModel(tableModel);
+    }
 }

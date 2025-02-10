@@ -2,6 +2,7 @@ package br.edu.ifms.estudantes.ui.search;
 
 import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.model.BorrowModel;
+import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.ui.menu.ShowAllTables;
 import br.edu.ifms.estudantes.ui.register.RegisterLoan;
 import br.edu.ifms.estudantes.ui.results.ResultsLoans;
@@ -63,7 +64,8 @@ public class SearchLoan extends JFrame{
     }
 
     public void openResultsLoan() {
-        new ResultsLoans(this);
+        CartModel cartModel = new CartModel();
+        new ResultsLoans(this, cartModel);
     }
 
     public void openSearchLoan() {
