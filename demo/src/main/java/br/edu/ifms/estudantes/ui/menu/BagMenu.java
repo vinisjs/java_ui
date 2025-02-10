@@ -1,6 +1,9 @@
 package br.edu.ifms.estudantes.ui.menu;
 
+import br.edu.ifms.estudantes.controller.BookController;
+import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.ui.register.RegisterLoan;
@@ -12,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,6 +62,7 @@ public class BagMenu extends JDialog {
         Date currentDate = new Date();
         DateLabel.setText(dateFormat.format(currentDate));
 
+
         setupTable(cartModel);
 
         Calendar calendar = Calendar.getInstance();
@@ -66,10 +72,63 @@ public class BagMenu extends JDialog {
         DevolutionLabel.setText(dateFormat.format(returnDate));
         updateTotalLabel(cartModel);
 
+        String now = dateFormat.format(currentDate);
+        String back = dateFormat.format(returnDate);
+
         cancelarButton.addActionListener(e -> dispose());
+
+        finalizarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                assert selectedUser != null;
+                saveLoan(cartModel, selectedUser);
+            }
+        });
 
         setVisible(true);
     }
+
+    private void saveLoan(CartModel cartModel, UserModel selectedUser ) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date currentDate = new Date();
+        DateLabel.setText(dateFormat.format(currentDate));
+
+        BookController bookController = new BookController();
+        BorrowModel borrowModel;
+        borrowModel = new BorrowModel();
+        BorrowController borrowController = new BorrowController();
+
+        borrowModel.setId_user(selectedUser.getNumberId());
+
+        System.out.println(selectedUser.getNumberId());
+        System.out.println(selectedUser.getNome());
+        System.out.println(selectedUser.getNumberPhone());
+
+        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
+            BookModel book = entry.getKey();
+            int quantity = entry.getValue();
+
+            System.out.println(book.getNumberId());
+            System.out.println(book.getTitulo());
+            System.out.println(book.getTema());
+            System.out.println(book.getAutor());
+            System.out.println(book.getQuantidade());
+            System.out.println(quantity);
+
+            System.out.println("Novo Stock: " + (book.getQuantidade() - quantity));
+
+            book.setQuantidade(book.getQuantidade() - quantity);
+            bookController.UpdateBook(book);
+
+            borrowModel.setId_book(book.getNumberId());
+//            borrowModel.setDateOut();
+//            borrowModel.setDataReturnPreview();
+//
+//            borrowController.Create();
+        }
+    }
+
 
     private void setupTable(CartModel cartModel) {
         DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade", "Ações"}, 0) {
