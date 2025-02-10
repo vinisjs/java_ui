@@ -109,15 +109,6 @@ public class RegisterLoan extends JDialog {
         SearchButton2.addActionListener(e -> showAllBooks());
         BookLoanInput.addActionListener(e -> showAllBooks());
 
-        LessButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(value > 0) {
-                    value -= 1;
-                }
-                QtdInput.setText(String.valueOf(value));
-            }
-        });
         PlusButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -137,9 +128,21 @@ public class RegisterLoan extends JDialog {
                     } else {
                         JOptionPane.showMessageDialog(parentLoan, "Você só pode adicionar mais " + remainingBooksAllowed + " livro(s).", "Aviso", JOptionPane.WARNING_MESSAGE);
                         value = remainingBooksAllowed;
+                        QtdInput.setText(String.valueOf(value));
                     }
                 } catch (NumberFormatException ex) {
                     QtdInput.setText("1");
+                    value = 1;
+                }
+            }
+        });
+
+        LessButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (value > 1) { // Garante que o valor não seja menor que 1
+                    value -= 1;
+                    QtdInput.setText(String.valueOf(value));
                 }
             }
         });
