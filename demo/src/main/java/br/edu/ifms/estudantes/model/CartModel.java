@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class CartModel {
     private Map<BookModel, Integer> books;
-    private int totalBooks;
 
     public CartModel() {
         this.books = new HashMap<>();
@@ -20,6 +19,7 @@ public class CartModel {
         }
     }
 
+    // Remove um livro do carrinho
     public void removeBook(BookModel book) {
         books.remove(book);
     }
@@ -28,6 +28,7 @@ public class CartModel {
     public Map<BookModel, Integer> getBooks() {
         return books;
     }
+
     // Limpa o carrinho
     public void clearCart() {
         books.clear();
@@ -35,13 +36,13 @@ public class CartModel {
 
     // Retorna o total de livros no carrinho
     public int getTotalBooks() {
-        return totalBooks;
+        return books.values().stream().mapToInt(Integer::intValue).sum();
     }
 
+    // Atualiza a quantidade de um livro no carrinho
     public void updateBookQuantity(BookModel book, int newQuantity) {
         if (books.containsKey(book)) {
             books.put(book, newQuantity);
         }
     }
-
 }

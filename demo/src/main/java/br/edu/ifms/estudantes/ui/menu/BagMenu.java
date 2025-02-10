@@ -190,6 +190,11 @@ public class BagMenu extends JDialog {
 
     public void updateTotalLabel(CartModel cartModel) {
         int total = cartModel.getBooks().values().stream().mapToInt(Integer::intValue).sum();
+
+        if (total > 5) {
+            JOptionPane.showMessageDialog(tableBag, "apenas 5 seu corno");
+        }
+
         totalLabel.setText("Total de livros: " + total);
     }
 }

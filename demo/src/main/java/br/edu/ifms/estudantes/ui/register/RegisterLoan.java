@@ -141,8 +141,10 @@ public class RegisterLoan extends JDialog {
     private void addToCart() {
         if (selectedBook != null) {
             int quantity = Integer.parseInt(QtdInput.getText());
+            System.out.println("Alguma quantidade: " + quantity);
             int totalBooksAfterAddition = cartModel.getTotalBooks() + quantity;
 
+            System.out.println("Alguma quantidade total : " + quantity);
             if (totalBooksAfterAddition > 5) {
                 JOptionPane.showMessageDialog(this, "Limite de 5 livros por empréstimo excedido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
