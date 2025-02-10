@@ -9,8 +9,8 @@ import br.edu.ifms.estudantes.util.Styles;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -72,22 +72,108 @@ public class BagMenu extends JDialog {
     }
 
     private void setupTable(CartModel cartModel) {
-        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade"}, 0) {
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade", "Ações"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2;
+                return column == 3; // A coluna de Ações será editável, que conterá os botões.
             }
         };
 
         for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
             BookModel book = entry.getKey();
             int quantity = entry.getValue();
-            tableModel.addRow(new Object[]{book.getNumberId(), book.getTitulo(), quantity});
+            tableModel.addRow(new Object[]{book.getNumberId(), book.getTitulo(), quantity, ""}); // Adiciona uma célula vazia para os botões
         }
 
         tableBag.setModel(tableModel);
-        tableBag.getColumnModel().getColumn(2).setCellEditor(new QuantityEditor(cartModel, this));
+        tableBag.getColumnModel().getColumn(2).setCellEditor(new QuantityEditor(cartModel, this)); // Exibição de quantidade na coluna 2
+        tableBag.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(cartModel, this)); // Adiciona os botões na coluna 3
         tableBag.setRowHeight(40);
+    }
+
+    private static class ButtonEditor extends AbstractCellEditor implements TableCellEditor {
+        private JPanel panel;
+        private JButton lessButton;
+        private JButton plusButton;
+        private CartModel cartModel;
+        private BookModel currentBook;
+        private BagMenu bagMenu;
+        private Styles styles = new Styles();
+
+        public ButtonEditor(CartModel cartModel, BagMenu bagMenu) {
+            this.cartModel = cartModel;
+            this.bagMenu = bagMenu;
+            panel = new JPanel(new GridBagLayout());
+            panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+            lessButton = new JButton();
+            plusButton = new JButton();
+
+            styles.styleButton(lessButton);
+            styles.styleButton(plusButton);
+
+            lessButton.setIcon(styles.loadIcon("/images/less.png"));
+            plusButton.setIcon(styles.loadIcon("/images/plus.png"));
+
+            lessButton.setPreferredSize(new Dimension(40, 30));
+            plusButton.setPreferredSize(new Dimension(40, 30));
+
+            lessButton.addActionListener(e -> updateQuantity(-1));
+            plusButton.addActionListener(e -> updateQuantity(1));
+
+            // Layout para os botões
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(0, 5, 0, 5);
+
+            gbc.gridx = 0;
+            panel.add(lessButton, gbc);
+            gbc.gridx = 1;
+            panel.add(plusButton, gbc);
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            int bookId = (int) table.getValueAt(row, 0);
+            for (BookModel book : cartModel.getBooks().keySet()) {
+                if (book.getNumberId() == bookId) {
+                    currentBook = book;
+                    break;
+                }
+            }
+
+            int currentQuantity = (int) table.getValueAt(row, 2);
+            lessButton.setEnabled(currentQuantity > 1);
+            plusButton.setEnabled(currentQuantity < 5);
+
+            panel.revalidate();
+            panel.repaint();
+
+            return panel;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return null; // Não é necessário retornar valor, pois os botões não alteram a célula diretamente
+        }
+
+        private void updateQuantity(int change) {
+            int row = bagMenu.tableBag.getSelectedRow();
+            int currentQuantity = (int) bagMenu.tableBag.getValueAt(row, 2);
+
+            int newQuantity = currentQuantity + change;
+
+            int currentTotal = cartModel.getBooks().values().stream().mapToInt(Integer::intValue).sum();
+            int newTotal = currentTotal - currentQuantity + newQuantity;
+
+            if (newQuantity >= 1 && newQuantity <= 5 && newTotal <= 5) {
+                cartModel.updateBookQuantity(currentBook, newQuantity);
+                bagMenu.tableBag.setValueAt(newQuantity, row, 2);
+                bagMenu.updateTotalLabel(cartModel);
+                fireEditingStopped();
+            } else {
+                JOptionPane.showMessageDialog(bagMenu, "O total de livros no carrinho não pode ultrapassar 5.", "Limite Excedido", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
     private static class QuantityEditor extends AbstractCellEditor implements TableCellEditor {
@@ -129,6 +215,7 @@ public class BagMenu extends JDialog {
             lessButton.addActionListener(e -> updateQuantity(-1));
             plusButton.addActionListener(e -> updateQuantity(1));
 
+            // Ajuste no layout
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(0, 5, 0, 5);
 
@@ -138,6 +225,9 @@ public class BagMenu extends JDialog {
             panel.add(qtdInput, gbc);
             gbc.gridx = 2;
             panel.add(plusButton, gbc);
+
+            // Garantir que o painel tenha um tamanho adequado
+            panel.setPreferredSize(new Dimension(120, 40));  // Ajuste o tamanho conforme necessário
         }
 
         @Override
@@ -153,11 +243,12 @@ public class BagMenu extends JDialog {
                 }
             }
 
+            // Garantir que os botões menos e mais sejam habilitados corretamente
             lessButton.setEnabled(currentQuantity > 1);
             plusButton.setEnabled(currentQuantity < 5);
 
-            panel.revalidate();
-            panel.repaint();
+            panel.revalidate();  // Revalidar o painel
+            panel.repaint();     // Repintar o painel
 
             return panel;
         }
