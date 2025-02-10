@@ -192,7 +192,7 @@ public class BagMenu extends JDialog {
         int total = cartModel.getBooks().values().stream().mapToInt(Integer::intValue).sum();
 
         if (total > 5) {
-            JOptionPane.showMessageDialog(tableBag, "apenas 5 seu corno");
+            JOptionPane.showMessageDialog(tableBag, "O máximo é 5", "Limite Excedido", JOptionPane.WARNING_MESSAGE);
         }
 
         totalLabel.setText("Total de livros: " + total);
