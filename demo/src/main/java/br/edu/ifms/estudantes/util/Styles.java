@@ -21,10 +21,6 @@ public class Styles {
         ));
     }
 
-    public void styleTextFieldQuantity(JTextField textField) {
-        textField.setPreferredSize(new Dimension(40, 28));
-    }
-
     public void styleButton(JButton button) {
         button.setBackground(new Color(217, 217, 217));
         button.setForeground(Color.BLACK);
@@ -51,6 +47,7 @@ public class Styles {
         button.setBackground(new Color(217, 217, 217));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
+        button.setOpaque(true);
         button.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         button.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
