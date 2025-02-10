@@ -31,7 +31,6 @@ public class ResultsLoans extends JDialog{
     private JFormattedTextField DateInputPreview;
     private JFormattedTextField DateInput;
     private JPanel JpanelUser;
-    private JPanel JpanelStatus;
     private JPanel JpanelTable;
     private JPanel JpanelPreview;
     private JPanel JpanelDate;
@@ -46,6 +45,8 @@ public class ResultsLoans extends JDialog{
     private JLabel DevolutionLabel;
     private JPanel JPanelDevolution;
     private JLabel StatusLabelFix;
+    private JLabel UserNameLabel;
+    private JLabel DateALabel;
 
     public Styles styles = new Styles();
     public Utils utils = new Utils();
@@ -90,7 +91,6 @@ public class ResultsLoans extends JDialog{
                 dispose();
             }
         });
-        this.setVisible(true);
         devolverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,7 +102,31 @@ public class ResultsLoans extends JDialog{
                 );
             }
         });
+
+        styleStatus();
+
+        this.setVisible(true);
     }
+
+    private void styleStatus() {
+        JpanelUser.setLayout(new GridLayout(2, 3, 10, 5));
+
+        UserNameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        StatusLabelFix.setHorizontalAlignment(SwingConstants.CENTER);
+        DateALabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        UserLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        StatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        DateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        JpanelUser.add(UserNameLabel);
+        JpanelUser.add(StatusLabelFix);
+        JpanelUser.add(DateALabel);
+        JpanelUser.add(UserLabel);
+        JpanelUser.add(StatusLabel);
+        JpanelUser.add(DateLabel);
+    }
+
 
     private void setupTable(CartModel cartModel) {
         DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade"}, 0) {
