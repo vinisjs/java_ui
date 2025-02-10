@@ -90,7 +90,7 @@ public class RegisterLoan extends JDialog {
         styles.styleButtonMenu(salvarButton);
         styles.styleButton(cancelarButton);
         QtdInput.setText(String.valueOf(1));
-        value = Integer.parseInt(QtdInput.getText());
+        value += Integer.parseInt(QtdInput.getText());
 
         utils.configureSearchInput(NameLoanInput, "Busque por id ou nome do usuário");
         utils.configureSearchInput(BookLoanInput, "Busque por id ou nome do livro");
@@ -122,15 +122,24 @@ public class RegisterLoan extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    int totalBooksInCart = cartModel.getTotalBooks();
+                    int remainingBooksAllowed = 5 - totalBooksInCart;
+
+                    if (remainingBooksAllowed <= 0) {
+                        JOptionPane.showMessageDialog(parentLoan, "Você já atingiu o limite de 5 livros no total.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+
                     value += 1;
-                    if (value <= 5) {
+
+                    if (value <= remainingBooksAllowed) {
                         QtdInput.setText(String.valueOf(value));
                     } else {
-                        JOptionPane.showMessageDialog(parentLoan, "O empréstimo máximo é de 5 livros.", "Aviso", JOptionPane.WARNING_MESSAGE);
-                        value = 5;
+                        JOptionPane.showMessageDialog(parentLoan, "Você só pode adicionar mais " + remainingBooksAllowed + " livro(s).", "Aviso", JOptionPane.WARNING_MESSAGE);
+                        value = remainingBooksAllowed;
                     }
                 } catch (NumberFormatException ex) {
-                    QtdInput.setText("0");
+                    QtdInput.setText("1");
                 }
             }
         });
@@ -141,18 +150,15 @@ public class RegisterLoan extends JDialog {
     private void addToCart() {
         if (selectedBook != null) {
             int quantity = Integer.parseInt(QtdInput.getText());
-            System.out.println("Alguma quantidade: " + quantity);
             int totalBooksAfterAddition = cartModel.getTotalBooks() + quantity;
 
-            System.out.println("Alguma quantidade total : " + quantity);
             if (totalBooksAfterAddition > 5) {
                 JOptionPane.showMessageDialog(this, "Limite de 5 livros por empréstimo excedido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             cartModel.addBook(selectedBook, quantity);
-            System.out.println("Livro adicionado ao carrinho: " + selectedBook.getTitulo() + ", Quantidade: " + quantity);
-            System.out.println("Total de livros no carrinho após adição: " + cartModel.getTotalBooks());
+            JOptionPane.showMessageDialog(this, "Livro adicionado ao carrinho: " + selectedBook.getTitulo() + ", Quantidade: " + quantity, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
             BookLoanInput.setText("");
             BookLoanInput.setEditable(true);
