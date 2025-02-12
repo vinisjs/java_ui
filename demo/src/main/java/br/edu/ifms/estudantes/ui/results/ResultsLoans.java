@@ -138,8 +138,11 @@ public class ResultsLoans extends JDialog {
 
             if (returnDate != null) {
                 DevolutionLabel.setText(returnDate.format(formatter));
+                long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(returnPreview, returnDate);
+                StatusLabel.setText(daysBetween <= 14 ? "Dentro do prazo" : "Fora do prazo");
             } else {
                 DevolutionLabel.setText("NUL");
+                StatusLabel.setText("Pendente");
             }
 
             PreviewLabel.setText(formattedReturnPreview);
