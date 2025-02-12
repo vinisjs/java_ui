@@ -1,6 +1,5 @@
 package br.edu.ifms.estudantes.ui.results;
 
-import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.BorrowModel;
@@ -9,7 +8,6 @@ import br.edu.ifms.estudantes.model.UserModel;
 import br.edu.ifms.estudantes.ui.search.SearchLoan;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
-import org.hibernate.dialect.SybaseAnywhereDialect;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -18,11 +16,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
-public class ResultsLoans extends JDialog{
+
+public class ResultsLoans extends JDialog {
     private JPanel ResultsScreenLoan;
     private JButton SearchResult;
     private JTextField LoanInput;
@@ -52,7 +55,7 @@ public class ResultsLoans extends JDialog{
     public Styles styles = new Styles();
     public Utils utils = new Utils();
 
-    public ResultsLoans(SearchLoan parentLoan , CartModel cartModel) {
+    public ResultsLoans(SearchLoan parentLoan, CartModel cartModel) {
         super(parentLoan, "Sacola", true);
         setContentPane(ResultsScreenLoan);
         this.setSize(800, 500);
@@ -77,14 +80,11 @@ public class ResultsLoans extends JDialog{
         Date currentDate = new Date();
         DateLabel.setText(dateFormat.format(currentDate));
 
-//        setupTable(cartModel);
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         calendar.add(Calendar.DAY_OF_MONTH, 14);
         Date returnDate = calendar.getTime();
-        PreviewLabel.setText(dateFormat.format(returnDate));
-//        updateTotalLabel(cartModel);
+        DevolutionLabel.setText(dateFormat.format(returnDate));
 
         cancelarButton.addActionListener(new ActionListener() {
             @Override
@@ -115,36 +115,6 @@ public class ResultsLoans extends JDialog{
         this.setVisible(true);
     }
 
-    public void showAll() {
-        // Buscar pelo tid
-        BorrowController borrowController = new BorrowController();
-        List<BorrowModel> borrowList = borrowController.getBorrow(LoanInput.getText());
-
-        // Garantir que a lista não esteja vazia
-        if (!borrowList.isEmpty()) {
-            BorrowModel borrow = borrowList.get(0); // Pega o primeiro item da lista
-            System.out.println("Borrow Id User: " + borrow.getId_user());
-
-            setupTable(borrowList);
-
-            // Buscar utilizador
-            UserController userController = new UserController();
-            UserModel user = userController.getUser(borrow.getId_user());
-
-
-            System.out.println("user id: " + user.getNumberId());
-            System.out.println("user id: " + user.getNome());
-            System.out.println("user id: " + user.getEmail());
-            UserLabel.setText(user.getNome());
-
-
-
-        } else {
-            System.out.println("Empréstimo não encontrado.");
-        }
-    }
-
-
     private void styleStatus() {
         JpanelUser.setLayout(new GridLayout(2, 3, 10, 5));
 
@@ -164,16 +134,70 @@ public class ResultsLoans extends JDialog{
         JpanelUser.add(DateLabel);
     }
 
-
     private void loadDataToTable(DefaultTableModel tableModel) {
         tableLoan.setModel(tableModel);
         tableLoan.repaint();
     }
 
+    public void showAll() {
+
+        BorrowController borrowController = new BorrowController();
+        List<BorrowModel> borrowList = borrowController.getBorrow(LoanInput.getText());
+
+        if (!borrowList.isEmpty()) {
+            BorrowModel borrow = borrowList.get(0);
+            System.out.println("Borrow Id User: " + borrow.getId_user());
+
+            setupTable(borrowList);
+
+            UserController userController = new UserController();
+            UserModel user = userController.getUser(borrow.getId_user());
+
+            System.out.println("user id: " + user.getNumberId());
+            System.out.println("user id: " + user.getNome());
+            System.out.println("user id: " + user.getEmail());
+            UserLabel.setText(user.getNome());
+
+            LocalDate dateOut = convertToLocalDate(borrow.getDateOut());
+            LocalDate returnPreview = convertToLocalDate(borrow.getDataReturnPreview());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDateOut = dateOut.format(formatter);
+            String formattedReturnPreview = returnPreview.format(formatter);
+
+            long daysBetween = ChronoUnit.DAYS.between(returnPreview, dateOut);
+
+            if (daysBetween > 14) {
+                StatusLabel.setText("Atrasado");
+            } else {
+                StatusLabel.setText("No Prazo");
+            }
+
+            TotalLabel.setText(String.valueOf(borrow.getQnt()));
+            PreviewLabel.setText(formattedReturnPreview);
+
+        } else {
+            System.out.println("Empréstimo não encontrado.");
+        }
+    }
+
+    // Método para converter Date para LocalDate
+    private LocalDate convertToLocalDate(Date date) {
+        if (date == null) return null;
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    // Método para formatar a data em dd-MM-yyyy
+    private String formatDate(Date date) {
+        if (date == null) return "";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        return formatter.format(date);
+    }
+
     public void setupTable(List<BorrowModel> borrow) {
         setTitle("Todos os Empréstimos");
 
-        String[] columnNames = {"Transaction ID","ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV", "QNT"};
+        String[] columnNames = {"Transaction ID", "ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV", "QNT"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -187,8 +211,8 @@ public class ResultsLoans extends JDialog{
                     borrowData.getId(),
                     borrowData.getId_user(),
                     borrowData.getId_book(),
-                    borrowData.getDateOut(),
-                    borrowData.getDataReturnPreview(),
+                    formatDate(borrowData.getDateOut()),  // Aplicando formatação
+                    formatDate(borrowData.getDataReturnPreview()),  // Aplicando formatação
                     borrowData.getQnt()
             });
         }
