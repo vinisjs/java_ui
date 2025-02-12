@@ -86,7 +86,7 @@ public class ResultsLoans extends JDialog {
         calendar.setTime(currentDate);
         calendar.add(Calendar.DAY_OF_MONTH, 14);
         Date returnDate = calendar.getTime();
-        DevolutionLabel.setText(dateFormat.format(returnDate));
+
 
         cancelarButton.addActionListener(new ActionListener() {
             @Override
@@ -148,24 +148,24 @@ public class ResultsLoans extends JDialog {
 
         if (!borrowList.isEmpty()) {
             BorrowModel borrow = borrowList.get(0);
-            System.out.println("Borrow Id User: " + borrow.getId_user());
-
             setupTable(borrowList);
 
             UserController userController = new UserController();
             UserModel user = userController.getUser(borrow.getId_user());
 
-            System.out.println("user id: " + user.getNumberId());
-            System.out.println("user id: " + user.getNome());
-            System.out.println("user id: " + user.getEmail());
             UserLabel.setText(user.getNome());
 
             LocalDate dateOut = convertToLocalDate(borrow.getDateOut());
             LocalDate returnPreview = convertToLocalDate(borrow.getDataReturnPreview());
+            LocalDate returnDate = convertToLocalDate(borrow.getDataReturn());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDateOut = dateOut.format(formatter);
             String formattedReturnPreview = returnPreview.format(formatter);
+
+            if (returnDate != null) {
+                String formattedReturnDate = returnDate.format(formatter);
+                DevolutionLabel.setText(formattedReturnDate);
+            }
 
             long daysBetween = ChronoUnit.DAYS.between(returnPreview, dateOut);
 
@@ -175,38 +175,30 @@ public class ResultsLoans extends JDialog {
                 StatusLabel.setText("No Prazo");
             }
 
-            TotalLabel.setText(String.valueOf(borrow.getQnt()));
             PreviewLabel.setText(formattedReturnPreview);
-
-            BookController bookController = new BookController();
-
-            BookModel book = bookController.getBook(borrow.getId_book());
-
-            System.out.println(book.getTitulo());
-
+            DevolutionLabel.setText("NUL");
 
         } else {
             System.out.println("Empréstimo não encontrado.");
         }
     }
 
-    // Método para converter Date para LocalDate
     private LocalDate convertToLocalDate(Date date) {
         if (date == null) return null;
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    // Método para formatar a data em dd-MM-yyyy
     private String formatDate(Date date) {
         if (date == null) return "";
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(date);
     }
 
-    public void setupTable(List<BorrowModel> borrow) {
+    public void setupTable(List<BorrowModel> borrowList) {
         setTitle("Todos os Empréstimos");
 
-        String[] columnNames = {"Transaction ID", "ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV", "QNT"};
+        // Definição das colunas desejadas
+        String[] columnNames = {"Transaction ID", "Título do Livro", "Quantidade"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -214,19 +206,31 @@ public class ResultsLoans extends JDialog {
             }
         };
 
-        for (BorrowModel borrowData : borrow) {
+        BookController bookController = new BookController();
+        int totalQuantity = 0;
+
+        for (BorrowModel borrowData : borrowList) {
+            String bookTitle = "Não encontrado";
+
+            BookModel book = bookController.getBook(borrowData.getId_book());
+            if (book != null) {
+                bookTitle = book.getTitulo();
+            }
+
             tableModel.addRow(new Object[]{
                     borrowData.getTransactionId(),
-                    borrowData.getId(),
-                    borrowData.getId_user(),
-                    borrowData.getId_book(),
-                    formatDate(borrowData.getDateOut()),  // Aplicando formatação
-                    formatDate(borrowData.getDataReturnPreview()),  // Aplicando formatação
+                    bookTitle,
                     borrowData.getQnt()
             });
+
+            totalQuantity += borrowData.getQnt();
         }
+
+        TotalLabel.setText(String.valueOf(totalQuantity));
 
         loadDataToTable(tableModel);
         setVisible(true);
     }
+
+
 }
