@@ -57,9 +57,8 @@ public class SearchLoan extends JFrame{
             new ShowAllTables().showAllBorrow(borrow);
 
         } else {
-            System.out.println("Nenhum livro encontrado.");
+            System.out.println("Nenhum empréstimo encontrado.");
         }
-
 
     }
 

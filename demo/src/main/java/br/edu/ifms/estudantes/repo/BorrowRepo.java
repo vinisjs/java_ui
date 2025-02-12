@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 
 public class BorrowRepo {
@@ -18,8 +19,6 @@ public class BorrowRepo {
             session.merge(borrow);
 
             session.getTransaction().commit();
-
-
 
             System.out.println("Empréstimo atualizado com sucesso!");
             System.out.println("Data de devolução!" + borrow.getDataReturnPreview());
@@ -37,6 +36,7 @@ public class BorrowRepo {
             session.save(borrow);
             session.getTransaction().commit();
             System.out.println("Empréstimo salvo com sucesso!");
+
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
@@ -54,25 +54,36 @@ public class BorrowRepo {
         }
     }
 
-    public BorrowModel getBorrow(Object param, Session session) {
+    public List<BorrowModel> getBorrow(Object param, Session session) {
         if (param == null) {
             System.out.println("Parâmetro fornecido é nulo.");
-            return null;
+            return Collections.emptyList();
         }
 
         try {
             System.out.println("Parâmetro recebido: " + param);
-            if (param instanceof Integer) {
-                return session.createQuery("FROM BorrowModel WHERE NumberId = :id", BorrowModel.class)
-                        .setParameter("id", param)
-                        .uniqueResult();
-            }
 
+            if (param instanceof Integer) {
+                BorrowModel result = session.createQuery("FROM BorrowModel WHERE NumberId = :id", BorrowModel.class)
+                        .setParameter("id", (Integer) param)
+                        .uniqueResult();
+                return result != null ? Collections.singletonList(result) : Collections.emptyList();
+
+            } else if (param instanceof String) {
+                return session.createQuery("FROM BorrowModel WHERE transaction_id = :id", BorrowModel.class)
+                        .setParameter("id", (String) param)
+                        .list();
+            } else {
+                System.out.println("Tipo de parâmetro não suportado: " + param.getClass().getSimpleName());
+            }
         } catch (Exception e) {
-            System.err.println("Erro ao buscar o livro: " + e.getMessage());
+            System.err.println("Erro ao buscar os registros: " + e.getMessage());
+            e.printStackTrace();
         }
-        return null;
+
+        return Collections.emptyList();
     }
+
 
     public void DeleteById(Object param, Session session) {
         if (param == null) {

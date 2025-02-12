@@ -1,14 +1,15 @@
 package br.edu.ifms.estudantes.ui.results;
 
+import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.BorrowController;
-import br.edu.ifms.estudantes.model.BookModel;
+import br.edu.ifms.estudantes.controller.UserController;
 import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.model.UserModel;
-import br.edu.ifms.estudantes.ui.menu.BagMenu;
 import br.edu.ifms.estudantes.ui.search.SearchLoan;
 import br.edu.ifms.estudantes.util.Styles;
 import br.edu.ifms.estudantes.util.Utils;
+import org.hibernate.dialect.SybaseAnywhereDialect;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -19,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 public class ResultsLoans extends JDialog{
     private JPanel ResultsScreenLoan;
@@ -76,7 +77,7 @@ public class ResultsLoans extends JDialog{
         Date currentDate = new Date();
         DateLabel.setText(dateFormat.format(currentDate));
 
-        setupTable(cartModel);
+//        setupTable(cartModel);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
@@ -103,10 +104,46 @@ public class ResultsLoans extends JDialog{
             }
         });
 
-        styleStatus();
+        SearchResult.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAll();
+            }
+        });
 
+        styleStatus();
         this.setVisible(true);
     }
+
+    public void showAll() {
+        // Buscar pelo tid
+        BorrowController borrowController = new BorrowController();
+        List<BorrowModel> borrowList = borrowController.getBorrow(LoanInput.getText());
+
+        // Garantir que a lista não esteja vazia
+        if (!borrowList.isEmpty()) {
+            BorrowModel borrow = borrowList.get(0); // Pega o primeiro item da lista
+            System.out.println("Borrow Id User: " + borrow.getId_user());
+
+            setupTable(borrowList);
+
+            // Buscar utilizador
+            UserController userController = new UserController();
+            UserModel user = userController.getUser(borrow.getId_user());
+
+
+            System.out.println("user id: " + user.getNumberId());
+            System.out.println("user id: " + user.getNome());
+            System.out.println("user id: " + user.getEmail());
+            UserLabel.setText(user.getNome());
+
+
+
+        } else {
+            System.out.println("Empréstimo não encontrado.");
+        }
+    }
+
 
     private void styleStatus() {
         JpanelUser.setLayout(new GridLayout(2, 3, 10, 5));
@@ -128,20 +165,35 @@ public class ResultsLoans extends JDialog{
     }
 
 
-    private void setupTable(CartModel cartModel) {
-        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"ID", "Livro", "Quantidade"}, 0) {
+    private void loadDataToTable(DefaultTableModel tableModel) {
+        tableLoan.setModel(tableModel);
+        tableLoan.repaint();
+    }
+
+    public void setupTable(List<BorrowModel> borrow) {
+        setTitle("Todos os Empréstimos");
+
+        String[] columnNames = {"Transaction ID","ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV", "QNT"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
 
-        for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
-            BookModel book = entry.getKey();
-            int quantity = entry.getValue();
-            tableModel.addRow(new Object[]{book.getNumberId(), book.getTitulo(), quantity, ""});
+        for (BorrowModel borrowData : borrow) {
+            tableModel.addRow(new Object[]{
+                    borrowData.getTransactionId(),
+                    borrowData.getId(),
+                    borrowData.getId_user(),
+                    borrowData.getId_book(),
+                    borrowData.getDateOut(),
+                    borrowData.getDataReturnPreview(),
+                    borrowData.getQnt()
+            });
         }
 
-        tableLoan.setModel(tableModel);
+        loadDataToTable(tableModel);
+        setVisible(true);
     }
 }

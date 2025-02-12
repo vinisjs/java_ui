@@ -72,8 +72,6 @@ public class ShowAllTables extends JFrame {
         setVisible(true);
     }
 
-
-
     public void showAllBooks(List<BookModel> livros) {
         setTitle("Todos os Livros");
 
@@ -101,9 +99,9 @@ public class ShowAllTables extends JFrame {
         setVisible(true);
     }
     public void showAllBorrow(List<BorrowModel> borrow) {
-        setTitle("Todos os Livros");
+        setTitle("Todos os Empréstimos");
 
-        String[] columnNames = {"ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV"};
+        String[] columnNames = {"Transaction ID","ID", "ID USER", "ID BOOKS", "DATE OUT", "DATE BACK PREV"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -113,6 +111,7 @@ public class ShowAllTables extends JFrame {
 
         for (BorrowModel borrowData : borrow) {
             tableModel.addRow(new Object[]{
+                    borrowData.getTransactionId(),
                     borrowData.getId(),
                     borrowData.getId_user(),
                     borrowData.getId_book(),

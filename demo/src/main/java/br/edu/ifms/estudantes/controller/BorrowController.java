@@ -48,11 +48,13 @@ public class BorrowController {
         }
     }
 
-    public BorrowModel getBook(Object param) {
+    public List<BorrowModel> getBorrow(Object param) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Certifica-se de que o retorno é uma lista, não um único objeto
             return borrowRepo.getBorrow(param, session);
         }
     }
+
 
     public List<BorrowModel> getAllBorrow(){
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -65,8 +67,6 @@ public class BorrowController {
             borrowRepo.DeleteById(param, session);
         }
     }
-
-
 
     public void saveLoan(BorrowModel mainBorrow, List<BorrowModel> borrowItems) {
         Session session = HibernateUtil.getSessionFactory().openSession();
