@@ -140,7 +140,7 @@ public class RegisterLoan extends JDialog {
         LessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (value > 1) { // Garante que o valor não seja menor que 1
+                if (value > 1) {
                     value -= 1;
                     QtdInput.setText(String.valueOf(value));
                 }

@@ -48,7 +48,6 @@ public class BorrowController {
 
     public List<BorrowModel> getBorrow(Object param) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Certifica-se de que o retorno é uma lista, não um único objeto
             return borrowRepo.getBorrow(param, session);
         }
     }
@@ -71,26 +70,20 @@ public class BorrowController {
         try (session) {
             session.beginTransaction();
 
-
-
             System.out.println("Transaction ID: " + transactionId);
-            // Salva o empréstimo principal
             borrowRepo.saveOneBorrow(mainBorrow, session);
 
-            // Atualiza as informações dos itens relacionados ao empréstimo
             for (BorrowModel item : borrowItems) {
                 item.setDateOut(mainBorrow.getDateOut());
                 item.setDataReturnPreview(mainBorrow.getDataReturnPreview());
                 item.setId_user(mainBorrow.getId_user());
-                item.setTransactionId(transactionId); // Aplica a mesma chave de transação
+                item.setTransactionId(transactionId);
                 borrowRepo.saveOneBorrow(item, session);
             }
 
-            // Faz o commit da transação
             session.getTransaction().commit();
             System.out.println("Empréstimo salvo com sucesso com Transaction ID: " + transactionId);
         } catch (Exception e) {
-            // Reverte a transação em caso de erro
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
             }

@@ -129,7 +129,6 @@ public class ResultsUsers extends JFrame {
                         return;
                     }
 
-                    // Capturar o sexo selecionado
                     String sexoSelecionado = "";
                     if (masculinoRadioButton.isSelected()) {
                         sexoSelecionado = "Masculino";

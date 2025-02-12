@@ -178,7 +178,6 @@ public class ResultsLoans extends JDialog {
             }
 
             for (BorrowModel borrow : borrowList) {
-                // Verifica se o empréstimo já foi devolvido
                 if (borrow.getDataReturn() != null) {
                     JOptionPane.showMessageDialog(
                             this,
@@ -190,14 +189,11 @@ public class ResultsLoans extends JDialog {
                     return;
                 }
 
-                // Atualiza a data de devolução no objeto existente
                 Date dataDevolucao = new Date();
                 borrow.setDataReturn(dataDevolucao);
 
-                // Atualiza o empréstimo no banco de dados
                 borrowController.UpdateBorrow(borrow);
 
-                // Atualiza o estoque do livro
                 BookModel book = bookController.getBook(borrow.getId_book());
                 if (book != null) {
                     book.setQuantidade(book.getQuantidade() + borrow.getQnt());
