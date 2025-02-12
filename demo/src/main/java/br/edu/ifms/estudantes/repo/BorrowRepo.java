@@ -16,12 +16,16 @@ public class BorrowRepo {
             session.beginTransaction();
             System.out.println("Tentando Atualizar Empréstimo");
 
-            session.merge(borrow);
+            if (session.contains(borrow)) {
+                session.update(borrow);
+            } else {
+                session.merge(borrow);
+            }
 
             session.getTransaction().commit();
 
             System.out.println("Empréstimo atualizado com sucesso!");
-            System.out.println("Data de devolução!" + borrow.getDataReturnPreview());
+            System.out.println("Data de devolução: " + borrow.getDataReturnPreview());
         } catch (Exception e) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();

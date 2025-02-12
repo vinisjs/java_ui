@@ -42,7 +42,7 @@ public class BorrowController {
     }
     public void UpdateBorrow(BorrowModel borrow) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            borrowRepo.saveOneBorrow(borrow, session);
+            borrowRepo.UpdateBorrow(borrow, session);
         }
     }
 
