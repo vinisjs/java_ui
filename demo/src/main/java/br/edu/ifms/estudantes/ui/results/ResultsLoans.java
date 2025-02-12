@@ -15,17 +15,13 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 
 public class ResultsLoans extends JDialog {
     private JPanel ResultsScreenLoan;
@@ -87,31 +83,11 @@ public class ResultsLoans extends JDialog {
         calendar.add(Calendar.DAY_OF_MONTH, 14);
         Date returnDate = calendar.getTime();
 
+        cancelarButton.addActionListener(e -> dispose());
 
-        cancelarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        devolverButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int confirmation = JOptionPane.showConfirmDialog(
-                        ResultsLoans.this,
-                        "Tem certeza que deseja devolver o(s) livros?",
-                        "Confirmação",
-                        JOptionPane.YES_NO_OPTION
-                );
-            }
-        });
+        devolverButton.addActionListener(e -> processarDevolucao());
 
-        SearchResult.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAll();
-            }
-        });
+        SearchResult.addActionListener(e -> showAll());
 
         styleStatus();
         this.setVisible(true);
@@ -142,7 +118,6 @@ public class ResultsLoans extends JDialog {
     }
 
     public void showAll() {
-
         BorrowController borrowController = new BorrowController();
         List<BorrowModel> borrowList = borrowController.getBorrow(LoanInput.getText());
 
@@ -155,7 +130,6 @@ public class ResultsLoans extends JDialog {
 
             UserLabel.setText(user.getNome());
 
-            LocalDate dateOut = convertToLocalDate(borrow.getDateOut());
             LocalDate returnPreview = convertToLocalDate(borrow.getDataReturnPreview());
             LocalDate returnDate = convertToLocalDate(borrow.getDataReturn());
 
@@ -163,23 +137,81 @@ public class ResultsLoans extends JDialog {
             String formattedReturnPreview = returnPreview.format(formatter);
 
             if (returnDate != null) {
-                String formattedReturnDate = returnDate.format(formatter);
-                DevolutionLabel.setText(formattedReturnDate);
-            }
-
-            long daysBetween = ChronoUnit.DAYS.between(returnPreview, dateOut);
-
-            if (daysBetween > 14) {
-                StatusLabel.setText("Atrasado");
+                DevolutionLabel.setText(returnDate.format(formatter));
             } else {
-                StatusLabel.setText("No Prazo");
+                DevolutionLabel.setText("NUL");
             }
 
             PreviewLabel.setText(formattedReturnPreview);
-            DevolutionLabel.setText("NUL");
-
         } else {
-            System.out.println("Empréstimo não encontrado.");
+            JOptionPane.showMessageDialog(this, "Empréstimo não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Empréstimo não encontrado para o termo: " + LoanInput.getText());
+        }
+    }
+
+    private void processarDevolucao() {
+        int confirmation = JOptionPane.showConfirmDialog(
+                this,
+                "Tem certeza que deseja devolver o(s) livro(s)?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmation == JOptionPane.YES_OPTION) {
+            BorrowController borrowController = new BorrowController();
+            BookController bookController = new BookController();
+
+            List<BorrowModel> borrowList = borrowController.getBorrow(LoanInput.getText());
+
+            if (borrowList.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Empréstimo não encontrado.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                System.out.println("Empréstimo não encontrado para o termo: " + LoanInput.getText());
+                return;
+            }
+
+            for (BorrowModel borrow : borrowList) {
+                // Se já foi devolvido, impede operação
+                if (borrow.getDataReturn() != null) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "O empréstimo de ID " + borrow.getTransactionId() + " já foi devolvido anteriormente.",
+                            "Erro",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    System.out.println("Tentativa de devolução de empréstimo já devolvido: " + borrow.getTransactionId());
+                    return;
+                }
+
+                // Atualiza a data de devolução no objeto existente
+                Date dataDevolucao = new Date();
+                borrow.setDataReturn(dataDevolucao);
+
+                // Chama o método correto para atualizar a data de devolução
+                borrowController.UpdateBorrow(borrow);
+
+                // Atualiza o estoque do livro
+                BookModel book = bookController.getBook(borrow.getId_book());
+                if (book != null) {
+                    book.setQuantidade(book.getQuantidade() + borrow.getQnt());
+                    bookController.UpdateBook(book);
+                }
+
+                System.out.println("Devolução registrada para empréstimo ID: " + borrow.getTransactionId());
+            }
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Devolução realizada com sucesso!",
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            showAll();
         }
     }
 
@@ -188,49 +220,20 @@ public class ResultsLoans extends JDialog {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    private String formatDate(Date date) {
-        if (date == null) return "";
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        return formatter.format(date);
-    }
-
     public void setupTable(List<BorrowModel> borrowList) {
-        setTitle("Todos os Empréstimos");
-
-        // Definição das colunas desejadas
         String[] columnNames = {"Transaction ID", "Título do Livro", "Quantidade"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
         BookController bookController = new BookController();
         int totalQuantity = 0;
 
         for (BorrowModel borrowData : borrowList) {
-            String bookTitle = "Não encontrado";
-
             BookModel book = bookController.getBook(borrowData.getId_book());
-            if (book != null) {
-                bookTitle = book.getTitulo();
-            }
-
-            tableModel.addRow(new Object[]{
-                    borrowData.getTransactionId(),
-                    bookTitle,
-                    borrowData.getQnt()
-            });
-
+            tableModel.addRow(new Object[]{borrowData.getTransactionId(), book != null ? book.getTitulo() : "Não encontrado", borrowData.getQnt()});
             totalQuantity += borrowData.getQnt();
         }
 
         TotalLabel.setText(String.valueOf(totalQuantity));
-
         loadDataToTable(tableModel);
-        setVisible(true);
     }
-
-
 }

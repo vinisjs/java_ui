@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class BorrowController {
     BorrowRepo borrowRepo = new BorrowRepo();
@@ -41,8 +40,7 @@ public class BorrowController {
             borrowRepo.saveOneBorrow(borrow, session);
         }
     }
-    public void UpdateBook(BorrowModel borrow) {
-        System.out.println("Deu ruim!");
+    public void UpdateBorrow(BorrowModel borrow) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             borrowRepo.saveOneBorrow(borrow, session);
         }
