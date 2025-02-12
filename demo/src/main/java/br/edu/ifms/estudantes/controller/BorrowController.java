@@ -68,13 +68,12 @@ public class BorrowController {
         }
     }
 
-    public void saveLoan(BorrowModel mainBorrow, List<BorrowModel> borrowItems) {
+    public void saveLoan(BorrowModel mainBorrow, List<BorrowModel> borrowItems, String transactionId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try (session) {
             session.beginTransaction();
 
-            String transactionId = UUID.randomUUID().toString();
-            mainBorrow.setTransactionId(transactionId);
+
 
             System.out.println("Transaction ID: " + transactionId);
             // Salva o empréstimo principal

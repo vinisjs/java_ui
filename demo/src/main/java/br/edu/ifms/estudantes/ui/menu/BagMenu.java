@@ -92,37 +92,35 @@ public class BagMenu extends JDialog {
         BookController bookController = new BookController();
         BorrowController borrowController = new BorrowController();
 
+        String transactionId = UUID.randomUUID().toString();
+
         try {
-            // Converte as datas fornecidas
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date dateOut = dateFormat.parse(now);
             Date dateReturnPreview = dateFormat.parse(back);
 
-            // Configura o empréstimo principal
             BorrowModel mainBorrow = new BorrowModel();
             mainBorrow.setId_user(selectedUser.getNumberId());
             mainBorrow.setDateOut(dateOut);
             mainBorrow.setDataReturnPreview(dateReturnPreview);
+            mainBorrow.setTransactionId(transactionId);
 
-            // Configura os itens do empréstimo
             List<BorrowModel> borrowItems = new ArrayList<>();
             for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
                 BookModel book = entry.getKey();
                 int quantity = entry.getValue();
 
-                // Atualiza o estoque do livro
                 book.setQuantidade(book.getQuantidade() - quantity);
                 bookController.UpdateBook(book);
 
-                // Adiciona o item ao empréstimo
                 BorrowModel item = new BorrowModel();
                 item.setId_book(book.getNumberId());
                 item.setQnt(quantity);
                 borrowItems.add(item);
             }
 
-            // Salva o empréstimo e seus itens relacionados
-            borrowController.saveLoan(mainBorrow, borrowItems);
+            borrowController.saveLoan(mainBorrow, borrowItems, transactionId);
         } catch (ParseException e) {
             System.err.println("Erro ao converter as datas: " + e.getMessage());
             e.printStackTrace();
