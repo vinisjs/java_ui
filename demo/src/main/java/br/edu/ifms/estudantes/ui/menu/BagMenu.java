@@ -128,6 +128,7 @@ public class BagMenu extends JDialog {
             }
 
             borrowController.saveLoan(mainBorrow, borrowItems, transactionId);
+            //
         } catch (ParseException e) {
             System.err.println("Erro ao converter as datas: " + e.getMessage());
             e.printStackTrace();

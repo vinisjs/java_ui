@@ -1,7 +1,9 @@
 package br.edu.ifms.estudantes.ui.results;
 
+import br.edu.ifms.estudantes.controller.BookController;
 import br.edu.ifms.estudantes.controller.BorrowController;
 import br.edu.ifms.estudantes.controller.UserController;
+import br.edu.ifms.estudantes.model.BookModel;
 import br.edu.ifms.estudantes.model.BorrowModel;
 import br.edu.ifms.estudantes.model.CartModel;
 import br.edu.ifms.estudantes.model.UserModel;
@@ -175,6 +177,13 @@ public class ResultsLoans extends JDialog {
 
             TotalLabel.setText(String.valueOf(borrow.getQnt()));
             PreviewLabel.setText(formattedReturnPreview);
+
+            BookController bookController = new BookController();
+
+            BookModel book = bookController.getBook(borrow.getId_book());
+
+            System.out.println(book.getTitulo());
+
 
         } else {
             System.out.println("Empréstimo não encontrado.");
