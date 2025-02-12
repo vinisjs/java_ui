@@ -105,6 +105,10 @@ public class BagMenu extends JDialog {
             mainBorrow.setDateOut(dateOut);
             mainBorrow.setDataReturnPreview(dateReturnPreview);
             mainBorrow.setTransactionId(transactionId);
+            JTextField textField = new JTextField(transactionId);
+            textField.setEditable(false);
+            textField.setColumns(15);
+            JOptionPane.showMessageDialog(null, textField, "Sucesso, Copie o ID!", JOptionPane.INFORMATION_MESSAGE);
 
             List<BorrowModel> borrowItems = new ArrayList<>();
             for (Map.Entry<BookModel, Integer> entry : cartModel.getBooks().entrySet()) {
